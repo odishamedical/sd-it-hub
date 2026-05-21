@@ -49,7 +49,7 @@ export const MOCK_SERVICES: ITService[] = [
     description: 'Bespoke, lightning-fast Next.js websites tailored with premium styling, headless CMS, and global SEO optimization.',
     category: 'Web Development',
     icon: 'Globe',
-    price_starting: 799,
+    price_starting: 49999,
     features: ['Next.js React Architecture', 'Directus / Headless CMS', 'Mobile-Responsive UI', '100% Core Web Vitals Score']
   },
   {
@@ -58,7 +58,7 @@ export const MOCK_SERVICES: ITService[] = [
     description: 'High-performance React Native iOS and Android apps connected seamlessly to your central databases.',
     category: 'App Development',
     icon: 'Smartphone',
-    price_starting: 1499,
+    price_starting: 99999,
     features: ['Cross-Platform Coverage', 'App Store & Play Store publishing', 'Real-time sync (Websockets)', 'Push Notifications']
   },
   {
@@ -67,7 +67,7 @@ export const MOCK_SERVICES: ITService[] = [
     description: 'Supercharged cloud hosting built on Railway and Vercel Edge with zero-downtime PostgreSQL instances.',
     category: 'Hosting',
     icon: 'CloudLightning',
-    price_starting: 29,
+    price_starting: 1999,
     features: ['99.99% Uptime Guarantee', 'Automatic daily backups', 'SSL Certificates included', 'Scale-on-demand resources']
   },
   {
@@ -76,7 +76,7 @@ export const MOCK_SERVICES: ITService[] = [
     description: 'Ready-to-deploy, customizable storefront and landing page modules specifically optimized for vendor storefront setups.',
     category: 'White-Label Templates',
     icon: 'LayoutGrid',
-    price_starting: 199,
+    price_starting: 14999,
     features: ['Multi-theme options', 'Built-in payment triggers', 'Pre-configured SEO metadata', 'Full source code ownership']
   }
 ];
@@ -115,7 +115,7 @@ export const MOCK_PRICING: ITPricingPlan[] = [
   {
     id: 'starter',
     name: 'Starter Suite',
-    price: '$49',
+    price: '₹3,999',
     period: 'mo',
     description: 'Perfect for small local vendors looking to host a premium mini-site or digital catalog.',
     features: ['1 Mini-Site Subdomain', '10GB Storage & CDN Hosting', 'Standard Directus CMS access', 'Community Email Support'],
@@ -125,7 +125,7 @@ export const MOCK_PRICING: ITPricingPlan[] = [
   {
     id: 'enterprise',
     name: 'Enterprise Platform',
-    price: '$199',
+    price: '₹15,999',
     period: 'mo',
     description: 'Full-featured package for established operations needing advanced custom databases, scaling, and premium subdomains.',
     features: ['Custom Subdomain setup', '100GB Premium Cloud Space', 'Full Directus Schema control', 'Priority 24/7 Slack Support', 'Daily database backups', 'AI Assistant integration'],

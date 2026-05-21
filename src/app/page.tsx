@@ -249,7 +249,7 @@ export default function Home() {
                 <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] text-slate-400 block uppercase">Starting from</span>
-                    <span className="text-lg font-bold text-white">${service.price_starting}</span>
+                    <span className="text-lg font-bold text-white">₹{service.price_starting.toLocaleString('en-IN')}</span>
                   </div>
                   <a 
                     href={`#inquiry`} 

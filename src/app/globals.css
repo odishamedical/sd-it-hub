@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #060c18; /* Super dark midnight blue */
+  --foreground: #f1f5f9; /* Slate 100 */
+  --primary-deep: #020610; /* Deepest black-blue */
+  --primary-slate: #0b132b; /* Midnight Navy */
+  --primary-light: #1c2541; /* Dark blue-gray */
+  --accent-gold: #e5c158; /* Premium Champagne Gold */
+  --accent-amber: #f5a623; /* Warm Amber Gold */
+  --accent-glow: rgba(229, 193, 88, 0.35);
+  --accent-glow-amber: rgba(245, 166, 35, 0.2);
+  --text-muted: #94a3b8; /* Muted Slate */
+  --card-bg: rgba(11, 19, 43, 0.55); /* Glass card fill */
+  --border-gold: rgba(229, 193, 88, 0.15); /* Sleek gold border */
 }
 
 @theme inline {
@@ -12,15 +22,77 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(229, 193, 88, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(229, 193, 88, 0.08);
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Accent Gradients */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
+}
+
+.border-gold-glow {
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Micro-animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--primary-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
 }

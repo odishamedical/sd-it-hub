@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import * as Icons from "lucide-react";
+import EcosystemSwitcher from "@/components/EcosystemSwitcher";
 import {
   MOCK_SERVICES,
   MOCK_PORTFOLIO,
@@ -133,7 +134,8 @@ export default function Home() {
           </nav>
 
           {/* Action Button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <EcosystemSwitcher />
             <Link 
               href="/portal" 
               className="px-5 py-2.5 rounded-xl border border-[#e5c158]/30 hover:border-[#e5c158] bg-transparent text-sm font-semibold text-[#e5c158] shadow-[0_0_15px_rgba(229,193,88,0.03)] hover:shadow-[0_0_15px_rgba(229,193,88,0.15)] transition-all"

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import * as Icons from "lucide-react";
+import { db, collection, addDoc, serverTimestamp } from "@/utils/firebase";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -128,6 +129,21 @@ const CATEGORIES = ["All", "Gold Jewelry", "Handloom", "Healthcare", "News Porta
 export default function TemplatesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
 
+  const handleRequestDeployment = async (template: any) => {
+    try {
+      await addDoc(collection(db, "support_tickets"), {
+        title: `Deploy Template: ${template.name}`,
+        category: "Infrastructure",
+        status: "Open",
+        createdAt: serverTimestamp()
+      });
+      alert(`Deployment request for '${template.name}' has been submitted to the Support Desk! Our cloud team will provision your node shortly.`);
+    } catch (e) {
+      console.error("Error requesting deployment", e);
+      alert("Failed to submit deployment request. Please try again.");
+    }
+  };
+
   const filteredTemplates = TEMPLATES.filter((tpl) => 
     activeCategory === "All" ? true : tpl.category === activeCategory
   );
@@ -208,9 +224,20 @@ export default function TemplatesPage() {
                     {template.description}
                   </p>
 
-                  <button className="w-full py-3 bg-[#001529] hover:bg-[#0ea5e9] text-white font-bold rounded transition-colors text-sm">
-                    Use This Template
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => handleRequestDeployment(template)}
+                      className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded transition-colors text-sm"
+                    >
+                      View Specs
+                    </button>
+                    <button 
+                      onClick={() => handleRequestDeployment(template)}
+                      className="flex-1 py-3 bg-[#001529] hover:bg-[#0ea5e9] text-white font-bold rounded transition-colors text-sm"
+                    >
+                      Request Deployment
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

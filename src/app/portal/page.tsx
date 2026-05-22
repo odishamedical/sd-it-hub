@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import * as Icons from "lucide-react";
+import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "@/utils/firebase";
 
 interface Ticket {
   id: string;
@@ -20,51 +21,111 @@ export default function ClientPortal() {
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
 
-  // Support ticket state
-  const [tickets, setTickets] = useState<Ticket[]>([
-    { id: "TK-402", title: "Domain DNS Propagation Issue", category: "DNS/SSL", status: "Resolved", date: "2026-05-18" },
-    { id: "TK-419", title: "Upgrade template to E-Commerce Pro", category: "Infrastructure", status: "In-Progress", date: "2026-05-20" }
-  ]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [newTicketTitle, setNewTicketTitle] = useState("");
   const [newTicketCategory, setNewTicketCategory] = useState("Infrastructure");
+  const [loadingTickets, setLoadingTickets] = useState(true);
+
+  // Fetch Tickets
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const q = query(collection(db, "support_tickets"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map(doc => ({
+          id: doc.id.substring(0, 6).toUpperCase(), // Short ID
+          title: doc.data().title,
+          category: doc.data().category,
+          status: doc.data().status || "Open",
+          date: doc.data().createdAt?.toDate().toISOString().split("T")[0] || new Date().toISOString().split("T")[0]
+        })) as Ticket[];
+        setTickets(data);
+      } catch (e) {
+        console.error("Error fetching tickets", e);
+      } finally {
+        setLoadingTickets(false);
+      }
+    };
+    fetchTickets();
+  }, [activeTab]);
 
   // Handle support ticket creation
-  const handleCreateTicket = (e: React.FormEvent) => {
+  const handleCreateTicket = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTicketTitle.trim()) return;
 
-    const newTicket: Ticket = {
-      id: `TK-${Math.floor(100 + Math.random() * 900)}`,
-      title: newTicketTitle,
-      category: newTicketCategory,
-      status: "Open",
-      date: new Date().toISOString().split("T")[0]
-    };
-
-    setTickets([newTicket, ...tickets]);
-    setNewTicketTitle("");
+    try {
+      await addDoc(collection(db, "support_tickets"), {
+        title: newTicketTitle,
+        category: newTicketCategory,
+        status: "Open",
+        createdAt: serverTimestamp()
+      });
+      
+      const newTicket: Ticket = {
+        id: `TK-${Math.floor(100 + Math.random() * 900)}`,
+        title: newTicketTitle,
+        category: newTicketCategory,
+        status: "Open",
+        date: new Date().toISOString().split("T")[0]
+      };
+      setTickets([newTicket, ...tickets]);
+      setNewTicketTitle("");
+    } catch (e) {
+      console.error("Error creating ticket", e);
+    }
   };
 
-  // Simulate Domain check
-  const handleCheckDomain = (e: React.FormEvent) => {
+  // Simulate Domain check against DB
+  const handleCheckDomain = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!domainQuery.trim()) return;
 
     setIsCheckingDomain(true);
     setDomainResult(null);
 
-    setTimeout(() => {
-      setIsCheckingDomain(false);
-      // Mocking: domains with 'taken' or 'admin' or 'gold' are not available
+    try {
       const cleanQuery = domainQuery.toLowerCase().replace(/\s+/g, "");
-      const isAvailable = !["taken", "admin", "gold", "bhulia", "auth", "shyamdash"].some(kw => cleanQuery.includes(kw));
-      
       const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}.shyamdash.com`;
-      setDomainResult({
-        available: isAvailable,
-        domain: domainName
+
+      // Check predefined restricted keywords
+      const restricted = ["taken", "admin", "gold", "bhulia", "auth", "shyamdash"];
+      if (restricted.some(kw => cleanQuery.includes(kw))) {
+        setDomainResult({ available: false, domain: domainName });
+        setIsCheckingDomain(false);
+        return;
+      }
+
+      // Query Firebase
+      const q = query(collection(db, "domains"), where("domainName", "==", domainName));
+      const snapshot = await getDocs(q);
+      
+      if (!snapshot.empty) {
+        setDomainResult({ available: false, domain: domainName });
+      } else {
+        setDomainResult({ available: true, domain: domainName });
+      }
+    } catch (e) {
+      console.error("Error checking domain", e);
+    } finally {
+      setIsCheckingDomain(false);
+    }
+  };
+
+  const handleProvisionDomain = async () => {
+    if (!domainResult?.domain) return;
+    try {
+      await addDoc(collection(db, "domains"), {
+        domainName: domainResult.domain,
+        status: "provisioned",
+        createdAt: serverTimestamp()
       });
-    }, 1000);
+      alert(`Successfully provisioned route: ${domainResult.domain}`);
+      setDomainResult(null);
+      setDomainQuery("");
+    } catch (e) {
+      console.error("Error provisioning", e);
+    }
   };
 
   return (
@@ -306,11 +367,7 @@ export default function ClientPortal() {
                           </div>
                         </div>
                         <button 
-                          onClick={() => {
-                            alert(`Provisioning route: ${domainResult.domain}...`);
-                            setDomainResult(null);
-                            setDomainQuery("");
-                          }}
+                          onClick={handleProvisionDomain}
                           className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20"
                         >
                           Bind Domain
@@ -384,8 +441,17 @@ export default function ClientPortal() {
 
                 {/* Ticket List */}
                 <div className="space-y-4">
-                  <h3 className="font-bold text-white text-sm">Active Support Tickets</h3>
+                  <h3 className="font-bold text-white text-sm flex items-center justify-between">
+                    <span>Active Support Tickets</span>
+                    {loadingTickets && <Icons.Loader2 className="w-4 h-4 animate-spin text-sky-400" />}
+                  </h3>
                   
+                  {tickets.length === 0 && !loadingTickets && (
+                    <div className="text-slate-500 text-sm italic p-4 border border-slate-800 rounded-xl bg-slate-900/50">
+                      No support tickets found. Create one to get started.
+                    </div>
+                  )}
+
                   {tickets.map((ticket) => (
                     <div key={ticket.id} className="glass-panel-dark p-5 rounded-2xl border border-slate-800 flex items-center justify-between gap-4">
                       <div>

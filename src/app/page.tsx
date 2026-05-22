@@ -10,6 +10,29 @@ export default function Home() {
   const [domainSearch, setDomainSearch] = useState("");
   const [domainExt, setDomainExt] = useState(".com");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Search State
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResult, setSearchResult] = useState<any>(null);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!domainSearch.trim()) return;
+
+    setIsSearching(true);
+    setSearchResult(null);
+
+    try {
+      // Call our mock Next.js backend
+      const res = await fetch(`/api/domains/search?domain=${encodeURIComponent(domainSearch)}&tld=${encodeURIComponent(domainExt)}`);
+      const data = await res.json();
+      setSearchResult(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   return (
     <main className="relative min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
@@ -86,35 +109,92 @@ export default function Home() {
             Domain Registration, Website Solutions & Custom Development
           </p>
 
-          {/* Domain Search Bar */}
-          <div className="w-full max-w-3xl flex flex-col sm:flex-row shadow-2xl rounded overflow-hidden bg-white group border-2 border-transparent focus-within:border-[#0ea5e9] transition-colors">
-            <div className="flex-grow flex items-center bg-white px-4 py-1">
-              <Icons.Search className="w-5 h-5 text-slate-400 mr-2 flex-shrink-0" />
-              <input 
-                type="text"
-                placeholder="Find your success (e.g. mybusiness)"
-                className="w-full py-4 text-slate-800 outline-none placeholder:text-slate-400 font-medium"
-                value={domainSearch}
-                onChange={(e) => setDomainSearch(e.target.value)}
-              />
-            </div>
-            
-            <div className="h-px w-full sm:w-px sm:h-auto bg-slate-200"></div>
-            
-            <select 
-              value={domainExt}
-              onChange={(e) => setDomainExt(e.target.value)}
-              className="bg-slate-50 text-slate-700 px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-100 transition-colors"
+          {/* Domain Search UI */}
+          <div className="w-full max-w-3xl relative">
+            <form 
+              onSubmit={handleSearch}
+              className="w-full flex flex-col sm:flex-row shadow-2xl rounded overflow-hidden bg-white group border-2 border-transparent focus-within:border-[#0ea5e9] transition-colors relative z-20"
             >
-              <option value=".com">.com</option>
-              <option value=".in">.in</option>
-              <option value=".org">.org</option>
-              <option value=".net">.net</option>
-            </select>
+              <div className="flex-grow flex items-center bg-white px-4 py-1">
+                <Icons.Search className="w-5 h-5 text-slate-400 mr-2 flex-shrink-0" />
+                <input 
+                  type="text"
+                  placeholder="Find your success (e.g. mybusiness)"
+                  className="w-full py-4 text-slate-800 outline-none placeholder:text-slate-400 font-medium"
+                  value={domainSearch}
+                  onChange={(e) => setDomainSearch(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))} // only allow valid domain chars
+                />
+              </div>
+              
+              <div className="h-px w-full sm:w-px sm:h-auto bg-slate-200"></div>
+              
+              <select 
+                value={domainExt}
+                onChange={(e) => setDomainExt(e.target.value)}
+                className="bg-slate-50 text-slate-700 px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-100 transition-colors"
+              >
+                <option value=".com">.com</option>
+                <option value=".in">.in</option>
+                <option value=".org">.org</option>
+                <option value=".net">.net</option>
+                <option value=".co">.co</option>
+              </select>
 
-            <button className="bg-[#0ea5e9] hover:bg-[#0284c7] text-white px-8 py-4 sm:py-0 font-bold tracking-wide transition-colors whitespace-nowrap">
-              Search Domain
-            </button>
+              <button 
+                type="submit"
+                disabled={isSearching}
+                className="bg-[#0ea5e9] hover:bg-[#0284c7] disabled:bg-[#0ea5e9]/70 text-white px-8 py-4 sm:py-0 font-bold tracking-wide transition-colors whitespace-nowrap flex items-center justify-center min-w-[160px]"
+              >
+                {isSearching ? <Icons.Loader2 className="w-5 h-5 animate-spin" /> : "Search Domain"}
+              </button>
+            </form>
+
+            {/* Results Dropdown Container */}
+            {searchResult && (
+              <div className="absolute top-full left-0 w-full mt-4 bg-white rounded-xl shadow-2xl overflow-hidden z-30 border border-slate-100 text-left animate-in slide-in-from-top-2 fade-in duration-200">
+                <div className="p-6 border-b border-slate-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-2xl font-black text-slate-900">{searchResult.domain}</span>
+                    {searchResult.available ? (
+                      <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200">AVAILABLE</span>
+                    ) : (
+                      <span className="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-full border border-rose-200">TAKEN</span>
+                    )}
+                  </div>
+                  
+                  {searchResult.available ? (
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-3xl font-extrabold text-slate-800">₹{searchResult.price} <span className="text-sm text-slate-400 font-medium">/yr</span></span>
+                      <button className="px-6 py-2 bg-slate-900 hover:bg-[#0ea5e9] text-white font-bold rounded transition-colors shadow-md">
+                        Add to Cart
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500 mt-2">This domain is currently registered by someone else. Check out these alternatives below!</p>
+                  )}
+                </div>
+
+                {/* Alternatives Section if taken */}
+                {!searchResult.available && searchResult.alternatives && (
+                  <div className="bg-slate-50 p-6">
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Recommended Alternatives</h4>
+                    <div className="space-y-3">
+                      {searchResult.alternatives.map((alt: any, idx: number) => (
+                        <div key={idx} className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded hover:border-sky-300 transition-colors">
+                          <span className="font-bold text-slate-700">{alt.domain}</span>
+                          <div className="flex items-center gap-4">
+                            <span className="font-extrabold text-slate-800">₹{alt.price}</span>
+                            <button className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded border border-slate-300 transition-colors">
+                              Select
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

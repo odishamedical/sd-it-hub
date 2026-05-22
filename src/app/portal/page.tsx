@@ -22,8 +22,8 @@ export default function ClientPortal() {
 
   // Support ticket state
   const [tickets, setTickets] = useState<Ticket[]>([
-    { id: "TK-402", title: "DB Cache Revalidation Error", category: "Database", status: "Resolved", date: "2026-05-18" },
-    { id: "TK-419", title: "Scale bandwidth for Gold Flash Sale", category: "Infrastructure", status: "In-Progress", date: "2026-05-20" }
+    { id: "TK-402", title: "Domain DNS Propagation Issue", category: "DNS/SSL", status: "Resolved", date: "2026-05-18" },
+    { id: "TK-419", title: "Upgrade template to E-Commerce Pro", category: "Infrastructure", status: "In-Progress", date: "2026-05-20" }
   ]);
   const [newTicketTitle, setNewTicketTitle] = useState("");
   const [newTicketCategory, setNewTicketCategory] = useState("Infrastructure");
@@ -68,21 +68,19 @@ export default function ClientPortal() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#040916] text-[#e2e8f0] font-sans flex flex-col md:flex-row overflow-x-hidden">
+    <div className="relative min-h-screen bg-slate-950 text-slate-200 font-sans flex flex-col md:flex-row overflow-x-hidden">
       
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 bg-[#020610] border-b md:border-b-0 md:border-r border-slate-900 flex flex-col justify-between p-6 z-20">
+      <aside className="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col justify-between p-6 z-20">
         <div>
           {/* Logo Brand */}
           <Link href="/" className="flex items-center gap-3 mb-10 group">
-            <div className="w-9 h-9 rounded-xl bg-gold-gradient p-[1px]">
-              <div className="w-full h-full bg-[#060c18] rounded-xl flex items-center justify-center">
-                <Icons.Server className="w-4.5 h-4.5 text-[#e5c158]" />
-              </div>
+            <div className="w-10 h-10 bg-sky-500/10 rounded border border-sky-500/20 flex items-center justify-center">
+              <Icons.Box className="w-6 h-6 text-sky-400" />
             </div>
             <div>
-              <span className="text-sm font-bold tracking-tight text-white block">SD PORTAL</span>
-              <span className="text-[9px] text-[#e5c158] tracking-wider uppercase block">Client Dashboard</span>
+              <span className="text-sm font-bold tracking-tight text-white block">IT HUB</span>
+              <span className="text-[9px] text-sky-400 tracking-wider uppercase block">Client Portal</span>
             </div>
           </Link>
 
@@ -92,8 +90,8 @@ export default function ClientPortal() {
               onClick={() => setActiveTab("dashboard")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
                 activeTab === "dashboard" 
-                  ? "bg-gold-gradient text-slate-950 shadow-md" 
-                  : "text-slate-400 hover:bg-slate-900/60 hover:text-white"
+                  ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" 
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
               }`}
             >
               <Icons.LayoutDashboard className="w-4 h-4" />
@@ -103,8 +101,8 @@ export default function ClientPortal() {
               onClick={() => setActiveTab("domains")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
                 activeTab === "domains" 
-                  ? "bg-gold-gradient text-slate-950 shadow-md" 
-                  : "text-slate-400 hover:bg-slate-900/60 hover:text-white"
+                  ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" 
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
               }`}
             >
               <Icons.Globe2 className="w-4 h-4" />
@@ -114,8 +112,8 @@ export default function ClientPortal() {
               onClick={() => setActiveTab("support")}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
                 activeTab === "support" 
-                  ? "bg-gold-gradient text-slate-950 shadow-md" 
-                  : "text-slate-400 hover:bg-slate-900/60 hover:text-white"
+                  ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" 
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
               }`}
             >
               <Icons.LifeBuoy className="w-4 h-4" />
@@ -125,115 +123,117 @@ export default function ClientPortal() {
         </div>
 
         {/* Back Link */}
-        <div className="pt-6 border-t border-slate-900/80 mt-6">
+        <div className="pt-6 border-t border-slate-800 mt-6">
           <Link href="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors">
             <Icons.ArrowLeft className="w-3.5 h-3.5" />
-            <span>Public Landing Page</span>
+            <span>Back to Website</span>
           </Link>
         </div>
       </aside>
 
       {/* Main Panel Content */}
-      <main className="flex-1 flex flex-col min-w-0 z-10">
-        
+      <main className="flex-1 flex flex-col min-w-0 z-10 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat relative">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-slate-950/90 mix-blend-multiply z-0"></div>
+
         {/* Header bar */}
-        <header className="bg-[#020610]/40 border-b border-slate-900 py-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <header className="relative z-10 bg-slate-900/50 backdrop-blur-md border-b border-slate-800 py-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
             <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-              Connected Node: Cuttack Central
+              Connected Node: Global Edge
             </span>
           </div>
 
           {/* User SSO info */}
-          <div className="flex items-center gap-3 bg-slate-900/50 border border-slate-800 py-1.5 px-3 rounded-xl">
-            <div className="w-6 h-6 rounded-full bg-[#e5c158]/10 text-[#e5c158] flex items-center justify-center font-bold text-[10px] border border-[#e5c158]/20">
-              PD
+          <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700 py-1.5 px-3 rounded-xl">
+            <div className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-[10px] border border-sky-500/20">
+              SD
             </div>
             <div className="text-left">
-              <span className="text-[10px] text-white font-bold block leading-none">Priyabrata Dash</span>
-              <span className="text-[8px] text-[#e5c158] uppercase font-bold block mt-0.5">Enterprise Member</span>
+              <span className="text-[10px] text-white font-bold block leading-none">Shyam Dash</span>
+              <span className="text-[8px] text-sky-400 uppercase font-bold block mt-0.5">Admin Account</span>
             </div>
           </div>
         </header>
 
         {/* Panel Main Area */}
-        <div className="flex-1 p-8 overflow-y-auto">
+        <div className="relative z-10 flex-1 p-8 overflow-y-auto">
           
           {/* TAB 1: DASHBOARD OVERVIEW */}
           {activeTab === "dashboard" && (
-            <div className="space-y-8 animate-float-fade">
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* Heading */}
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white">IT Infrastructure Node</h1>
-                <p className="text-slate-400 text-xs mt-1">Real-time status metrics of your active hosting, templates, and subdomains.</p>
+                <p className="text-slate-400 text-sm mt-1">Real-time status metrics of your active hosting, templates, and subdomains.</p>
               </div>
 
               {/* Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-panel p-6 rounded-2xl">
+                <div className="glass-panel-dark p-6 rounded-2xl">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Subdomain Nodes</span>
-                    <Icons.Link2 className="w-4 h-4 text-[#e5c158]" />
+                    <Icons.Link2 className="w-4 h-4 text-sky-400" />
                   </div>
-                  <span className="text-2xl font-black text-white">3 Active</span>
-                  <span className="text-[10px] text-emerald-400 block mt-1">● SSL Secured</span>
+                  <span className="text-2xl font-black text-white">5 Active</span>
+                  <span className="text-[10px] text-emerald-400 block mt-1 flex items-center gap-1"><Icons.CheckCircle2 className="w-3 h-3" /> SSL Secured</span>
                 </div>
 
-                <div className="glass-panel p-6 rounded-2xl">
+                <div className="glass-panel-dark p-6 rounded-2xl">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Bandwidth Usage</span>
-                    <Icons.Activity className="w-4 h-4 text-[#e5c158]" />
+                    <Icons.Activity className="w-4 h-4 text-sky-400" />
                   </div>
-                  <span className="text-2xl font-black text-white">82.4 GB</span>
+                  <span className="text-2xl font-black text-white">12.4 GB</span>
                   <span className="text-[10px] text-slate-400 block mt-1">of 100 GB limit</span>
                 </div>
 
-                <div className="glass-panel p-6 rounded-2xl">
+                <div className="glass-panel-dark p-6 rounded-2xl">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Avg SLA Response</span>
-                    <Icons.Zap className="w-4 h-4 text-[#e5c158]" />
+                    <Icons.Zap className="w-4 h-4 text-sky-400" />
                   </div>
-                  <span className="text-2xl font-black text-white">99.98%</span>
-                  <span className="text-[10px] text-emerald-400 block mt-1">● Target Exceeded</span>
+                  <span className="text-2xl font-black text-white">99.99%</span>
+                  <span className="text-[10px] text-emerald-400 block mt-1 flex items-center gap-1"><Icons.ArrowUpRight className="w-3 h-3" /> Target Exceeded</span>
                 </div>
               </div>
 
               {/* Active Deployments Table */}
-              <div className="glass-panel rounded-2xl overflow-hidden">
-                <div className="p-6 border-b border-slate-900/60 bg-slate-900/10">
+              <div className="glass-panel-dark rounded-2xl overflow-hidden">
+                <div className="p-6 border-b border-slate-800 bg-slate-900/50">
                   <h3 className="font-bold text-white text-sm">Hosted Tenant Deployments</h3>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="bg-slate-950/20 text-slate-500 font-bold border-b border-slate-900">
+                      <tr className="bg-slate-900/30 text-slate-400 font-bold border-b border-slate-800">
                         <th className="p-4">App/Storefront</th>
-                        <th className="p-4">Directus ID</th>
+                        <th className="p-4">Template ID</th>
                         <th className="p-4">Domain Route</th>
                         <th className="p-4">SaaS Region</th>
-                        <th className="p-4">Deployment Status</th>
+                        <th className="p-4">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-900/50">
-                      <tr>
-                        <td className="p-4 font-bold text-white">Bhulia Weaver Directory</td>
-                        <td className="p-4 text-slate-400 font-mono">ithub_bhulia_01</td>
-                        <td className="p-4 text-[#e5c158] font-semibold">directory.bhulia.com</td>
+                    <tbody className="divide-y divide-slate-800">
+                      <tr className="hover:bg-slate-800/30 transition-colors">
+                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Bhulia Weaver Directory</td>
+                        <td className="p-4 text-slate-400 font-mono">sar-3</td>
+                        <td className="p-4 text-sky-400 font-semibold">directory.bhulia.com</td>
                         <td className="p-4 text-slate-400">Asia-South (Mumbai)</td>
                         <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
                       </tr>
-                      <tr>
-                        <td className="p-4 font-bold text-white">Gold Marketplace Front</td>
-                        <td className="p-4 text-slate-400 font-mono">ithub_gold_02</td>
-                        <td className="p-4 text-[#e5c158] font-semibold">shyamdash.com</td>
+                      <tr className="hover:bg-slate-800/30 transition-colors">
+                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Gold Marketplace Front</td>
+                        <td className="p-4 text-slate-400 font-mono">gld-1</td>
+                        <td className="p-4 text-sky-400 font-semibold">shyamdash.com</td>
                         <td className="p-4 text-slate-400">US-East (Virginia)</td>
                         <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
                       </tr>
-                      <tr>
-                        <td className="p-4 font-bold text-white">Central SSO Auth Gateway</td>
-                        <td className="p-4 text-slate-400 font-mono">ithub_auth_sso</td>
-                        <td className="p-4 text-[#e5c158] font-semibold">auth.shyamdash.com</td>
+                      <tr className="hover:bg-slate-800/30 transition-colors">
+                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Dehapa Telemedicine</td>
+                        <td className="p-4 text-slate-400 font-mono">hlt-1</td>
+                        <td className="p-4 text-sky-400 font-semibold">portal.dehapa.com</td>
                         <td className="p-4 text-slate-400">Global Edge Nodes</td>
                         <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
                       </tr>
@@ -246,14 +246,14 @@ export default function ClientPortal() {
 
           {/* TAB 2: DOMAIN ALLOCATOR */}
           {activeTab === "domains" && (
-            <div className="space-y-8 max-w-4xl">
+            <div className="space-y-8 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white">Subdomain Allocator Terminal</h1>
-                <p className="text-slate-400 text-xs mt-1">Reserve subfolders or subdomains in real time under the shyamdash.com ecosystem.</p>
+                <p className="text-slate-400 text-sm mt-1">Reserve subfolders or subdomains in real time under the shyamdash.com ecosystem.</p>
               </div>
 
               {/* Form */}
-              <div className="glass-panel p-8 rounded-2xl">
+              <div className="glass-panel-dark p-8 rounded-2xl border border-slate-800">
                 <form onSubmit={handleCheckDomain} className="space-y-6">
                   <div className="max-w-xl">
                     <label className="text-xs text-slate-300 font-bold block mb-2">Configure Subdomain Route</label>
@@ -265,10 +265,10 @@ export default function ClientPortal() {
                           value={domainQuery}
                           onChange={(e) => setDomainQuery(e.target.value)}
                           placeholder="e.g. sambalpur-weavers"
-                          className="w-full p-3.5 bg-slate-950/60 border border-slate-800 focus:border-[#e5c158] rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#e5c158]"
+                          className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
                         />
                       </div>
-                      <span className="flex items-center text-slate-400 text-xs font-bold px-4 bg-slate-900 rounded-xl border border-slate-800">
+                      <span className="flex items-center text-slate-400 text-sm font-bold px-4 bg-slate-800 rounded-xl border border-slate-700">
                         .shyamdash.com
                       </span>
                     </div>
@@ -277,7 +277,7 @@ export default function ClientPortal() {
                   <button 
                     type="submit" 
                     disabled={isCheckingDomain}
-                    className="px-6 py-3.5 bg-gold-gradient text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md hover:shadow-[0_0_15px_rgba(229,193,88,0.25)] flex items-center gap-2"
+                    className="px-6 py-3.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-sky-500/20 flex items-center gap-2"
                   >
                     {isCheckingDomain ? (
                       <>
@@ -295,14 +295,14 @@ export default function ClientPortal() {
 
                 {/* Results UI */}
                 {domainResult && (
-                  <div className="mt-8 pt-8 border-t border-slate-900/60">
+                  <div className="mt-8 pt-8 border-t border-slate-800">
                     {domainResult.available ? (
-                      <div className="p-6 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="p-6 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex gap-3">
                           <Icons.CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0" />
                           <div>
                             <h4 className="text-white font-bold text-sm">Domain Route is Available!</h4>
-                            <p className="text-slate-400 text-xs mt-0.5">You can provision <span className="text-[#e5c158] font-bold font-mono">{domainResult.domain}</span> to a template catalog.</p>
+                            <p className="text-slate-400 text-xs mt-0.5">You can provision <span className="text-sky-400 font-bold font-mono">{domainResult.domain}</span> to a template catalog.</p>
                           </div>
                         </div>
                         <button 
@@ -311,13 +311,13 @@ export default function ClientPortal() {
                             setDomainResult(null);
                             setDomainQuery("");
                           }}
-                          className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-lg transition-all"
+                          className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20"
                         >
                           Bind Domain
                         </button>
                       </div>
                     ) : (
-                      <div className="p-6 rounded-xl bg-red-950/20 border border-red-500/30 flex gap-3">
+                      <div className="p-6 rounded-xl bg-red-500/10 border border-red-500/30 flex gap-3">
                         <Icons.AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0" />
                         <div>
                           <h4 className="text-white font-bold text-sm">Route Node Already Allocated</h4>
@@ -333,17 +333,17 @@ export default function ClientPortal() {
 
           {/* TAB 3: SUPPORT TICKETS */}
           {activeTab === "support" && (
-            <div className="space-y-8 max-w-4xl">
+            <div className="space-y-8 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white">Tech Support Desk</h1>
-                <p className="text-slate-400 text-xs mt-1">Submit tickets directly to our systems administrators for cloud provisioning.</p>
+                <p className="text-slate-400 text-sm mt-1">Submit tickets directly to our systems administrators for cloud provisioning.</p>
               </div>
 
               {/* Grid split */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 
                 {/* Form */}
-                <div className="glass-panel p-6 rounded-2xl">
+                <div className="glass-panel-dark p-6 rounded-2xl border border-slate-800">
                   <h3 className="font-bold text-white text-sm mb-6">Open Support Ticket</h3>
                   <form onSubmit={handleCreateTicket} className="space-y-4">
                     <div>
@@ -354,7 +354,7 @@ export default function ClientPortal() {
                         value={newTicketTitle}
                         onChange={(e) => setNewTicketTitle(e.target.value)}
                         placeholder="e.g. Purge database cache manually"
-                        className="w-full p-3.5 bg-slate-950/60 border border-slate-800 focus:border-[#e5c158] rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#e5c158]"
+                        className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
                       />
                     </div>
 
@@ -363,7 +363,7 @@ export default function ClientPortal() {
                       <select 
                         value={newTicketCategory}
                         onChange={(e) => setNewTicketCategory(e.target.value)}
-                        className="w-full p-3.5 bg-slate-950/60 border border-slate-800 focus:border-[#e5c158] rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#e5c158]"
+                        className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
                       >
                         <option value="Infrastructure">Infrastructure Scaling</option>
                         <option value="Database">Database Query Error</option>
@@ -374,7 +374,7 @@ export default function ClientPortal() {
 
                     <button 
                       type="submit"
-                      className="w-full py-3.5 bg-gold-gradient text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                      className="w-full py-3.5 bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
                     >
                       <Icons.Plus className="w-4 h-4" />
                       <span>Transmit Ticket</span>
@@ -387,16 +387,16 @@ export default function ClientPortal() {
                   <h3 className="font-bold text-white text-sm">Active Support Tickets</h3>
                   
                   {tickets.map((ticket) => (
-                    <div key={ticket.id} className="glass-panel p-5 rounded-2xl flex items-center justify-between gap-4">
+                    <div key={ticket.id} className="glass-panel-dark p-5 rounded-2xl border border-slate-800 flex items-center justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] text-slate-500 font-mono font-bold">{ticket.id}</span>
-                          <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400 text-[8px] uppercase tracking-wider font-bold">
+                          <span className="text-[10px] text-slate-400 font-mono font-bold">{ticket.id}</span>
+                          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[8px] uppercase tracking-wider font-bold">
                             {ticket.category}
                           </span>
                         </div>
-                        <h4 className="text-white text-xs font-bold mt-2">{ticket.title}</h4>
-                        <span className="text-[9px] text-slate-500 block mt-1">Created on {ticket.date}</span>
+                        <h4 className="text-white text-sm font-bold mt-2">{ticket.title}</h4>
+                        <span className="text-[10px] text-slate-500 block mt-1">Created on {ticket.date}</span>
                       </div>
 
                       <div>
@@ -405,7 +405,7 @@ export default function ClientPortal() {
                             ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400" 
                             : ticket.status === "In-Progress"
                             ? "bg-amber-500/10 border border-amber-500/30 text-amber-400"
-                            : "bg-blue-500/10 border border-blue-500/30 text-blue-400"
+                            : "bg-sky-500/10 border border-sky-500/30 text-sky-400"
                         }`}>
                           {ticket.status}
                         </span>

@@ -16,6 +16,7 @@ const TEMPLATES = [
     price: "Enterprise Only",
     image: "/gold-1.png",
     description: "Sleek dark mode UI with glowing gold accents. Perfect for high-end luxury showrooms.",
+    previewUrl: "https://shyamdash.com",
   },
   {
     id: "gld-2",
@@ -24,6 +25,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/gold-2.png",
     description: "Classic traditional Indian jewellery layout with a rich royal red and gold theme.",
+    previewUrl: "https://shyamdash.com",
   },
   {
     id: "gld-3",
@@ -32,6 +34,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/gold-3.png",
     description: "Clean white background focusing on single high-value pieces and elegant typography.",
+    previewUrl: "https://shyamdash.com",
   },
   // SAMBALPURI SAREE
   {
@@ -41,6 +44,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/saree-1.png",
     description: "Colorful and engaging UI highlighting rich Sambalpuri ikat patterns and textiles.",
+    previewUrl: "https://bhulia.com",
   },
   {
     id: "sar-2",
@@ -49,6 +53,7 @@ const TEMPLATES = [
     price: "Enterprise Only",
     image: "/saree-2.png",
     description: "Sophisticated pastel high-fashion boutique for premium silk sarees.",
+    previewUrl: "https://bhulia.com",
   },
   {
     id: "sar-3",
@@ -57,6 +62,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/saree-3.png",
     description: "Earthy artisan portfolio focusing on storytelling and traditional weaver craftsmanship.",
+    previewUrl: "https://bhulia.com",
   },
   // HEALTHCARE (Dehapa)
   {
@@ -66,6 +72,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/health-1.png",
     description: "Clean medical blue theme with integrated patient appointment booking dashboard.",
+    previewUrl: "https://dehapa.com",
   },
   {
     id: "hlt-2",
@@ -74,6 +81,7 @@ const TEMPLATES = [
     price: "Enterprise Only",
     image: "/health-2.png",
     description: "Large multi-specialty hospital portal with trustworthy corporate medical design.",
+    previewUrl: "https://dehapa.com",
   },
   {
     id: "hlt-3",
@@ -82,6 +90,7 @@ const TEMPLATES = [
     price: "Included in Pro",
     image: "/health-3.png",
     description: "Clean laboratory scientific aesthetic for pharmaceutical manufacturing companies.",
+    previewUrl: "https://dehapa.com",
   },
   // NEWS PORTAL
   {
@@ -91,6 +100,7 @@ const TEMPLATES = [
     price: "Enterprise Only",
     image: "/news-1.png",
     description: "Dense informational layout with breaking news banners and live ticker integration.",
+    previewUrl: "#",
   },
   // CORPORATE / OTHER
   {
@@ -100,6 +110,7 @@ const TEMPLATES = [
     price: "Free",
     image: "/template-corporate.png",
     description: "Sleek, dark-themed corporate website for B2B SaaS and IT agencies.",
+    previewUrl: "#",
   },
   {
     id: "tpl-6",
@@ -108,6 +119,7 @@ const TEMPLATES = [
     price: "Free",
     image: "/business-directory.png",
     description: "Clean layout for local businesses to showcase their services, map, and reviews.",
+    previewUrl: "https://directory.bhulia.com",
   }
 ];
 
@@ -171,9 +183,14 @@ export default function TemplatesPage() {
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                    <button className="px-6 py-2.5 bg-white text-slate-900 font-bold rounded shadow-xl flex items-center gap-2 hover:bg-sky-50 transition-colors">
+                    <a 
+                      href={template.previewUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-6 py-2.5 bg-white text-slate-900 font-bold rounded shadow-xl flex items-center gap-2 hover:bg-sky-50 transition-colors"
+                    >
                       <Icons.Eye className="w-4 h-4" /> Live Preview
-                    </button>
+                    </a>
                   </div>
                 </div>
 

@@ -89,7 +89,7 @@ export default function Home() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative w-full pt-32 pb-40 lg:pt-48 lg:pb-56 bg-[#001529] z-40">
+      <section className="relative w-full pt-32 pb-40 lg:pt-48 lg:pb-56 bg-[#001529]">
         {/* Background Image Overlay */}
         <div 
           className="absolute inset-0 opacity-40 mix-blend-screen"
@@ -101,7 +101,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/80 via-[#001529]/60 to-[#001529] pointer-events-none" />
 
-        <div className="container relative z-10 mx-auto px-4 lg:px-8 text-center flex flex-col items-center">
+        <div className="container relative z-[100] mx-auto px-4 lg:px-8 text-center flex flex-col items-center">
           <h1 className="text-4xl lg:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg">
             Build Your Online Success
           </h1>

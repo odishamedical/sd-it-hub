@@ -19,6 +19,7 @@ export default function ClientPortal() {
   
   const [domainQuery, setDomainQuery] = useState("");
   const [domainExtension, setDomainExtension] = useState(".com");
+  const [domainDuration, setDomainDuration] = useState("1");
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
   
@@ -192,7 +193,13 @@ export default function ClientPortal() {
 
   const handleProvisionDomain = async () => {
     if (!domainResult?.domain) return;
-    router.push(`/checkout?type=domain&item=${encodeURIComponent(domainResult.domain)}&amount=1499`);
+    
+    let amount = 1499;
+    if (domainDuration === "2") amount = 2499;
+    else if (domainDuration === "3") amount = 3999;
+    else if (domainDuration === "5") amount = 6499;
+
+    router.push(`/checkout?type=domain&item=${encodeURIComponent(domainResult.domain)}&amount=${amount}`);
   };
 
   const handleLogout = () => {
@@ -485,12 +492,24 @@ export default function ClientPortal() {
                             <p className="text-slate-400 text-xs mt-0.5">You can book <span className="text-sky-400 font-bold font-mono">{domainResult.domain}</span> now.</p>
                           </div>
                         </div>
-                        <button 
-                          onClick={handleProvisionDomain}
-                          className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20"
-                        >
-                          Book Domain
-                        </button>
+                        <div className="flex flex-col sm:flex-row items-center gap-3">
+                          <select 
+                            value={domainDuration}
+                            onChange={(e) => setDomainDuration(e.target.value)}
+                            className="w-full sm:w-auto p-2.5 bg-slate-800 border border-slate-700 focus:border-sky-500 rounded-lg text-xs text-white font-medium focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors cursor-pointer"
+                          >
+                            <option value="1">1 Year - ₹1499</option>
+                            <option value="2">2 Years - ₹2499 (Save ₹499)</option>
+                            <option value="3">3 Years - ₹3999 (Save ₹498)</option>
+                            <option value="5">5 Years - ₹6499 (Save ₹996)</option>
+                          </select>
+                          <button 
+                            onClick={handleProvisionDomain}
+                            className="w-full sm:w-auto px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20 whitespace-nowrap"
+                          >
+                            Book Domain
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <div className="p-6 rounded-xl bg-red-500/10 border border-red-500/30 flex gap-3">

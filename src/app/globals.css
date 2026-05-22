@@ -1,18 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060c18; /* Super dark midnight blue */
-  --foreground: #f1f5f9; /* Slate 100 */
-  --primary-deep: #020610; /* Deepest black-blue */
-  --primary-slate: #0b132b; /* Midnight Navy */
-  --primary-light: #1c2541; /* Dark blue-gray */
-  --accent-gold: #e5c158; /* Premium Champagne Gold */
-  --accent-amber: #f5a623; /* Warm Amber Gold */
-  --accent-glow: rgba(229, 193, 88, 0.35);
-  --accent-glow-amber: rgba(245, 166, 35, 0.2);
-  --text-muted: #94a3b8; /* Muted Slate */
-  --card-bg: rgba(11, 19, 43, 0.55); /* Glass card fill */
-  --border-gold: rgba(229, 193, 88, 0.15); /* Sleek gold border */
+  --background: #f8fafc; /* Very light slate/white for main content areas */
+  --foreground: #0f172a; /* Slate 900 for text */
+  --primary-navy: #001529; /* Deep corporate navy for headers/footers */
+  --primary-blue: #0ea5e9; /* Bright tech blue */
+  --primary-blue-hover: #0284c7; /* Darker tech blue for hover */
+  --accent-glow: rgba(14, 165, 233, 0.35);
+  --text-muted: #64748b; /* Slate 500 */
+  --card-bg-dark: #0f172a; /* Slate 900 for dark cards */
+  --card-bg-white: #ffffff;
+  --border-subtle: #e2e8f0; /* Slate 200 */
 }
 
 @theme inline {
@@ -30,36 +28,47 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Glassmorphism Styles */
-.glass-panel {
-  background: var(--card-bg);
+/* Glassmorphism Styles (Updated for new theme) */
+.glass-panel-dark {
+  background: rgba(15, 23, 42, 0.85); /* Slate 900 with transparency */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-gold);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-.glass-panel-hover:hover {
-  border-color: rgba(229, 193, 88, 0.35);
-  box-shadow: 0 12px 40px 0 rgba(229, 193, 88, 0.08);
-  transform: translateY(-2px);
+.glass-panel-dark:hover {
+  border-color: rgba(14, 165, 233, 0.5); /* Blue glow border on hover */
+  box-shadow: 0 12px 40px 0 rgba(14, 165, 233, 0.15);
+  transform: translateY(-4px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Accent Gradients */
-.text-gold-gradient {
-  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-.bg-gold-gradient {
-  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
+.glass-panel-light:hover {
+  box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.border-gold-glow {
-  box-shadow: 0 0 15px var(--accent-glow);
+/* Gradients */
+.bg-navy-gradient {
+  background: linear-gradient(180deg, var(--primary-navy) 0%, #06233d 100%);
+}
+
+.bg-blue-gradient {
+  background: linear-gradient(135deg, #38bdf8 0%, var(--primary-blue) 100%);
+}
+
+.bg-dark-card-gradient {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 /* Micro-animations */
@@ -73,26 +82,17 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.3; }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--primary-deep);
+  background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-light);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-gold);
+  background: var(--primary-blue);
 }

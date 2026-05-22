@@ -15,7 +15,8 @@ interface Ticket {
 }
 
 export default function ClientPortal() {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support" | "reseller">("dashboard");
+  const [isPartner, setIsPartner] = useState(false);
   
   const [domainQuery, setDomainQuery] = useState("");
   const [domainExtension, setDomainExtension] = useState(".com");
@@ -59,6 +60,10 @@ export default function ClientPortal() {
     }
     setUserEmail(email);
     setUserName(localStorage.getItem("sd_current_user_name") || "Client");
+    
+    if (localStorage.getItem("sd_current_user_role") === "partner") {
+      setIsPartner(true);
+    }
 
     // 3. Process Domain Payment Success
     const paymentSuccess = params.get("payment_success");
@@ -87,6 +92,15 @@ export default function ClientPortal() {
         }
       };
       saveBookedDomain();
+    }
+
+    // 4. Process Franchise Activation
+    const franchiseActivated = params.get("franchise_activated");
+    if (franchiseActivated === "true") {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      localStorage.setItem("sd_current_user_role", "partner");
+      setIsPartner(true);
+      setActiveTab("reseller");
     }
   }, []);
 
@@ -262,6 +276,19 @@ export default function ClientPortal() {
               <Icons.LifeBuoy className="w-4 h-4" />
               <span>Support Desk</span>
             </button>
+            {isPartner && (
+              <button 
+                onClick={() => setActiveTab("reseller")}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all mt-4 border border-emerald-500/30 ${
+                  activeTab === "reseller" 
+                    ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" 
+                    : "text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
+                }`}
+              >
+                <Icons.Briefcase className="w-4 h-4" />
+                <span>Reseller Panel</span>
+              </button>
+            )}
           </nav>
         </div>
 
@@ -348,6 +375,26 @@ export default function ClientPortal() {
                   <span className="text-[10px] text-emerald-400 block mt-1 flex items-center gap-1"><Icons.ArrowUpRight className="w-3 h-3" /> Target Exceeded</span>
                 </div>
               </div>
+
+              {/* Franchise Promotional Banner */}
+              {!isPartner && (
+                <div className="mt-8 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-500/30 rounded-2xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                    <Icons.Briefcase className="w-32 h-32 text-sky-400" />
+                  </div>
+                  <div className="relative z-10 max-w-2xl">
+                    <h3 className="text-xl font-black text-white mb-2">Scale your business. Become an IT Hub Partner.</h3>
+                    <p className="text-sm text-sky-200 leading-relaxed">
+                      Join our exclusive wholesale network. Get deep B2B discounts on domains and premium SaaS templates. Resell them to your local clients at your own retail prices and keep 100% of the margin.
+                    </p>
+                  </div>
+                  <div className="relative z-10 shrink-0">
+                    <Link href="/partner" className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all shadow-lg shadow-sky-500/20 block text-center whitespace-nowrap">
+                      View Partner Program
+                    </Link>
+                  </div>
+                </div>
+              )}
 
               {/* Active Deployments Table */}
               <div className="glass-panel-dark rounded-2xl overflow-hidden">
@@ -616,6 +663,63 @@ export default function ClientPortal() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: RESELLER PANEL */}
+          {activeTab === "reseller" && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-3">
+                  <Icons.Briefcase className="w-8 h-8 text-emerald-400" />
+                  Wholesale Command Center
+                </h1>
+                <p className="text-slate-400 text-sm mt-1">Manage your local clients, buy domains at wholesale rates, and track your agency profits.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/30 p-6 rounded-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 opacity-10"><Icons.DollarSign className="w-20 h-20 text-emerald-400" /></div>
+                  <div className="relative z-10">
+                    <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">Total Retail Value Sold</span>
+                    <span className="text-3xl font-black text-white block mt-2">₹0</span>
+                    <span className="text-[10px] text-slate-400 block mt-1">across 0 active clients</span>
+                  </div>
+                </div>
+
+                <div className="glass-panel-dark p-6 rounded-2xl">
+                  <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Wholesale Discount Level</span>
+                  <div className="mt-2 flex items-end gap-2">
+                    <span className="text-3xl font-black text-white">Tier 1</span>
+                    <span className="text-sm font-bold text-sky-400 mb-1">(40% Off)</span>
+                  </div>
+                </div>
+
+                <div className="glass-panel-dark p-6 rounded-2xl">
+                  <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Wholesale Wallet Balance</span>
+                  <div className="mt-2 flex items-end gap-2">
+                    <span className="text-3xl font-black text-white">₹0</span>
+                  </div>
+                  <button className="mt-3 text-xs font-bold text-sky-400 hover:text-sky-300">Top up wallet &rarr;</button>
+                </div>
+              </div>
+
+              <div className="glass-panel-dark rounded-2xl overflow-hidden border border-slate-800">
+                <div className="p-6 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-white">Your Agency Clients</h3>
+                    <p className="text-xs text-slate-400 mt-1">Provision and manage infrastructure for your customers.</p>
+                  </div>
+                  <button className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs rounded-lg transition-colors">
+                    + Add New Client
+                  </button>
+                </div>
+                <div className="p-12 text-center">
+                  <Icons.Users className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                  <p className="text-slate-400 text-sm">You haven't added any clients yet.</p>
+                  <p className="text-slate-500 text-xs mt-1">Click "Add New Client" to start building their website.</p>
                 </div>
               </div>
             </div>

@@ -17,7 +17,6 @@ export default function PartnerRegistrationPage() {
     phone: "",
     gstNumber: "",
     panFile: null as string | null,
-    depositTxn: "",
     agreedToSecrets: false
   });
 
@@ -34,9 +33,9 @@ export default function PartnerRegistrationPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => {
-      // Mock save and redirect
-      router.push("/portal?partner_pending=true");
-    }, 2000);
+      // Auto route to Checkout for Security Deposit
+      router.push("/checkout?type=franchise&item=Partner+Security+Deposit&amount=10000");
+    }, 1500);
   };
 
   return (
@@ -52,18 +51,17 @@ export default function PartnerRegistrationPage() {
         {/* Progress Bar */}
         <div className="mb-10 relative z-10">
           <div className="flex justify-between text-xs font-bold text-sky-400 mb-2 uppercase tracking-wider">
-            <span>Step {currentStep} of 4</span>
+            <span>Step {currentStep} of 3</span>
             <span>
               {currentStep === 1 && "Agency Details"}
               {currentStep === 2 && "KYC Verification"}
-              {currentStep === 3 && "Security Deposit"}
-              {currentStep === 4 && "Agreements"}
+              {currentStep === 3 && "Agreements"}
             </span>
           </div>
           <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
             <div 
               className="h-full bg-sky-500 transition-all duration-500"
-              style={{ width: `${(currentStep / 4) * 100}%` }}
+              style={{ width: `${(currentStep / 3) * 100}%` }}
             ></div>
           </div>
         </div>
@@ -135,28 +133,12 @@ export default function PartnerRegistrationPage() {
           {/* STEP 3 */}
           {currentStep === 3 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
-              <div className="p-6 bg-sky-500/10 border border-sky-500/20 rounded-xl text-center">
-                <span className="text-sm font-bold text-sky-400 block mb-1">Refundable Security Deposit</span>
+              <div className="p-6 bg-sky-500/10 border border-sky-500/20 rounded-xl text-center mb-6">
+                <span className="text-sm font-bold text-sky-400 block mb-1">Refundable Security Deposit Required</span>
                 <span className="text-3xl font-black text-white">₹10,000</span>
-                <p className="text-xs text-slate-400 mt-2">To protect our wholesale network, an upfront deposit is required. It is fully refundable if you choose to exit the program.</p>
+                <p className="text-xs text-slate-400 mt-2">Upon submitting this form, you will be securely redirected to complete your deposit.</p>
               </div>
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Transaction ID</label>
-                <input 
-                  type="text" required
-                  value={formData.depositTxn}
-                  onChange={e => setFormData({...formData, depositTxn: e.target.value})}
-                  className="w-full p-4 bg-slate-950 border border-slate-800 focus:border-sky-500 rounded-xl text-white outline-none"
-                  placeholder="e.g. TXN90283019"
-                />
-                <p className="text-[10px] text-slate-500 mt-2">Please transfer to our corporate account and paste the Reference ID here.</p>
-              </div>
-            </div>
-          )}
 
-          {/* STEP 4 */}
-          {currentStep === 4 && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
               <div className="p-6 border border-emerald-500/30 bg-emerald-500/10 rounded-xl">
                 <h3 className="font-bold text-white mb-2 flex items-center gap-2">
                   <Icons.Lock className="w-4 h-4 text-emerald-400" /> Commercial Secret Agreement
@@ -185,14 +167,14 @@ export default function PartnerRegistrationPage() {
               </button>
             )}
             
-            {currentStep < 4 ? (
+            {currentStep < 3 ? (
               <button type="button" onClick={handleNext} className="flex-1 py-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors">
                 Continue to Next Step
               </button>
             ) : (
               <button type="submit" disabled={isSubmitting || !formData.agreedToSecrets} className="flex-1 py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                {isSubmitting ? <Icons.Loader2 className="w-5 h-5 animate-spin" /> : <Icons.CheckCircle className="w-5 h-5" />}
-                Submit Partner Application
+                {isSubmitting ? <Icons.Loader2 className="w-5 h-5 animate-spin" /> : <Icons.CreditCard className="w-5 h-5" />}
+                Proceed to Secure Payment
               </button>
             )}
           </div>

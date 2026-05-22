@@ -31,7 +31,7 @@ export default function Header() {
 
           {/* Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="https://auth.shyamdash.com" className="text-sm font-medium text-white hover:text-sky-400">Login</Link>
+            <Link href="https://sd-auth-center.vercel.app" className="text-sm font-medium text-white hover:text-sky-400">Login</Link>
             <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg">
               Get Started
             </Link>
@@ -53,7 +53,7 @@ export default function Header() {
             <Link href="/templates" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Templates</Link>
             <Link href="/#services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
             <div className="h-px bg-white/10 w-full my-2"></div>
-            <Link href="https://auth.shyamdash.com" className="text-white font-medium">Login</Link>
+            <Link href="https://sd-auth-center.vercel.app" className="text-white font-medium">Login</Link>
             <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded">Get Started</Link>
           </div>
         )}

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
 import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "@/utils/firebase";
 
@@ -21,33 +22,62 @@ export default function ClientPortal() {
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
 
+  const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [deployments, setDeployments] = useState<any[]>([]);
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("Client");
   const [newTicketTitle, setNewTicketTitle] = useState("");
   const [newTicketCategory, setNewTicketCategory] = useState("Infrastructure");
   const [loadingTickets, setLoadingTickets] = useState(true);
 
-  // Fetch Tickets
+  // Auth Check & Fetch User Data
   useEffect(() => {
-    const fetchTickets = async () => {
+    const email = localStorage.getItem("sd_current_user_email");
+    if (!email) {
+      window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.href)}`;
+      return;
+    }
+    setUserEmail(email);
+    setUserName(localStorage.getItem("sd_current_user_name") || "Client");
+  }, []);
+
+  // Fetch Tickets & Deployments
+  useEffect(() => {
+    if (!userEmail) return;
+
+    const fetchData = async () => {
       try {
-        const q = query(collection(db, "support_tickets"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => ({
+        setLoadingTickets(true);
+        // Fetch Tickets
+        const qTickets = query(collection(db, "support_tickets"), orderBy("createdAt", "desc"));
+        const snapshotT = await getDocs(qTickets);
+        const dataT = snapshotT.docs.map(doc => ({
           id: doc.id.substring(0, 6).toUpperCase(), // Short ID
           title: doc.data().title,
           category: doc.data().category,
           status: doc.data().status || "Open",
           date: doc.data().createdAt?.toDate().toISOString().split("T")[0] || new Date().toISOString().split("T")[0]
         })) as Ticket[];
-        setTickets(data);
+        setTickets(dataT);
+
+        // Fetch Deployments
+        const qDeploy = query(collection(db, "tenant_deployments"), where("ownerEmail", "==", userEmail));
+        const snapshotD = await getDocs(qDeploy);
+        const dataD = snapshotD.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setDeployments(dataD);
+
       } catch (e) {
-        console.error("Error fetching tickets", e);
+        console.error("Error fetching data", e);
       } finally {
         setLoadingTickets(false);
       }
     };
-    fetchTickets();
-  }, [activeTab]);
+    fetchData();
+  }, [activeTab, userEmail]);
 
   // Handle support ticket creation
   const handleCreateTicket = async (e: React.FormEvent) => {
@@ -114,18 +144,7 @@ export default function ClientPortal() {
 
   const handleProvisionDomain = async () => {
     if (!domainResult?.domain) return;
-    try {
-      await addDoc(collection(db, "domains"), {
-        domainName: domainResult.domain,
-        status: "provisioned",
-        createdAt: serverTimestamp()
-      });
-      alert(`Successfully provisioned route: ${domainResult.domain}`);
-      setDomainResult(null);
-      setDomainQuery("");
-    } catch (e) {
-      console.error("Error provisioning", e);
-    }
+    router.push(`/checkout?type=domain&item=${encodeURIComponent(domainResult.domain)}&amount=1499`);
   };
 
   return (
@@ -246,8 +265,8 @@ export default function ClientPortal() {
                     <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Bandwidth Usage</span>
                     <Icons.Activity className="w-4 h-4 text-sky-400" />
                   </div>
-                  <span className="text-2xl font-black text-white">12.4 GB</span>
-                  <span className="text-[10px] text-slate-400 block mt-1">of 100 GB limit</span>
+                  <div className="text-xl font-bold text-white mb-1">Welcome, {userName}</div>
+                  <div className="text-slate-400 text-sm">Manage your web infrastructure and active nodes</div>
                 </div>
 
                 <div className="glass-panel-dark p-6 rounded-2xl">
@@ -266,38 +285,45 @@ export default function ClientPortal() {
                   <h3 className="font-bold text-white text-sm">Hosted Tenant Deployments</h3>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs border-collapse">
+                  <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-900/30 text-slate-400 font-bold border-b border-slate-800">
-                        <th className="p-4">App/Storefront</th>
-                        <th className="p-4">Template ID</th>
-                        <th className="p-4">Domain Route</th>
-                        <th className="p-4">SaaS Region</th>
-                        <th className="p-4">Status</th>
+                      <tr className="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                        <th className="p-4 font-semibold">Service Name</th>
+                        <th className="p-4 font-semibold">Architecture</th>
+                        <th className="p-4 font-semibold">Status</th>
+                        <th className="p-4 font-semibold text-right">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
-                      <tr className="hover:bg-slate-800/30 transition-colors">
-                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Bhulia Weaver Directory</td>
-                        <td className="p-4 text-slate-400 font-mono">sar-3</td>
-                        <td className="p-4 text-sky-400 font-semibold">directory.bhulia.com</td>
-                        <td className="p-4 text-slate-400">Asia-South (Mumbai)</td>
-                        <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
-                      </tr>
-                      <tr className="hover:bg-slate-800/30 transition-colors">
-                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Gold Marketplace Front</td>
-                        <td className="p-4 text-slate-400 font-mono">gld-1</td>
-                        <td className="p-4 text-sky-400 font-semibold">shyamdash.com</td>
-                        <td className="p-4 text-slate-400">US-East (Virginia)</td>
-                        <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
-                      </tr>
-                      <tr className="hover:bg-slate-800/30 transition-colors">
-                        <td className="p-4 font-bold text-white flex items-center gap-2"><Icons.LayoutTemplate className="w-4 h-4 text-sky-400" /> Dehapa Telemedicine</td>
-                        <td className="p-4 text-slate-400 font-mono">hlt-1</td>
-                        <td className="p-4 text-sky-400 font-semibold">portal.dehapa.com</td>
-                        <td className="p-4 text-slate-400">Global Edge Nodes</td>
-                        <td className="p-4"><span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[9px] uppercase">Active</span></td>
-                      </tr>
+                    <tbody className="divide-y divide-slate-800/50">
+                      {deployments.length === 0 ? (
+                        <tr>
+                          <td colSpan={4} className="p-8 text-center text-slate-500 italic">
+                            No active deployments. Select a template to build your site!
+                          </td>
+                        </tr>
+                      ) : (
+                        deployments.map((dep, idx) => (
+                          <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
+                            <td className="p-4 font-bold text-white flex items-center gap-3">
+                              {dep.logoUrl ? (
+                                <img src={dep.logoUrl} className="w-6 h-6 object-contain rounded bg-white" alt="logo" />
+                              ) : (
+                                <Icons.LayoutTemplate className="w-6 h-6 text-sky-400" />
+                              )}
+                              {dep.siteName}
+                            </td>
+                            <td className="p-4 text-slate-400 text-sm">{dep.templateName}</td>
+                            <td className="p-4">
+                              <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs rounded-full">
+                                {dep.status}
+                              </span>
+                            </td>
+                            <td className="p-4 text-right">
+                              <button className="text-sky-400 hover:text-sky-300 text-sm font-semibold">Manage</button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>

@@ -17,10 +17,11 @@ interface Ticket {
 export default function ClientPortal() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support">("dashboard");
   
-  // Domain availability checker state
   const [domainQuery, setDomainQuery] = useState("");
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
+  
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -56,6 +57,35 @@ export default function ClientPortal() {
     }
     setUserEmail(email);
     setUserName(localStorage.getItem("sd_current_user_name") || "Client");
+
+    // 3. Process Domain Payment Success
+    const paymentSuccess = params.get("payment_success");
+    const domainPaid = params.get("domain");
+
+    if (paymentSuccess === "true" && domainPaid) {
+      // Clean the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      const saveBookedDomain = async () => {
+        try {
+          const qCheck = query(collection(db, "tenant_deployments"), where("ownerEmail", "==", email), where("siteName", "==", domainPaid));
+          const snap = await getDocs(qCheck);
+          if (snap.empty) {
+            await addDoc(collection(db, "tenant_deployments"), {
+              ownerEmail: email,
+              siteName: domainPaid,
+              templateName: "Pending Setup",
+              status: "Domain Secured",
+              createdAt: serverTimestamp()
+            });
+            setRefreshTrigger(prev => prev + 1);
+          }
+        } catch (e) {
+          console.error("Error saving domain:", e);
+        }
+      };
+      saveBookedDomain();
+    }
   }, []);
 
   // Fetch Tickets & Deployments
@@ -93,7 +123,7 @@ export default function ClientPortal() {
       }
     };
     fetchData();
-  }, [activeTab, userEmail]);
+  }, [activeTab, userEmail, refreshTrigger]);
 
   // Handle support ticket creation
   const handleCreateTicket = async (e: React.FormEvent) => {
@@ -350,7 +380,13 @@ export default function ClientPortal() {
                               </span>
                             </td>
                             <td className="p-4 text-right">
-                              <button className="text-sky-400 hover:text-sky-300 text-sm font-semibold">Manage</button>
+                              {dep.status === "Domain Secured" ? (
+                                <Link href="/templates" className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded shadow-lg shadow-sky-500/20 transition-all">
+                                  Select Template
+                                </Link>
+                              ) : (
+                                <button className="text-sky-400 hover:text-sky-300 text-sm font-semibold">Manage</button>
+                              )}
                             </td>
                           </tr>
                         ))

@@ -89,7 +89,7 @@ export default function Home() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative w-full pt-32 pb-40 lg:pt-48 lg:pb-56 bg-[#001529] overflow-hidden">
+      <section className="relative w-full pt-32 pb-40 lg:pt-48 lg:pb-56 bg-[#001529] z-40">
         {/* Background Image Overlay */}
         <div 
           className="absolute inset-0 opacity-40 mix-blend-screen"

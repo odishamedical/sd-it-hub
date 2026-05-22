@@ -43,6 +43,9 @@ export default function Header() {
             <Link href="/#domains" className="hover:text-sky-400 transition-colors">Domains</Link>
             <Link href="/templates" className="hover:text-sky-400 transition-colors">Templates</Link>
             <Link href="/#services" className="hover:text-sky-400 transition-colors">Services</Link>
+            <Link href="/partner" className="text-sky-400 font-bold flex items-center gap-1 hover:text-sky-300 transition-colors">
+              <Icons.BadgeCheck className="w-4 h-4" /> Partner
+            </Link>
             <Link href="/#about" className="hover:text-sky-400 transition-colors">About</Link>
             <Link href="/#contact" className="hover:text-sky-400 transition-colors">Contact</Link>
           </nav>
@@ -92,6 +95,7 @@ export default function Header() {
             <Link href="/#domains" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Domains</Link>
             <Link href="/templates" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Templates</Link>
             <Link href="/#services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+            <Link href="/partner" className="text-sky-400 font-bold flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}><Icons.BadgeCheck className="w-5 h-5" /> Partner Program</Link>
             <div className="h-px bg-white/10 w-full my-2"></div>
             {userEmail ? (
               <>

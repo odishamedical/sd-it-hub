@@ -18,6 +18,7 @@ export default function ClientPortal() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support">("dashboard");
   
   const [domainQuery, setDomainQuery] = useState("");
+  const [domainExtension, setDomainExtension] = useState(".com");
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
   
@@ -162,7 +163,8 @@ export default function ClientPortal() {
 
     try {
       const cleanQuery = domainQuery.toLowerCase().replace(/\s+/g, "");
-      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}.com`;
+      // If user typed 'example.org' in input, keep it. Otherwise append selected extension.
+      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}${domainExtension}`;
 
       // Check predefined restricted keywords
       const restricted = ["taken", "admin", "gold", "bhulia", "auth", "shyamdash"];
@@ -406,6 +408,22 @@ export default function ClientPortal() {
                 <p className="text-slate-400 text-sm mt-1">Search, book, and reserve global domains for your SaaS templates.</p>
               </div>
 
+              {/* Promotional Banner */}
+              <div className="bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-500/30 rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Icons.Tag className="w-24 h-24 text-sky-400" />
+                </div>
+                <div className="relative z-10">
+                  <span className="px-3 py-1 bg-sky-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-lg shadow-sky-500/30">
+                    Flash Offer
+                  </span>
+                  <h3 className="text-xl font-black text-white mb-1">Grab Your Domain at ₹1499/year!</h3>
+                  <p className="text-sm text-sky-200">
+                    Lock in your brand identity. <strong className="text-white">Special 2-Year Plan:</strong> Book for 2 years at just ₹2499 and save big. Limited time only.
+                  </p>
+                </div>
+              </div>
+
               {/* Form */}
               <div className="glass-panel-dark p-8 rounded-2xl border border-slate-800">
                 <form onSubmit={handleCheckDomain} className="space-y-6">
@@ -418,10 +436,21 @@ export default function ClientPortal() {
                           required
                           value={domainQuery}
                           onChange={(e) => setDomainQuery(e.target.value)}
-                          placeholder="e.g. sambalpurweavers.com"
-                          className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
+                          placeholder="e.g. sambalpurweavers"
+                          className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-l-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
                         />
                       </div>
+                      <select 
+                        value={domainExtension}
+                        onChange={(e) => setDomainExtension(e.target.value)}
+                        className="p-3.5 bg-slate-800 border-y border-r border-slate-700 focus:border-sky-500 rounded-r-xl text-sm text-sky-400 font-bold focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors cursor-pointer"
+                      >
+                        <option value=".com">.com</option>
+                        <option value=".in">.in</option>
+                        <option value=".org">.org</option>
+                        <option value=".net">.net</option>
+                        <option value=".co">.co</option>
+                      </select>
                     </div>
                   </div>
 

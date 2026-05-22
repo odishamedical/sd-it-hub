@@ -34,6 +34,8 @@ function CheckoutForm() {
           router.push(`/portal?payment_success=true&domain=${encodeURIComponent(itemName)}`);
         } else if (itemType === "template") {
           router.push(`/portal/configure?template=${encodeURIComponent(itemName)}`);
+        } else if (itemType === "franchise") {
+          router.push(`/portal?franchise_activated=true`);
         } else {
           router.push("/portal");
         }

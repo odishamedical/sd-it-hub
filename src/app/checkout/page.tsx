@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as Icons from "lucide-react";
 
-export default function CheckoutPage() {
+function CheckoutForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const itemType = searchParams.get("type") || "domain";
@@ -124,5 +124,13 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><Icons.Loader2 className="w-8 h-8 animate-spin text-indigo-600" /></div>}>
+      <CheckoutForm />
+    </Suspense>
   );
 }

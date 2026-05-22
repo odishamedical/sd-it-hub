@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { db, collection, addDoc, serverTimestamp } from "@/utils/firebase";
 import * as Icons from "lucide-react";
 
-export default function ConfigureSitePage() {
+function ConfigureSiteForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateName = searchParams.get("template") || "Custom Site";
@@ -137,5 +137,13 @@ export default function ConfigureSitePage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function ConfigureSitePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#001529]"><Icons.Loader2 className="w-8 h-8 animate-spin text-sky-500" /></div>}>
+      <ConfigureSiteForm />
+    </Suspense>
   );
 }

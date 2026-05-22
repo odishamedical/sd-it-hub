@@ -33,6 +33,22 @@ export default function ClientPortal() {
 
   // Auth Check & Fetch User Data
   useEffect(() => {
+    // 1. Check URL for incoming SSO session
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const sso_email = params.get("sso_email");
+    const sso_name = params.get("sso_name");
+    const sso_role = params.get("sso_role");
+
+    if (token === "sd_user_sso_token" && sso_email) {
+      localStorage.setItem("sd_current_user_email", sso_email);
+      localStorage.setItem("sd_current_user_name", sso_name || "User");
+      localStorage.setItem("sd_current_user_role", sso_role || "user");
+      // Clean the URL so the parameters disappear for security/aesthetics
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    // 2. Enforce Auth
     const email = localStorage.getItem("sd_current_user_email");
     if (!email) {
       window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.href)}`;
@@ -228,11 +244,11 @@ export default function ClientPortal() {
           {/* User SSO info */}
           <div className="flex items-center gap-3 bg-slate-800/50 border border-slate-700 py-1.5 px-3 rounded-xl">
             <div className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-[10px] border border-sky-500/20">
-              SD
+              {userName.substring(0, 2).toUpperCase()}
             </div>
             <div className="text-left">
-              <span className="text-[10px] text-white font-bold block leading-none">Shyam Dash</span>
-              <span className="text-[8px] text-sky-400 uppercase font-bold block mt-0.5">Admin Account</span>
+              <span className="text-[10px] text-white font-bold block leading-none">{userName}</span>
+              <span className="text-[8px] text-sky-400 uppercase font-bold block mt-0.5">Verified Client</span>
             </div>
           </div>
         </header>

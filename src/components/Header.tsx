@@ -1,11 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import * as Icons from "lucide-react";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string>("User");
+
+  useEffect(() => {
+    const email = localStorage.getItem("sd_current_user_email");
+    if (email) {
+      setUserEmail(email);
+      setUserName(localStorage.getItem("sd_current_user_name") || "User");
+    }
+  }, []);
 
   return (
     <>
@@ -31,10 +41,26 @@ export default function Header() {
 
           {/* Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-sm font-medium text-white hover:text-sky-400">Login</Link>
-            <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg">
-              Get Started
-            </Link>
+            {userEmail ? (
+              <>
+                <Link href="/portal" className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 border border-slate-700 hover:border-sky-500/50 rounded-lg transition-colors">
+                  <div className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold text-[10px]">
+                    {userName.substring(0, 2).toUpperCase()}
+                  </div>
+                  <span className="text-sm font-medium text-white">{userName}</span>
+                </Link>
+                <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg">
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-sm font-medium text-white hover:text-sky-400">Login</Link>
+                <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg">
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -53,8 +79,14 @@ export default function Header() {
             <Link href="/templates" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Templates</Link>
             <Link href="/#services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
             <div className="h-px bg-white/10 w-full my-2"></div>
-            <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-white font-medium">Login</Link>
-            <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded">Get Started</Link>
+            {userEmail ? (
+              <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded">Go to Dashboard</Link>
+            ) : (
+              <>
+                <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-white font-medium">Login</Link>
+                <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded">Get Started</Link>
+              </>
+            )}
           </div>
         )}
       </header>

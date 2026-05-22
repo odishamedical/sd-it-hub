@@ -8,14 +8,91 @@ import Footer from "@/components/Footer";
 
 // Mock template data
 const TEMPLATES = [
+  // GOLD JEWELRY
   {
-    id: "tpl-1",
-    name: "Lumina Commerce",
-    category: "E-Commerce",
-    price: "Included in Pro",
-    image: "/template-ecommerce.png",
-    description: "High-conversion premium store layout with dynamic cart and beautiful product galleries.",
+    id: "gld-1",
+    name: "Aura Gold Modern",
+    category: "Gold Jewelry",
+    price: "Enterprise Only",
+    image: "/gold-1.png",
+    description: "Sleek dark mode UI with glowing gold accents. Perfect for high-end luxury showrooms.",
   },
+  {
+    id: "gld-2",
+    name: "Heritage Royal",
+    category: "Gold Jewelry",
+    price: "Included in Pro",
+    image: "/gold-2.png",
+    description: "Classic traditional Indian jewellery layout with a rich royal red and gold theme.",
+  },
+  {
+    id: "gld-3",
+    name: "Minimalist Diamond",
+    category: "Gold Jewelry",
+    price: "Included in Pro",
+    image: "/gold-3.png",
+    description: "Clean white background focusing on single high-value pieces and elegant typography.",
+  },
+  // SAMBALPURI SAREE
+  {
+    id: "sar-1",
+    name: "Vibrant Ikat",
+    category: "Handloom",
+    price: "Included in Pro",
+    image: "/saree-1.png",
+    description: "Colorful and engaging UI highlighting rich Sambalpuri ikat patterns and textiles.",
+  },
+  {
+    id: "sar-2",
+    name: "Silk Elegance",
+    category: "Handloom",
+    price: "Enterprise Only",
+    image: "/saree-2.png",
+    description: "Sophisticated pastel high-fashion boutique for premium silk sarees.",
+  },
+  {
+    id: "sar-3",
+    name: "Weaver's Legacy",
+    category: "Handloom",
+    price: "Included in Pro",
+    image: "/saree-3.png",
+    description: "Earthy artisan portfolio focusing on storytelling and traditional weaver craftsmanship.",
+  },
+  // HEALTHCARE (Dehapa)
+  {
+    id: "hlt-1",
+    name: "CareClinic Portal",
+    category: "Healthcare",
+    price: "Included in Pro",
+    image: "/health-1.png",
+    description: "Clean medical blue theme with integrated patient appointment booking dashboard.",
+  },
+  {
+    id: "hlt-2",
+    name: "Medica Hospital",
+    category: "Healthcare",
+    price: "Enterprise Only",
+    image: "/health-2.png",
+    description: "Large multi-specialty hospital portal with trustworthy corporate medical design.",
+  },
+  {
+    id: "hlt-3",
+    name: "PharmaCorp Sciences",
+    category: "Healthcare",
+    price: "Included in Pro",
+    image: "/health-3.png",
+    description: "Clean laboratory scientific aesthetic for pharmaceutical manufacturing companies.",
+  },
+  // NEWS PORTAL
+  {
+    id: "nws-1",
+    name: "The Daily Express",
+    category: "News Portal",
+    price: "Enterprise Only",
+    image: "/news-1.png",
+    description: "Dense informational layout with breaking news banners and live ticker integration.",
+  },
+  // CORPORATE / OTHER
   {
     id: "tpl-2",
     name: "Nexus Corporate",
@@ -25,40 +102,16 @@ const TEMPLATES = [
     description: "Sleek, dark-themed corporate website for B2B SaaS and IT agencies.",
   },
   {
-    id: "tpl-3",
-    name: "Aura Portfolio",
-    category: "Portfolio",
-    price: "Free",
-    image: "/template-portfolio.png",
-    description: "Minimalist, typography-driven portfolio for creative professionals and freelancers.",
-  },
-  {
-    id: "tpl-4",
-    name: "Velocity SaaS",
-    category: "One-Page",
-    price: "Included in Pro",
-    image: "/template-corporate.png",
-    description: "High-speed, single-page landing page designed specifically for SaaS product launches.",
-  },
-  {
-    id: "tpl-5",
-    name: "Marketplace Hub",
-    category: "E-Commerce",
-    price: "Enterprise Only",
-    image: "/gold-market.png",
-    description: "Multi-vendor architecture supporting thousands of simultaneous sellers.",
-  },
-  {
     id: "tpl-6",
-    name: "Local Biz Listing",
-    category: "Directory",
+    name: "Local Biz Directory",
+    category: "Corporate",
     price: "Free",
     image: "/business-directory.png",
     description: "Clean layout for local businesses to showcase their services, map, and reviews.",
   }
 ];
 
-const CATEGORIES = ["All", "E-Commerce", "Corporate", "Portfolio", "One-Page", "Directory"];
+const CATEGORIES = ["All", "Gold Jewelry", "Handloom", "Healthcare", "News Portal", "Corporate"];
 
 export default function TemplatesPage() {
   const [activeCategory, setActiveCategory] = useState("All");

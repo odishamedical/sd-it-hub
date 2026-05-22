@@ -163,6 +163,14 @@ export default function ClientPortal() {
     router.push(`/checkout?type=domain&item=${encodeURIComponent(domainResult.domain)}&amount=1499`);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("sd_current_user_email");
+    localStorage.removeItem("sd_current_user_name");
+    localStorage.removeItem("sd_current_user_role");
+    // Also optional: you could ping auth.shyamdash.com/logout if you want a global logout, but local clearing is fine for now
+    window.location.href = "/";
+  };
+
   return (
     <div className="relative min-h-screen bg-slate-950 text-slate-200 font-sans flex flex-col md:flex-row overflow-x-hidden">
       
@@ -218,13 +226,20 @@ export default function ClientPortal() {
           </nav>
         </div>
 
-        {/* Back Link */}
-        <div className="pt-6 border-t border-slate-800 mt-6">
-          <Link href="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors">
-            <Icons.ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Website</span>
-          </Link>
-        </div>
+          {/* Back Link & Logout */}
+          <div className="pt-6 border-t border-slate-800 mt-6 flex flex-col gap-4">
+            <Link href="/" className="flex items-center gap-2 text-xs text-slate-500 hover:text-white transition-colors">
+              <Icons.ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Website</span>
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-xs text-red-500/70 hover:text-red-400 transition-colors"
+            >
+              <Icons.LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </div>
       </aside>
 
       {/* Main Panel Content */}

@@ -17,6 +17,14 @@ export default function Header() {
     }
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("sd_current_user_email");
+    localStorage.removeItem("sd_current_user_name");
+    localStorage.removeItem("sd_current_user_role");
+    setUserEmail(null);
+    setUserName("User");
+  };
+
   return (
     <>
       <header className="absolute top-0 left-0 w-full z-[200] bg-[#001529]/90 backdrop-blur-md border-b border-white/10">
@@ -49,7 +57,13 @@ export default function Header() {
                   </div>
                   <span className="text-sm font-medium text-white">{userName}</span>
                 </Link>
-                <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg">
+                <button 
+                  onClick={handleLogout}
+                  className="text-xs font-bold text-slate-400 hover:text-red-400 transition-colors uppercase tracking-wider"
+                >
+                  Sign Out
+                </button>
+                <Link href="/portal" className="px-5 py-2.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-semibold rounded transition-colors shadow-lg ml-2">
                   Dashboard
                 </Link>
               </>
@@ -80,7 +94,10 @@ export default function Header() {
             <Link href="/#services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
             <div className="h-px bg-white/10 w-full my-2"></div>
             {userEmail ? (
-              <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded">Go to Dashboard</Link>
+              <>
+                <Link href="/portal" className="text-center py-3 bg-[#0ea5e9] text-white font-bold rounded" onClick={() => setIsMobileMenuOpen(false)}>Go to Dashboard</Link>
+                <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="text-center py-3 border border-slate-700 text-red-400 font-bold rounded">Sign Out</button>
+              </>
             ) : (
               <>
                 <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-white font-medium">Login</Link>

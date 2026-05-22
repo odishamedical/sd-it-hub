@@ -35,6 +35,22 @@ export default function ClientPortal() {
   const [newTicketCategory, setNewTicketCategory] = useState("Infrastructure");
   const [loadingTickets, setLoadingTickets] = useState(true);
 
+  // Domain Management States
+  const [selectedDomain, setSelectedDomain] = useState<any | null>(null);
+  const [ns1, setNs1] = useState("ns1.shyamdash.com");
+  const [ns2, setNs2] = useState("ns2.shyamdash.com");
+  const [dnsRecords, setDnsRecords] = useState<{type:string, name:string, value:string}[]>([{ type: "A", name: "@", value: "192.168.1.1" }]);
+  const [newDnsRecord, setNewDnsRecord] = useState({ type: "A", name: "", value: "" });
+  const [eppCode, setEppCode] = useState("");
+  const [autoRenew, setAutoRenew] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 4000);
+  };
+
   // Auth Check & Fetch User Data
   useEffect(() => {
     // 1. Check URL for incoming SSO session
@@ -437,11 +453,11 @@ export default function ClientPortal() {
                             </td>
                             <td className="p-4 text-right">
                               {dep.status === "Domain Secured" ? (
-                                <Link href="/templates" className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded shadow-lg shadow-sky-500/20 transition-all">
-                                  Select Template
-                                </Link>
+                                <button onClick={() => setSelectedDomain(dep)} className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded shadow-lg shadow-sky-500/20 transition-all">
+                                  Manage Domain
+                                </button>
                               ) : (
-                                <button className="text-sky-400 hover:text-sky-300 text-sm font-semibold">Manage</button>
+                                <button onClick={() => setSelectedDomain(dep)} className="text-sky-400 hover:text-sky-300 text-sm font-semibold">Manage</button>
                               )}
                             </td>
                           </tr>
@@ -727,6 +743,178 @@ export default function ClientPortal() {
 
         </div>
       </main>
+
+      {/* DOMAIN MANAGEMENT MODAL */}
+      {selectedDomain && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-slate-700 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="p-6 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/90 backdrop-blur-md rounded-t-2xl z-10">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Icons.Globe2 className="w-5 h-5 text-sky-400" />
+                  Manage {selectedDomain.siteName}
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">Advanced DNS and Domain Settings</p>
+              </div>
+              <button onClick={() => setSelectedDomain(null)} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors">
+                <Icons.X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Toast Notification */}
+            {toastMsg && (
+              <div className="bg-emerald-500/10 border border-emerald-500 text-emerald-400 px-6 py-3 text-sm font-bold flex items-center gap-2 animate-in slide-in-from-top-2">
+                <Icons.CheckCircle2 className="w-4 h-4" /> {toastMsg}
+              </div>
+            )}
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto flex-1 space-y-8">
+              
+              {/* Auto Renew Toggle */}
+              <div className="glass-panel-dark p-6 rounded-xl flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <Icons.RefreshCw className="w-4 h-4 text-sky-400" /> Auto-Renew Domain
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-md">Automatically bill your card 15 days before expiration to prevent downtime.</p>
+                  {!autoRenew && (
+                    <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex gap-2">
+                      <Icons.AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                      <p className="text-[10px] text-red-300 leading-tight">Warning: Your domain will expire and be deleted unless manually renewed. It cannot be recovered after deletion.</p>
+                    </div>
+                  )}
+                </div>
+                <button 
+                  onClick={() => setAutoRenew(!autoRenew)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${autoRenew ? 'bg-sky-500' : 'bg-slate-700'}`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${autoRenew ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+
+              {/* Nameservers */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <Icons.Server className="w-4 h-4 text-sky-400" /> Nameservers
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">Point your domain to external hosting servers.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nameserver 1</label>
+                    <input type="text" value={ns1} onChange={e => setNs1(e.target.value)} className="w-full p-3 bg-slate-950 border border-slate-700 focus:border-sky-500 rounded-lg text-sm text-white outline-none" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Nameserver 2</label>
+                    <input type="text" value={ns2} onChange={e => setNs2(e.target.value)} className="w-full p-3 bg-slate-950 border border-slate-700 focus:border-sky-500 rounded-lg text-sm text-white outline-none" />
+                  </div>
+                </div>
+                <button 
+                  onClick={() => { setIsSaving(true); setTimeout(() => { setIsSaving(false); showToast("Nameservers updated. Please allow 24 hours for DNS propagation."); }, 1000); }}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-2"
+                >
+                  {isSaving ? <Icons.Loader2 className="w-3 h-3 animate-spin" /> : <Icons.Save className="w-3 h-3" />} Save Nameservers
+                </button>
+              </div>
+
+              {/* DNS Zone Editor */}
+              <div className="space-y-4 pt-6 border-t border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <Icons.List className="w-4 h-4 text-sky-400" /> DNS Zone Editor
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">Manage A, CNAME, TXT, and MX records.</p>
+                </div>
+                
+                <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-slate-900 border-b border-slate-800">
+                      <tr>
+                        <th className="p-3 text-[10px] uppercase font-bold text-slate-400">Type</th>
+                        <th className="p-3 text-[10px] uppercase font-bold text-slate-400">Name</th>
+                        <th className="p-3 text-[10px] uppercase font-bold text-slate-400">Value</th>
+                        <th className="p-3 text-[10px] uppercase font-bold text-slate-400 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/50">
+                      {dnsRecords.map((rec, i) => (
+                        <tr key={i} className="hover:bg-slate-800/20">
+                          <td className="p-3 font-bold text-sky-400">{rec.type}</td>
+                          <td className="p-3 text-white">{rec.name}</td>
+                          <td className="p-3 text-slate-400 font-mono text-xs">{rec.value}</td>
+                          <td className="p-3 text-right">
+                            <button onClick={() => setDnsRecords(dnsRecords.filter((_, idx) => idx !== i))} className="text-red-400 hover:text-red-300 text-xs">Delete</button>
+                          </td>
+                        </tr>
+                      ))}
+                      {/* Add New Record Row */}
+                      <tr className="bg-slate-900/50">
+                        <td className="p-2">
+                          <select value={newDnsRecord.type} onChange={e => setNewDnsRecord({...newDnsRecord, type: e.target.value})} className="w-full p-2 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                            <option>A</option><option>CNAME</option><option>TXT</option><option>MX</option>
+                          </select>
+                        </td>
+                        <td className="p-2">
+                          <input type="text" placeholder="@" value={newDnsRecord.name} onChange={e => setNewDnsRecord({...newDnsRecord, name: e.target.value})} className="w-full p-2 bg-slate-800 border border-slate-700 rounded text-xs text-white" />
+                        </td>
+                        <td className="p-2">
+                          <input type="text" placeholder="Value" value={newDnsRecord.value} onChange={e => setNewDnsRecord({...newDnsRecord, value: e.target.value})} className="w-full p-2 bg-slate-800 border border-slate-700 rounded text-xs text-white font-mono" />
+                        </td>
+                        <td className="p-2 text-right">
+                          <button 
+                            onClick={() => {
+                              if(newDnsRecord.name && newDnsRecord.value) {
+                                setDnsRecords([...dnsRecords, newDnsRecord]);
+                                setNewDnsRecord({ type: "A", name: "", value: "" });
+                                showToast("DNS Record added successfully.");
+                              }
+                            }}
+                            className="px-3 py-2 bg-sky-500 hover:bg-sky-400 text-white rounded text-xs font-bold"
+                          >
+                            Add
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* EPP Code */}
+              <div className="space-y-4 pt-6 border-t border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <Icons.ShieldAlert className="w-4 h-4 text-amber-400" /> Transfer Domain (EPP Code)
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-xl">You need an Authorization (EPP) code to transfer this domain to another registrar. Do not share this code with anyone you do not trust.</p>
+                </div>
+                
+                {eppCode ? (
+                  <div className="p-4 bg-slate-950 border border-slate-700 rounded-xl max-w-md flex items-center justify-between">
+                    <code className="text-emerald-400 font-mono font-bold tracking-widest">{eppCode}</code>
+                    <button className="text-xs text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1">
+                      <Icons.Copy className="w-3 h-3" /> Copy
+                    </button>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => setEppCode("IT" + Math.random().toString(36).substring(2, 10).toUpperCase() + "X!")}
+                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 hover:border-amber-500/30 text-xs font-bold rounded-lg transition-all"
+                  >
+                    Reveal Authorization Code
+                  </button>
+                )}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -132,7 +132,7 @@ export default function ClientPortal() {
 
     try {
       const cleanQuery = domainQuery.toLowerCase().replace(/\s+/g, "");
-      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}.shyamdash.com`;
+      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}.com`;
 
       // Check predefined restricted keywords
       const restricted = ["taken", "admin", "gold", "bhulia", "auth", "shyamdash"];
@@ -366,15 +366,15 @@ export default function ClientPortal() {
           {activeTab === "domains" && (
             <div className="space-y-8 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-2xl md:text-3xl font-extrabold text-white">Subdomain Allocator Terminal</h1>
-                <p className="text-slate-400 text-sm mt-1">Reserve subfolders or subdomains in real time under the shyamdash.com ecosystem.</p>
+                <h1 className="text-2xl md:text-3xl font-extrabold text-white">Domain Search Terminal</h1>
+                <p className="text-slate-400 text-sm mt-1">Search, book, and reserve global domains for your SaaS templates.</p>
               </div>
 
               {/* Form */}
               <div className="glass-panel-dark p-8 rounded-2xl border border-slate-800">
                 <form onSubmit={handleCheckDomain} className="space-y-6">
                   <div className="max-w-xl">
-                    <label className="text-xs text-slate-300 font-bold block mb-2">Configure Subdomain Route</label>
+                    <label className="text-xs text-slate-300 font-bold block mb-2">Search Global Domain Name</label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <input 
@@ -382,13 +382,10 @@ export default function ClientPortal() {
                           required
                           value={domainQuery}
                           onChange={(e) => setDomainQuery(e.target.value)}
-                          placeholder="e.g. sambalpur-weavers"
+                          placeholder="e.g. sambalpurweavers.com"
                           className="w-full p-3.5 bg-slate-900 border border-slate-700 focus:border-sky-500 rounded-xl text-sm text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
                         />
                       </div>
-                      <span className="flex items-center text-slate-400 text-sm font-bold px-4 bg-slate-800 rounded-xl border border-slate-700">
-                        .shyamdash.com
-                      </span>
                     </div>
                   </div>
 
@@ -419,15 +416,15 @@ export default function ClientPortal() {
                         <div className="flex gap-3">
                           <Icons.CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0" />
                           <div>
-                            <h4 className="text-white font-bold text-sm">Domain Route is Available!</h4>
-                            <p className="text-slate-400 text-xs mt-0.5">You can provision <span className="text-sky-400 font-bold font-mono">{domainResult.domain}</span> to a template catalog.</p>
+                            <h4 className="text-white font-bold text-sm">Domain is Available!</h4>
+                            <p className="text-slate-400 text-xs mt-0.5">You can book <span className="text-sky-400 font-bold font-mono">{domainResult.domain}</span> now.</p>
                           </div>
                         </div>
                         <button 
                           onClick={handleProvisionDomain}
                           className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm rounded-lg transition-all shadow-lg shadow-emerald-500/20"
                         >
-                          Bind Domain
+                          Book Domain
                         </button>
                       </div>
                     ) : (

@@ -95,6 +95,8 @@ export default function ClientPortal() {
         try {
           const qCheck = query(collection(db, "tenant_deployments"), where("ownerEmail", "==", email), where("siteName", "==", domainPaid));
           const snap = await getDocs(qCheck);
+          let domainDocId = "";
+          
           if (snap.empty) {
             // Add a temporary 'Provisioning' state
             const docRef = await addDoc(collection(db, "tenant_deployments"), {
@@ -104,28 +106,37 @@ export default function ClientPortal() {
               status: "Provisioning DNS...",
               createdAt: serverTimestamp()
             });
-            setRefreshTrigger(prev => prev + 1);
-            showToast("Initializing domain provisioning sequence...");
-            setIsProvisioning(true);
-            setProvisioningDomain(domainPaid);
-
-            // Call the mock domain service
-            const { DomainService } = await import('@/services/domain.service');
-            const result = await DomainService.registerDomainMock(domainPaid, email);
-
-            // Update status after API returns
-            import('firebase/firestore').then(({ doc, updateDoc }) => {
-              const domainDocRef = doc(db, "tenant_deployments", docRef.id);
-              updateDoc(domainDocRef, {
-                status: result.success ? "Domain Secured" : "Registration Failed"
-              }).then(() => {
-                setRefreshTrigger(prev => prev + 1);
-                setIsProvisioning(false);
-                setProvisioningDomain("");
-                showToast(result.message);
-              });
+            domainDocId = docRef.id;
+          } else {
+            // If it already exists (user testing same domain), update its status to trigger flow again
+            domainDocId = snap.docs[0].id;
+            const existingDocRef = doc(db, "tenant_deployments", domainDocId);
+            await updateDoc(existingDocRef, {
+              status: "Provisioning DNS..."
             });
           }
+
+          setRefreshTrigger(prev => prev + 1);
+          showToast("Initializing domain provisioning sequence...");
+          setIsProvisioning(true);
+          setProvisioningDomain(domainPaid);
+
+          // Call the mock domain service
+          const { DomainService } = await import('@/services/domain.service');
+          const result = await DomainService.registerDomainMock(domainPaid, email);
+
+          // Update status after API returns
+          import('firebase/firestore').then(({ doc, updateDoc }) => {
+            const domainDocRef = doc(db, "tenant_deployments", domainDocId);
+            updateDoc(domainDocRef, {
+              status: result.success ? "Domain Secured" : "Registration Failed"
+            }).then(() => {
+              setRefreshTrigger(prev => prev + 1);
+              setIsProvisioning(false);
+              setProvisioningDomain("");
+              showToast(result.message);
+            });
+          });
         } catch (e) {
           console.error("Error saving domain:", e);
           setIsProvisioning(false);
@@ -434,7 +445,16 @@ export default function ClientPortal() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/50">
-                      {deployments.length === 0 ? (
+                      {loadingTickets ? (
+                        <tr>
+                          <td colSpan={4} className="p-8 text-center text-slate-500 italic">
+                            <div className="flex items-center justify-center gap-3">
+                              <Icons.Loader2 className="w-5 h-5 animate-spin text-sky-400" /> 
+                              <span>Connecting to Edge Nodes...</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : deployments.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="p-8 text-center text-slate-500 italic">
                             No active deployments. Select a template to build your site!

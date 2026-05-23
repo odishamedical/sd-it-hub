@@ -36,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     // 2. Validate Super Admin
-    if (currentRole !== "super_admin") {
+    if (currentRole !== "super_admin" && currentRole !== "admin") {
       alert("Access Denied: Super Admin privileges required.");
       router.push("/");
     } else {

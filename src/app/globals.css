@@ -82,6 +82,10 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

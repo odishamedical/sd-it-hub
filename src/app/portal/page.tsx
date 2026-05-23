@@ -25,6 +25,8 @@ export default function ClientPortal() {
   const [domainResult, setDomainResult] = useState<{ available: boolean; domain: string } | null>(null);
   
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isProvisioning, setIsProvisioning] = useState(false);
+  const [provisioningDomain, setProvisioningDomain] = useState("");
 
   const router = useRouter();
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -94,17 +96,39 @@ export default function ClientPortal() {
           const qCheck = query(collection(db, "tenant_deployments"), where("ownerEmail", "==", email), where("siteName", "==", domainPaid));
           const snap = await getDocs(qCheck);
           if (snap.empty) {
-            await addDoc(collection(db, "tenant_deployments"), {
+            // Add a temporary 'Provisioning' state
+            const docRef = await addDoc(collection(db, "tenant_deployments"), {
               ownerEmail: email,
               siteName: domainPaid,
               templateName: "Pending Setup",
-              status: "Domain Secured",
+              status: "Provisioning DNS...",
               createdAt: serverTimestamp()
             });
             setRefreshTrigger(prev => prev + 1);
+            showToast("Initializing domain provisioning sequence...");
+            setIsProvisioning(true);
+            setProvisioningDomain(domainPaid);
+
+            // Call the mock domain service
+            const { DomainService } = await import('@/services/domain.service');
+            const result = await DomainService.registerDomainMock(domainPaid, email);
+
+            // Update status after API returns
+            import('firebase/firestore').then(({ doc, updateDoc }) => {
+              const domainDocRef = doc(db, "tenant_deployments", docRef.id);
+              updateDoc(domainDocRef, {
+                status: result.success ? "Domain Secured" : "Registration Failed"
+              }).then(() => {
+                setRefreshTrigger(prev => prev + 1);
+                setIsProvisioning(false);
+                setProvisioningDomain("");
+                showToast(result.message);
+              });
+            });
           }
         } catch (e) {
           console.error("Error saving domain:", e);
+          setIsProvisioning(false);
         }
       };
       saveBookedDomain();
@@ -392,25 +416,7 @@ export default function ClientPortal() {
                 </div>
               </div>
 
-              {/* Franchise Promotional Banner */}
-              {!isPartner && (
-                <div className="mt-8 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-500/30 rounded-2xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                    <Icons.Briefcase className="w-32 h-32 text-sky-400" />
-                  </div>
-                  <div className="relative z-10 max-w-2xl">
-                    <h3 className="text-xl font-black text-white mb-2">Scale your business. Become an IT Hub Partner.</h3>
-                    <p className="text-sm text-sky-200 leading-relaxed">
-                      Join our exclusive wholesale network. Get deep B2B discounts on domains and premium SaaS templates. Resell them to your local clients at your own retail prices and keep 100% of the margin.
-                    </p>
-                  </div>
-                  <div className="relative z-10 shrink-0">
-                    <Link href="/partner" className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all shadow-lg shadow-sky-500/20 block text-center whitespace-nowrap">
-                      View Partner Program
-                    </Link>
-                  </div>
-                </div>
-              )}
+              {/* Moved Franchise Banner Below */}
 
               {/* Active Deployments Table */}
               <div className="glass-panel-dark rounded-2xl overflow-hidden">
@@ -467,6 +473,30 @@ export default function ClientPortal() {
                   </table>
                 </div>
               </div>
+              
+              {/* Franchise Promotional Banner (Moved to Bottom with Special Effect) */}
+              {!isPartner && (
+                <div className="mt-12 bg-gradient-to-r from-emerald-500/20 via-sky-500/20 to-indigo-500/20 border border-sky-500/50 rounded-2xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_0_30px_rgba(14,165,233,0.3)] hover:shadow-[0_0_50px_rgba(14,165,233,0.5)] transition-all duration-500 group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-white/5 to-indigo-500/0 translate-x-[-100%] group-hover:animate-[shimmer_2s_infinite] pointer-events-none"></div>
+                  <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                    <Icons.Briefcase className="w-32 h-32 text-sky-400" />
+                  </div>
+                  <div className="relative z-10 max-w-2xl">
+                    <h3 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                      <Icons.Rocket className="w-6 h-6 text-emerald-400 animate-pulse" />
+                      Scale your business. Become an IT Hub Partner.
+                    </h3>
+                    <p className="text-sm text-sky-200 leading-relaxed">
+                      Join our exclusive wholesale network. Get deep B2B discounts on domains and premium SaaS templates. Resell them to your local clients at your own retail prices and keep <strong className="text-white">100% of the margin</strong>.
+                    </p>
+                  </div>
+                  <div className="relative z-10 shrink-0">
+                    <Link href="/partner" className="px-8 py-4 bg-white hover:bg-sky-50 text-sky-600 font-black rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.4)] block text-center whitespace-nowrap uppercase tracking-wider text-sm">
+                      Activate Partner Mode
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -743,6 +773,42 @@ export default function ClientPortal() {
 
         </div>
       </main>
+
+      {/* PROVISIONING OVERLAY */}
+      {isProvisioning && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-slate-900 border border-sky-500/30 p-8 rounded-2xl shadow-[0_0_50px_rgba(14,165,233,0.2)] max-w-md w-full text-center flex flex-col items-center">
+            <div className="relative mb-6">
+              <div className="absolute inset-0 bg-sky-500 rounded-full blur-xl opacity-20 animate-pulse"></div>
+              <div className="relative w-20 h-20 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center">
+                <Icons.Globe2 className="w-8 h-8 text-sky-400 animate-[spin_4s_linear_infinite]" />
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-black text-white mb-2">Configuring Domain</h2>
+            <p className="text-sky-400 font-mono text-sm mb-6 bg-sky-500/10 px-4 py-2 rounded-lg border border-sky-500/20">
+              {provisioningDomain}
+            </p>
+            
+            <div className="w-full space-y-3 text-left">
+              <div className="flex items-center gap-3 text-sm">
+                <Icons.CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span className="text-slate-300">Payment Verified</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <Icons.CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span className="text-slate-300">Registering DNS Records</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <Icons.Loader2 className="w-4 h-4 text-sky-400 animate-spin" />
+                <span className="text-white font-bold animate-pulse">Propagating Edge Network...</span>
+              </div>
+            </div>
+            
+            <p className="mt-8 text-[10px] text-slate-500 uppercase tracking-widest font-bold">Please do not close this window</p>
+          </div>
+        </div>
+      )}
 
       {/* DOMAIN MANAGEMENT MODAL */}
       {selectedDomain && (

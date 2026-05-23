@@ -22,13 +22,24 @@ function CheckoutForm() {
     }
   }, []);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     setIsProcessing(true);
-    setTimeout(() => {
+    try {
+      const email = localStorage.getItem("sd_current_user_email") || "guest";
+      
+      // Call our mock Payment API
+      const { PaymentService } = await import('@/services/payment.service');
+      await PaymentService.initiateMockPayment({
+        amount: parseInt(amount),
+        currency: "INR",
+        partnerId: email,
+        description: `Payment for ${itemType}: ${itemName}`
+      });
+
       setIsProcessing(false);
       setIsSuccess(true);
       
-      // Simulate Razorpay success callback and redirect
+      // Redirect after success animation
       setTimeout(() => {
         if (itemType === "domain") {
           router.push(`/portal?payment_success=true&domain=${encodeURIComponent(itemName)}`);
@@ -40,7 +51,11 @@ function CheckoutForm() {
           router.push("/portal");
         }
       }, 2000);
-    }, 2500); // simulate network delay
+    } catch (error) {
+      console.error("Payment failed", error);
+      setIsProcessing(false);
+      alert("Payment failed. Please try again.");
+    }
   };
 
   return (

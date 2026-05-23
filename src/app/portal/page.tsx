@@ -88,9 +88,6 @@ export default function ClientPortal() {
     const domainPaid = params.get("domain");
 
     if (paymentSuccess === "true" && domainPaid) {
-      // Clean the URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
       const saveBookedDomain = async () => {
         try {
           const qCheck = query(collection(db, "tenant_deployments"), where("ownerEmail", "==", email), where("siteName", "==", domainPaid));
@@ -135,11 +132,13 @@ export default function ClientPortal() {
               setIsProvisioning(false);
               setProvisioningDomain("");
               showToast(result.message);
+              router.replace('/portal');
             });
           });
         } catch (e) {
           console.error("Error saving domain:", e);
           setIsProvisioning(false);
+          router.replace('/portal');
         }
       };
       saveBookedDomain();
@@ -522,30 +521,17 @@ export default function ClientPortal() {
 
           {/* TAB 2: DOMAIN ALLOCATOR */}
           {activeTab === "domains" && (
-            <div className="space-y-8 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-extrabold text-white">Domain Search Terminal</h1>
-                <p className="text-slate-400 text-sm mt-1">Search, book, and reserve global domains for your SaaS templates.</p>
-              </div>
-
-              {/* Promotional Banner */}
-              <div className="bg-gradient-to-r from-sky-500/20 to-indigo-500/20 border border-sky-500/30 rounded-2xl p-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Icons.Tag className="w-24 h-24 text-sky-400" />
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 max-w-6xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+              
+              {/* Left Column: Search & Results */}
+              <div className="lg:col-span-3 space-y-8">
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-extrabold text-white">Domain Search Terminal</h1>
+                  <p className="text-slate-400 text-sm mt-1">Search, book, and reserve global domains for your SaaS templates.</p>
                 </div>
-                <div className="relative z-10">
-                  <span className="px-3 py-1 bg-sky-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-lg shadow-sky-500/30">
-                    Flash Offer
-                  </span>
-                  <h3 className="text-xl font-black text-white mb-1">Grab Your Domain at ₹1499/year!</h3>
-                  <p className="text-sm text-sky-200">
-                    Lock in your brand identity. <strong className="text-white">Special 2-Year Plan:</strong> Book for 2 years at just ₹2499 and save big. Limited time only.
-                  </p>
-                </div>
-              </div>
 
-              {/* Form */}
-              <div className="glass-panel-dark p-8 rounded-2xl border border-slate-800">
+                {/* Form */}
+                <div className="glass-panel-dark p-8 rounded-2xl border border-slate-800">
                 <form onSubmit={handleCheckDomain} className="space-y-6">
                   <div className="max-w-xl">
                     <label className="text-xs text-slate-300 font-bold block mb-2">Search Global Domain Name</label>
@@ -637,7 +623,32 @@ export default function ClientPortal() {
                 )}
               </div>
             </div>
-          )}
+            
+            {/* Right Column: Promotional Banner */}
+            <div className="lg:col-span-2">
+              <div className="bg-gradient-to-br from-sky-500/20 to-indigo-500/20 border border-sky-500/30 rounded-2xl p-8 relative overflow-hidden h-full min-h-[300px] flex flex-col justify-center shadow-[0_0_30px_rgba(14,165,233,0.15)] group">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                  <Icons.Tag className="w-48 h-48 text-sky-400" />
+                </div>
+                <div className="relative z-10">
+                  <span className="px-4 py-1.5 bg-sky-500 text-white text-xs font-black uppercase tracking-widest rounded-full mb-4 inline-block shadow-lg shadow-sky-500/30 animate-pulse">
+                    Flash Offer
+                  </span>
+                  <h3 className="text-3xl font-black text-white mb-3 leading-tight">Grab Your Domain<br/>at ₹1499/year!</h3>
+                  <p className="text-base text-sky-200 mb-6">
+                    Lock in your brand identity and establish your global presence instantly.
+                  </p>
+                  <div className="bg-slate-900/50 border border-sky-500/20 rounded-xl p-4 backdrop-blur-sm">
+                    <p className="text-sm text-slate-300">
+                      <strong className="text-white flex items-center gap-2 mb-1"><Icons.Star className="w-4 h-4 text-amber-400" /> Special 2-Year Plan:</strong> 
+                      Book for 2 years at just ₹2499 and save big. Limited time only.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
           {/* TAB 3: SUPPORT TICKETS */}
           {activeTab === "support" && (

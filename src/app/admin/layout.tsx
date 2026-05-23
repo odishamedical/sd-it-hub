@@ -10,12 +10,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
 
   useEffect(() => {
-    // Basic Auth Check for Super Admin
-    const role = localStorage.getItem("sd_current_user_role");
-    
-    // In a real app, this should be validated server-side.
-    // For now, if they aren't admin, we kick them out.
-    if (role !== "admin") {
+    let currentRole = null;
+
+    // 1. Parse SSO tokens if arriving from Auth Center
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const email = params.get("sso_email") || params.get("email");
+      const name = params.get("sso_name") || params.get("name");
+      const role = params.get("sso_role") || params.get("role");
+
+      if (token && email && name) {
+        localStorage.setItem("sd_current_user_email", email);
+        localStorage.setItem("sd_current_user_name", name);
+        if (role) {
+          localStorage.setItem("sd_current_user_role", role);
+          currentRole = role;
+        }
+        
+        // Clean URL to remove SSO params
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else {
+        currentRole = localStorage.getItem("sd_current_user_role");
+      }
+    }
+
+    // 2. Validate Super Admin
+    if (currentRole !== "super_admin") {
       alert("Access Denied: Super Admin privileges required.");
       router.push("/");
     } else {

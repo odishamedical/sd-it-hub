@@ -71,20 +71,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Icons.Activity className="w-4 h-4" />
             <span>Platform Overview</span>
           </Link>
-          <button className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+          <Link href="/admin/partners" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <div className="flex items-center gap-3">
               <Icons.Users className="w-4 h-4" />
               <span>Partner Agencies</span>
             </div>
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+          </Link>
+          <Link href="/admin/deployments" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <Icons.Server className="w-4 h-4" />
             <span>Tenant Deployments</span>
-          </button>
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+          </Link>
+          <Link href="/admin/templates" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <Icons.Database className="w-4 h-4" />
             <span>SaaS Template Library</span>
-          </button>
+          </Link>
         </nav>
 
         <div className="pt-6 border-t border-slate-800 mt-6">

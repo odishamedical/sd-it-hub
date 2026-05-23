@@ -10,10 +10,33 @@ export default function Header() {
   const [userName, setUserName] = useState<string>("User");
 
   useEffect(() => {
-    const email = localStorage.getItem("sd_current_user_email");
-    if (email) {
-      setUserEmail(email);
-      setUserName(localStorage.getItem("sd_current_user_name") || "User");
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      const email = params.get("sso_email") || params.get("email");
+      const name = params.get("sso_name") || params.get("name");
+      const role = params.get("sso_role") || params.get("role");
+
+      if (token && email && name) {
+        localStorage.setItem("sd_current_user_email", email);
+        localStorage.setItem("sd_current_user_name", name);
+        if (role) {
+          localStorage.setItem("sd_current_user_role", role);
+        }
+        
+        // Clean URL to remove SSO params
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        setUserEmail(email);
+        setUserName(name);
+      } else {
+        // Fallback to local storage if already logged in
+        const localEmail = localStorage.getItem("sd_current_user_email");
+        if (localEmail) {
+          setUserEmail(localEmail);
+          setUserName(localStorage.getItem("sd_current_user_name") || "User");
+        }
+      }
     }
   }, []);
 

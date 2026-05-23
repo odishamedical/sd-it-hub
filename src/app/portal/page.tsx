@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
-import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where } from "@/utils/firebase";
+import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where, doc, updateDoc } from "@/utils/firebase";
 
 interface Ticket {
   id: string;

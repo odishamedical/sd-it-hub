@@ -17,6 +17,22 @@ interface Ticket {
 export default function ClientPortal() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support" | "reseller">("dashboard");
   const [isPartner, setIsPartner] = useState(false);
+
+  // Sync tab with URL Hash
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && ["dashboard", "domains", "support", "reseller"].includes(hash)) {
+        setActiveTab(hash as any);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", "#" + activeTab);
+    }
+  }, [activeTab]);
   
   const [domainQuery, setDomainQuery] = useState("");
   const [domainExtension, setDomainExtension] = useState(".com");

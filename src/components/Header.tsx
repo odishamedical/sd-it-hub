@@ -95,7 +95,7 @@ export default function Header() {
                 >
                   Sign Out
                 </button>
-                <Link href="/portal" className="px-5 py-2.5 bg-purple-600 hover:bg-[#8b5cf6] text-white text-sm font-semibold rounded-xl transition-colors shadow-lg ml-2 shadow-purple-950/20">
+                <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="px-5 py-2.5 bg-purple-600 hover:bg-[#8b5cf6] text-white text-sm font-semibold rounded-xl transition-colors shadow-lg ml-2 shadow-purple-950/20">
                   Dashboard
                 </Link>
               </>
@@ -128,7 +128,7 @@ export default function Header() {
             <div className="h-px bg-slate-900 w-full my-2"></div>
             {userEmail ? (
               <>
-                <Link href="/portal" className="text-center py-3 bg-purple-600 text-white font-bold rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>Go to Dashboard</Link>
+                <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="text-center py-3 bg-purple-600 text-white font-bold rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>Go to Dashboard</Link>
                 <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="text-center py-3 border border-slate-800 text-red-400 font-bold rounded-lg">Sign Out</button>
               </>
             ) : (

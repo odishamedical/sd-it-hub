@@ -84,6 +84,12 @@ export default function ClientPortal() {
       localStorage.setItem("sd_current_user_role", sso_role || "user");
       // Clean the URL so the parameters disappear for security/aesthetics
       window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Auto-route admins to the command center on initial login
+      if (sso_role === "super_admin" || sso_role === "admin" || sso_email === "odishamedical@gmail.com") {
+        router.push("/admin");
+        return;
+      }
     }
 
     // 2. Enforce Auth

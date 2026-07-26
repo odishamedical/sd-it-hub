@@ -7,26 +7,55 @@ import { db, collection, getDocs, query, orderBy } from "@/utils/firebase";
 export default function AdminDomainRegistry() {
   const [domains, setDomains] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const fetchDomains = async () => {
+    try {
+      setLoading(true);
+      const q = query(collection(db, "domains"), orderBy("purchasedAt", "desc"));
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setDomains(data);
+    } catch (e) {
+      console.error("Error fetching domains:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDomains = async () => {
-      try {
-        setLoading(true);
-        const q = query(collection(db, "domains"), orderBy("purchasedAt", "desc"));
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setDomains(data);
-      } catch (e) {
-        console.error("Error fetching domains:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchDomains();
   }, []);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    try {
+      const res = await fetch('/api/domains/sync', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        await fetchDomains(); // Refresh the list
+      } else {
+        alert("Sync failed: " + data.error);
+      }
+    } catch (e) {
+      console.error("Sync error:", e);
+      alert("An error occurred during sync.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const filteredDomains = domains.filter(dom => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (dom.domainName && dom.domainName.toLowerCase().includes(q)) ||
+           (dom.ownerEmail && dom.ownerEmail.toLowerCase().includes(q));
+  });
 
   return (
     <div className="p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -44,10 +73,29 @@ export default function AdminDomainRegistry() {
           <div className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-sm font-bold text-slate-300">
             Total Active: <span className="text-sky-400">{domains.length}</span>
           </div>
-          <button className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-sm font-bold rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center gap-2">
-            <Icons.RefreshCw className="w-4 h-4" /> Sync ResellerClub
+          <button 
+            onClick={handleSync}
+            disabled={isSyncing}
+            className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-sm font-bold rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            <Icons.RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} /> 
+            {isSyncing ? "Syncing..." : "Sync ResellerClub"}
           </button>
         </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mb-6 relative">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <Icons.Search className="h-5 w-5 text-slate-500" />
+        </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by domain name or owner email..."
+          className="block w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors"
+        />
       </div>
 
       <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
@@ -71,14 +119,14 @@ export default function AdminDomainRegistry() {
                     Fetching registry data...
                   </td>
                 </tr>
-              ) : domains.length === 0 ? (
+              ) : filteredDomains.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="p-8 text-center text-slate-500">
-                    No domains found in the registry.
+                    {searchQuery ? "No domains match your search." : "No domains found in the registry."}
                   </td>
                 </tr>
               ) : (
-                domains.map((dom) => (
+                filteredDomains.map((dom) => (
                   <tr key={dom.id} className="hover:bg-slate-800/30 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">

@@ -34,13 +34,23 @@ export async function GET(request: Request) {
   try {
     // Call ResellerClub Test Environment API
     const rcUrl = `https://test.httpapi.com/api/domains/available.json?auth-userid=${RESELLER_ID}&api-key=${API_KEY}&domain-name=${cleanDomain}&tlds=${cleanTld}`;
-    const response = await fetch(rcUrl);
+    const response = await fetch(rcUrl.toString(), { method: 'GET' });
+    const text = await response.text();
     
-    if (!response.ok) {
-      throw new Error(`ResellerClub API error: ${response.status}`);
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      if (text.includes("Cloudflare") || text.toLowerCase().includes("attention required")) {
+        console.error("ResellerClub Cloudflare IP Block Error");
+        return NextResponse.json({ error: 'ResellerClub API Blocked by Cloudflare due to IP whitelisting.' }, { status: 500 });
+      }
+      throw new Error(`Invalid JSON from ResellerClub: ${text.substring(0, 100)}`);
     }
 
-    const data = await response.json();
+    if (data.status === 'ERROR') {
+      throw new Error(`ResellerClub API error: ${data.message || 'Unknown error'}`);
+    }
     
     // ResellerClub response format: { "domain.com": { "status": "available", "classkey": "domcno" } }
     let isAvailable = false;

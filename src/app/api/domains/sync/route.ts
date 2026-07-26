@@ -17,9 +17,20 @@ export async function POST(request: Request) {
     rcUrl.searchParams.append('no-of-records', '50');
     rcUrl.searchParams.append('page-no', '1');
     
-    // We fetch the data. Note: If the test environment is empty, it might return empty result.
     const response = await fetch(rcUrl.toString(), { method: 'GET' });
-    const data = await response.json();
+    const text = await response.text();
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      if (text.includes("Cloudflare") || text.toLowerCase().includes("attention required")) {
+        return NextResponse.json({ 
+          error: 'ResellerClub API Blocked by Cloudflare. You must whitelist your Vercel IP address in your ResellerClub API settings.' 
+        }, { status: 500 });
+      }
+      throw new Error(`Invalid JSON from ResellerClub: ${text.substring(0, 100)}`);
+    }
 
     if (data.status === 'ERROR') {
       console.warn("ResellerClub API Error during Sync:", data.message);
@@ -69,8 +80,8 @@ export async function POST(request: Request) {
       message: `Successfully synced ${syncedCount} new domains from ResellerClub.`
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Sync Error:", error);
-    return NextResponse.json({ error: 'Failed to sync with ResellerClub' }, { status: 500 });
+    return NextResponse.json({ error: `Failed to sync with ResellerClub: ${error.message || String(error)}` }, { status: 500 });
   }
 }

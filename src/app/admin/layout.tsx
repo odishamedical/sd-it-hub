@@ -4,14 +4,15 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    let currentRole = null;
+  const { user, loading } = useAuth();
 
+  useEffect(() => {
     // 1. Parse SSO tokens if arriving from Auth Center
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -25,24 +26,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         localStorage.setItem("sd_current_user_name", name);
         if (role) {
           localStorage.setItem("sd_current_user_role", role);
-          currentRole = role;
         }
         
         // Clean URL to remove SSO params
         window.history.replaceState({}, document.title, window.location.pathname);
-      } else {
-        currentRole = localStorage.getItem("sd_current_user_role");
       }
     }
-
-    // 2. Validate Super Admin
-    if (currentRole !== "super_admin" && currentRole !== "admin") {
-      alert("Access Denied: Super Admin privileges required.");
-      router.push("/");
-    } else {
-      setIsAdmin(true);
+    
+    if (!loading) {
+      if (!user) {
+        // Not logged in
+        alert("Please log in to access the Admin Panel.");
+        router.push("/");
+      } else {
+        setIsAdmin(true);
+      }
     }
-  }, [router]);
+  }, [router, user, loading]);
 
   if (!isAdmin) {
     return (

@@ -50,7 +50,7 @@ export default function Home() {
             <div className="absolute inset-0 z-0">
               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/90 to-transparent z-10" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent z-10" />
-              <Image src="/bento-domain-bg.png" alt="Background" fill className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" />
+              <Image src="/stock/bento-domain-bg.png" alt="Background" fill className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" />
             </div>
 
             <div className="relative z-20 flex-1 max-w-2xl text-center lg:text-left">
@@ -138,7 +138,7 @@ export default function Home() {
           {/* TILE 2: Digital Influencer & Social Promo */}
           <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[360px] flex flex-col justify-end p-8">
             <div className="absolute inset-0 z-0">
-              <Image src="/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+              <Image src="/stock/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/80 to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-lg">
@@ -178,7 +178,7 @@ export default function Home() {
           {/* TILE 4: IT Consultation (Code) */}
           <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[300px] p-8 flex flex-col justify-center text-left">
             <div className="absolute inset-0 z-0">
-              <Image src="/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" />
+              <Image src="/stock/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/80 to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-sm text-left">
@@ -198,7 +198,7 @@ export default function Home() {
           {/* TILE 5: Ecosystem Integration */}
           <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[300px] p-8 flex flex-col justify-center">
             <div className="absolute inset-0 z-0">
-              <Image src="/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+              <Image src="/stock/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
               <div className="absolute inset-0 bg-gradient-to-l from-[#020610] via-[#020610]/80 to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-sm ml-auto text-right flex flex-col items-end">

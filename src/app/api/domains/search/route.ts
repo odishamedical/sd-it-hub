@@ -18,39 +18,60 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Domain and TLD are required' }, { status: 400 });
   }
 
-  // Simulate network delay for realism
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  const cleanDomain = domain.toLowerCase().replace(/[^a-z0-9-]/g, '');
+  const cleanTld = tld.replace('.', ''); // ResellerClub expects 'com' not '.com'
+  const fullDomain = `${cleanDomain}.${cleanTld}`;
 
-  const fullDomain = `${domain.toLowerCase()}${tld}`;
-  
-  // Create deterministic mock availability based on string length
-  // e.g., if the domain length is even, it's available, otherwise taken. 
-  // Exception: "shyamdash" is always taken.
-  let isAvailable = domain.length % 2 === 0;
-  
-  if (domain.toLowerCase() === 'shyamdash' || domain.toLowerCase() === 'google') {
-    isAvailable = false;
+  // ResellerClub credentials
+  const API_KEY = process.env.RESELLERCLUB_API_KEY;
+  const RESELLER_ID = process.env.RESELLERCLUB_RESELLER_ID;
+
+  if (!API_KEY || !RESELLER_ID) {
+    console.error("Missing ResellerClub API credentials in environment.");
+    return NextResponse.json({ error: 'Domain search is temporarily unavailable.' }, { status: 500 });
   }
 
-  // Generate some alternatives
-  const alternatives = [];
-  if (!isAvailable) {
-    const alternateTlds = Object.keys(TLD_PRICING).filter((ext) => ext !== tld);
-    // Pick 3 random alternative TLDs
-    for (let i = 0; i < 3; i++) {
-      const altTld = alternateTlds[i];
-      alternatives.push({
-        domain: `${domain}${altTld}`,
-        available: true,
-        price: TLD_PRICING[altTld],
-      });
+  try {
+    // Call ResellerClub Test Environment API
+    const rcUrl = `https://test.httpapi.com/api/domains/available.json?auth-userid=${RESELLER_ID}&api-key=${API_KEY}&domain-name=${cleanDomain}&tlds=${cleanTld}`;
+    const response = await fetch(rcUrl);
+    
+    if (!response.ok) {
+      throw new Error(`ResellerClub API error: ${response.status}`);
     }
-  }
 
-  return NextResponse.json({
-    domain: fullDomain,
-    available: isAvailable,
-    price: isAvailable ? TLD_PRICING[tld] : null,
-    alternatives: alternatives,
-  });
+    const data = await response.json();
+    
+    // ResellerClub response format: { "domain.com": { "status": "available", "classkey": "domcno" } }
+    let isAvailable = false;
+    if (data[fullDomain] && data[fullDomain].status === "available") {
+      isAvailable = true;
+    }
+
+    // Still use our internal pricing logic for retail prices
+    const retailPrice = TLD_PRICING[tld] || 999;
+
+    // Generate some mocked alternatives for now (in production, we could query multiple TLDs at once)
+    const alternatives = [];
+    if (!isAvailable) {
+      const alternateTlds = Object.keys(TLD_PRICING).filter((ext) => ext !== tld).slice(0, 3);
+      for (const altTld of alternateTlds) {
+        alternatives.push({
+          domain: `${cleanDomain}${altTld}`,
+          available: true, // Mocked for speed, could query these too
+          price: TLD_PRICING[altTld],
+        });
+      }
+    }
+
+    return NextResponse.json({
+      domain: fullDomain,
+      available: isAvailable,
+      price: isAvailable ? retailPrice : null,
+      alternatives: alternatives,
+    });
+  } catch (error) {
+    console.error("Domain search error:", error);
+    return NextResponse.json({ error: 'Failed to query registry' }, { status: 500 });
+  }
 }

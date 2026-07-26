@@ -50,25 +50,18 @@ export default function AdminDashboard() {
 
     try {
       const cleanQuery = domainQuery.toLowerCase().replace(/\s+/g, "");
-      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}${domainExtension}`;
+      // Call the live API
+      const res = await fetch(`/api/domains/search?domain=${encodeURIComponent(cleanQuery)}&tld=${encodeURIComponent(domainExtension)}`);
+      const data = await res.json();
 
-      const restricted = ["taken", "admin", "gold", "bhulia", "auth", "shyamdash"];
-      if (restricted.some(kw => cleanQuery.includes(kw))) {
-        setDomainResult({ available: false, domain: domainName });
-        setIsCheckingDomain(false);
-        return;
-      }
-
-      const q = query(collection(db, "domains"), where("domainName", "==", domainName));
-      const snapshot = await getDocs(q);
-      
-      if (!snapshot.empty) {
-        setDomainResult({ available: false, domain: domainName });
+      if (res.ok) {
+        setDomainResult({ available: data.available, domain: data.domain });
       } else {
-        setDomainResult({ available: true, domain: domainName });
+        setDomainResult({ available: false, domain: cleanQuery + domainExtension });
       }
     } catch (e) {
       console.error("Error checking domain", e);
+      setDomainResult({ available: false, domain: domainQuery + domainExtension });
     } finally {
       setIsCheckingDomain(false);
     }

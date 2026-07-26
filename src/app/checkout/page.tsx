@@ -42,7 +42,23 @@ function CheckoutForm() {
       // Redirect after success animation
       setTimeout(() => {
         if (itemType === "domain") {
-          router.push(`/portal?payment_success=true&domain=${encodeURIComponent(itemName)}`);
+          const userName = localStorage.getItem("sd_current_user_name") || "Client";
+          // Process live domain booking
+          fetch('/api/domains/book', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              domain: itemName,
+              duration: "1", // Hardcoded 1 year for now
+              userEmail: email,
+              userName: userName
+            })
+          }).then(() => {
+            router.push(`/portal#domains`);
+          }).catch((err) => {
+            console.error("Failed to book domain via API:", err);
+            router.push(`/portal#domains`); // Still redirect so user isn't stuck
+          });
         } else if (itemType === "template") {
           router.push(`/portal/configure?template=${encodeURIComponent(itemName)}`);
         } else if (itemType === "franchise") {

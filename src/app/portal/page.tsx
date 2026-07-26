@@ -250,28 +250,18 @@ export default function ClientPortal() {
 
     try {
       const cleanQuery = domainQuery.toLowerCase().replace(/\s+/g, "");
-      // If user typed 'example.org' in input, keep it. Otherwise append selected extension.
-      const domainName = cleanQuery.includes(".") ? cleanQuery : `${cleanQuery}${domainExtension}`;
+      // Call the live API
+      const res = await fetch(`/api/domains/search?domain=${encodeURIComponent(cleanQuery)}&tld=${encodeURIComponent(domainExtension)}`);
+      const data = await res.json();
 
-      // Check predefined restricted keywords
-      const restricted = ["taken", "admin", "gold", "bhulia", "auth", "shyamdash"];
-      if (restricted.some(kw => cleanQuery.includes(kw))) {
-        setDomainResult({ available: false, domain: domainName });
-        setIsCheckingDomain(false);
-        return;
-      }
-
-      // Query Firebase
-      const q = query(collection(db, "domains"), where("domainName", "==", domainName));
-      const snapshot = await getDocs(q);
-      
-      if (!snapshot.empty) {
-        setDomainResult({ available: false, domain: domainName });
+      if (res.ok) {
+        setDomainResult({ available: data.available, domain: data.domain });
       } else {
-        setDomainResult({ available: true, domain: domainName });
+        setDomainResult({ available: false, domain: cleanQuery + domainExtension });
       }
     } catch (e) {
       console.error("Error checking domain", e);
+      setDomainResult({ available: false, domain: domainQuery + domainExtension });
     } finally {
       setIsCheckingDomain(false);
     }

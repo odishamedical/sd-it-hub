@@ -11,18 +11,61 @@ interface Ticket {
   title: string;
   category: string;
   status: "Open" | "In-Progress" | "Resolved";
+  status: "Open" | "In-Progress" | "Resolved";
   date: string;
 }
 
+const TEMPLATES = [
+  {
+    id: "jewel-classic",
+    name: "Classic Elegance",
+    industry: "Gold Jewellery",
+    description: "A traditional, luxurious layout perfect for established heritage jewelers.",
+    image: "https://images.unsplash.com/photo-1599643477874-5c91fce90a19?auto=format&fit=crop&q=80&w=800",
+    colors: [
+      { name: "Ruby Red", value: "#991b1b" },
+      { name: "Emerald", value: "#065f46" },
+      { name: "Royal Blue", value: "#1e3a8a" },
+      { name: "Gold", value: "#854d0e" },
+    ]
+  },
+  {
+    id: "jewel-modern",
+    name: "Modern Minimalist",
+    industry: "Gold Jewellery",
+    description: "Clean, spacious design focusing on high-quality product imagery and contemporary style.",
+    image: "https://images.unsplash.com/photo-1588444650733-d0767b753cb8?auto=format&fit=crop&q=80&w=800",
+    colors: [
+      { name: "Slate", value: "#0f172a" },
+      { name: "Rose Gold", value: "#b45309" },
+      { name: "Sapphire", value: "#0369a1" },
+      { name: "Pearl", value: "#d6d3d1" },
+    ]
+  },
+  {
+    id: "jewel-prestige",
+    name: "Prestige Gallery",
+    industry: "Gold Jewellery",
+    description: "Dark-themed, high-contrast layout designed for premium, exclusive collections.",
+    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
+    colors: [
+      { name: "Onyx", value: "#000000" },
+      { name: "Crimson", value: "#881337" },
+      { name: "Midnight", value: "#172554" },
+      { name: "Deep Forest", value: "#14532d" },
+    ]
+  }
+];
+
 export default function ClientPortal() {
-  const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support" | "reseller">("dashboard");
+  const [activeTab, setActiveTab] = useState<"dashboard" | "domains" | "support" | "reseller" | "templates">("dashboard");
   const [isPartner, setIsPartner] = useState(false);
 
   // Sync tab with URL Hash
   useEffect(() => {
     if (typeof window !== "undefined") {
       const hash = window.location.hash.replace("#", "");
-      if (hash && ["dashboard", "domains", "support", "reseller"].includes(hash)) {
+      if (hash && ["dashboard", "domains", "support", "reseller", "templates"].includes(hash)) {
         setActiveTab(hash as any);
       }
     }
@@ -52,6 +95,13 @@ export default function ClientPortal() {
   const [newTicketTitle, setNewTicketTitle] = useState("");
   const [newTicketCategory, setNewTicketCategory] = useState("Infrastructure");
   const [loadingTickets, setLoadingTickets] = useState(true);
+
+  // Template Library States
+  const [selectedTemplateColor, setSelectedTemplateColor] = useState<Record<string, string>>({
+    "jewel-classic": "#991b1b",
+    "jewel-modern": "#0f172a",
+    "jewel-prestige": "#000000"
+  });
 
   // Domain Management States
   const [selectedDomain, setSelectedDomain] = useState<any | null>(null);
@@ -337,6 +387,17 @@ export default function ClientPortal() {
             >
               <Icons.LifeBuoy className="w-4 h-4" />
               <span>Support Desk</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab("templates")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
+                activeTab === "templates" 
+                  ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" 
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              <Icons.LayoutTemplate className="w-4 h-4" />
+              <span>Template Library</span>
             </button>
             {isPartner && (
               <button 
@@ -810,6 +871,90 @@ export default function ClientPortal() {
                   <p className="text-slate-400 text-sm">You haven't added any clients yet.</p>
                   <p className="text-slate-500 text-xs mt-1">Click "Add New Client" to start building their website.</p>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: TEMPLATE LIBRARY */}
+          {activeTab === "templates" && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-3">
+                  <Icons.LayoutTemplate className="w-8 h-8 text-sky-400" />
+                  SaaS Template Library
+                </h1>
+                <p className="text-slate-400 text-sm mt-1">Browse, select, and customize beautiful templates for your connected domains.</p>
+              </div>
+              
+              {/* Template Placeholder UI */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                {TEMPLATES.map(template => (
+                  <div key={template.id} className="glass-panel-dark rounded-2xl overflow-hidden border border-slate-800 flex flex-col group">
+                    
+                    {/* Image Preview */}
+                    <div className="relative h-48 overflow-hidden bg-slate-900 border-b border-slate-800">
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10" />
+                      
+                      {/* Dynamic Color Overlay based on selected swatch */}
+                      <div 
+                        className="absolute inset-0 mix-blend-color transition-colors duration-500 z-0 opacity-50"
+                        style={{ backgroundColor: selectedTemplateColor[template.id] }}
+                      />
+                      
+                      <img 
+                        src={template.image} 
+                        alt={template.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      
+                      <div className="absolute top-3 right-3 z-20">
+                        <span className="px-2.5 py-1 bg-slate-900/80 backdrop-blur-md border border-slate-700 text-[9px] font-bold uppercase tracking-wider text-amber-400 rounded-md">
+                          {template.industry}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h3 className="text-xl font-bold text-white mb-2">{template.name}</h3>
+                      <p className="text-xs text-slate-400 line-clamp-2 mb-6 flex-1">
+                        {template.description}
+                      </p>
+
+                      {/* Color Swatches */}
+                      <div className="mb-6">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Color Theme</span>
+                          <span className="text-[10px] text-sky-400 font-bold">
+                            {template.colors.find(c => c.value === selectedTemplateColor[template.id])?.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {template.colors.map(color => (
+                            <button
+                              key={color.value}
+                              onClick={() => setSelectedTemplateColor({...selectedTemplateColor, [template.id]: color.value})}
+                              className={`w-8 h-8 rounded-full border-2 transition-all ${
+                                selectedTemplateColor[template.id] === color.value 
+                                  ? "border-sky-400 scale-110 shadow-[0_0_10px_rgba(56,189,248,0.5)]" 
+                                  : "border-transparent hover:scale-110 hover:border-slate-500"
+                              }`}
+                              style={{ backgroundColor: color.value }}
+                              title={color.name}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Action */}
+                      <button className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">
+                        <Icons.Download className="w-4 h-4" />
+                        Install Template
+                      </button>
+                    </div>
+
+                  </div>
+                ))}
               </div>
             </div>
           )}

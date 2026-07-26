@@ -45,13 +45,13 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-4 lg:gap-6 auto-rows-min">
 
           {/* TILE 1: Domain Hero (Full Width) */}
-          <div className="md:col-span-4 lg:col-span-12 bg-gradient-to-br from-[#070d1e] via-[#040815] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-2xl overflow-hidden relative group p-8 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="md:col-span-4 lg:col-span-12 bg-gradient-to-br from-[#070d1e] via-[#040815] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-2xl overflow-hidden relative group p-6 sm:p-8 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
             
             {/* Background Image Layer */}
             <div className="absolute inset-0 z-0">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/90 to-transparent z-10" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent z-10" />
-              <Image src="/stock/bento-domain-bg.png" alt="Background" fill className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-1000" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/70 md:via-[#020610]/90 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/40 md:via-transparent to-transparent z-10" />
+              <Image src="/stock/bento-domain-bg.png" alt="Background" fill className="object-cover md:object-right opacity-60 md:opacity-30 group-hover:scale-105 transition-transform duration-1000" />
             </div>
 
             <div className="relative z-20 flex-1 max-w-2xl text-center lg:text-left">
@@ -59,7 +59,7 @@ export default function Home() {
                 <span className="text-sm md:text-base font-mono text-[#a855f7] uppercase tracking-widest block mb-4 font-bold">Global IT & Web Services</span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#6366f1]">We Build the Internet.</span>
               </h1>
-              <p className="text-lg text-slate-300 font-light mb-10 tracking-wide">
+              <p className="text-base sm:text-lg text-slate-300 font-light mb-8 lg:mb-10 tracking-wide">
                 Your Complete IT & Promotion Agency. Domain booking, custom web development, and digital marketing—all in one place.
               </p>
 
@@ -67,7 +67,7 @@ export default function Home() {
               <div className="w-full relative">
                 <form 
                   onSubmit={handleSearch}
-                  className="w-full flex flex-col sm:flex-row shadow-2xl rounded-2xl overflow-hidden bg-[#040815]/80 backdrop-blur-md group-focus-within:border-[#a855f7]/50 focus-within:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 border border-slate-700/50"
+                  className="w-full flex flex-col sm:flex-row shadow-2xl rounded-2xl overflow-hidden bg-[#040815]/90 backdrop-blur-xl group-focus-within:border-[#a855f7]/50 focus-within:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 border border-slate-700/50"
                 >
                   <div className="flex-grow flex items-center bg-transparent px-4 py-2">
                     <Icons.Search className="w-5 h-5 text-[#a855f7] mr-3 shrink-0" />
@@ -80,25 +80,27 @@ export default function Home() {
                     />
                   </div>
                   
-                  <div className="h-px w-full sm:w-px sm:h-auto bg-slate-700/50"></div>
+                  <div className="h-px w-full sm:w-px sm:h-auto bg-slate-700/50 block sm:hidden"></div>
                   
-                  <select 
-                    value={domainExt}
-                    onChange={(e) => setDomainExt(e.target.value)}
-                    className="bg-[#020610]/50 text-slate-300 px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-900 transition-colors font-mono text-sm"
-                  >
-                    <option value=".com">.com</option>
-                    <option value=".in">.in</option>
-                    <option value=".org">.org</option>
-                  </select>
+                  <div className="flex sm:contents">
+                    <select 
+                      value={domainExt}
+                      onChange={(e) => setDomainExt(e.target.value)}
+                      className="flex-1 sm:flex-none bg-[#020610]/80 sm:bg-[#020610]/50 text-slate-300 px-4 sm:px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-900 transition-colors font-mono text-sm border-r border-slate-700/50 sm:border-r-0"
+                    >
+                      <option value=".com">.com</option>
+                      <option value=".in">.in</option>
+                      <option value=".org">.org</option>
+                    </select>
 
-                  <button 
-                    type="submit"
-                    disabled={isSearching}
-                    className="bg-gradient-to-r from-[#a855f7] to-[#6366f1] hover:brightness-110 disabled:opacity-75 text-white px-8 py-4 sm:py-0 font-bold tracking-wider uppercase text-sm transition-all flex items-center justify-center min-w-[160px] font-mono shadow-inner shadow-white/20"
-                  >
-                    {isSearching ? <Icons.Loader2 className="w-5 h-5 animate-spin" /> : "Search"}
-                  </button>
+                    <button 
+                      type="submit"
+                      disabled={isSearching}
+                      className="flex-1 sm:flex-none bg-gradient-to-r from-[#a855f7] to-[#6366f1] hover:brightness-110 disabled:opacity-75 text-white px-4 sm:px-8 py-4 sm:py-0 font-bold tracking-wider uppercase text-sm transition-all flex items-center justify-center min-w-[120px] sm:min-w-[160px] font-mono shadow-inner shadow-white/20"
+                    >
+                      {isSearching ? <Icons.Loader2 className="w-5 h-5 animate-spin" /> : "Search"}
+                    </button>
+                  </div>
                 </form>
 
                 {/* Search Results */}
@@ -137,10 +139,10 @@ export default function Home() {
           </div>
 
           {/* TILE 2: Digital Influencer & Social Promo */}
-          <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[360px] flex flex-col justify-end p-8">
+          <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[320px] sm:min-h-[360px] flex flex-col justify-end p-6 sm:p-8">
             <div className="absolute inset-0 z-0">
-              <Image src="/stock/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/80 to-transparent" />
+              <Image src="/stock/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-80 md:opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-lg">
               <div className="w-12 h-12 bg-pink-500/20 border border-pink-500/30 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm">
@@ -157,7 +159,7 @@ export default function Home() {
           </div>
 
           {/* TILE 3: Quick Contact */}
-          <div className="md:col-span-2 lg:col-span-4 bg-gradient-to-b from-[#111827] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group p-8 flex flex-col justify-between">
+          <div className="md:col-span-2 lg:col-span-4 bg-gradient-to-b from-[#111827] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group p-6 sm:p-8 flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
                 <Icons.MessageSquare className="w-6 h-6 text-blue-400" />
@@ -170,10 +172,10 @@ export default function Home() {
           </div>
 
           {/* TILE 4: IT Consultation (Code) */}
-          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[300px] p-8 flex flex-col justify-center text-left">
+          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[280px] sm:min-h-[300px] p-6 sm:p-8 flex flex-col justify-center text-left">
             <div className="absolute inset-0 z-0">
-              <Image src="/stock/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/80 to-transparent" />
+              <Image src="/stock/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-50 md:opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-sm text-left">
               <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-500/30 rounded-2xl flex items-center justify-center mb-4">
@@ -190,10 +192,10 @@ export default function Home() {
           </div>
 
           {/* TILE 5: Ecosystem Integration */}
-          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[300px] p-8 flex flex-col justify-center">
+          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e]/80 rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group min-h-[280px] sm:min-h-[300px] p-6 sm:p-8 flex flex-col justify-center">
             <div className="absolute inset-0 z-0">
-              <Image src="/stock/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-l from-[#020610] via-[#020610]/80 to-transparent" />
+              <Image src="/stock/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-60 md:opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-l from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />
             </div>
             <div className="relative z-10 w-full max-w-sm ml-auto text-right flex flex-col items-end">
               <div className="w-12 h-12 bg-amber-500/20 border border-amber-500/30 rounded-2xl flex items-center justify-center mb-4">

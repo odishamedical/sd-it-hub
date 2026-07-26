@@ -4,13 +4,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
-import { useAuth } from "@/components/AuthProvider";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
-
-  const { user, loading } = useAuth();
 
   useEffect(() => {
     // 1. Parse SSO tokens if arriving from Auth Center
@@ -31,18 +28,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         // Clean URL to remove SSO params
         window.history.replaceState({}, document.title, window.location.pathname);
       }
-    }
-    
-    if (!loading) {
-      if (!user) {
-        // Not logged in
+
+      // Check login status from localStorage
+      const currentEmail = localStorage.getItem("sd_current_user_email");
+      const currentRole = localStorage.getItem("sd_current_user_role");
+
+      if (!currentEmail) {
         alert("Please log in to access the Admin Panel.");
         router.push("/");
       } else {
-        setIsAdmin(true);
+        // If it's the master admin, always allow. Otherwise check role.
+        if (currentEmail === "odishamedical@gmail.com" || currentRole === "super_admin" || currentRole === "admin") {
+          setIsAdmin(true);
+        } else {
+          alert("Access Denied: You do not have Admin privileges.");
+          router.push("/portal");
+        }
       }
     }
-  }, [router, user, loading]);
+  }, [router]);
 
   if (!isAdmin) {
     return (

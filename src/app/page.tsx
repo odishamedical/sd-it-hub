@@ -6,6 +6,7 @@ import Image from "next/image";
 import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import QuickContactForm from "@/components/QuickContactForm";
 
 export default function Home() {
   const [domainSearch, setDomainSearch] = useState("");
@@ -164,14 +165,7 @@ export default function Home() {
               <h3 className="text-xl font-bold font-serif text-white mb-2">Start a Project</h3>
               <p className="text-slate-400 text-xs mb-6">Send us a quick message. Our consultants will get back to you immediately.</p>
               
-              <form className="space-y-3">
-                <input type="text" placeholder="Your Name" className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors" />
-                <input type="email" placeholder="Email Address" className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors" />
-                <textarea placeholder="How can we help?" rows={3} className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors resize-none"></textarea>
-                <button type="button" className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm transition-colors shadow-lg shadow-blue-900/20">
-                  Send Message
-                </button>
-              </form>
+              <QuickContactForm />
             </div>
           </div>
 

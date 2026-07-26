@@ -67,9 +67,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
 
         <nav className="space-y-2 flex-1">
-          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all bg-indigo-500 text-white shadow-lg shadow-indigo-500/20">
+          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <Icons.Activity className="w-4 h-4" />
             <span>Platform Overview</span>
+          </Link>
+          <Link href="/admin/leads" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+            <div className="flex items-center gap-3">
+              <Icons.Inbox className="w-4 h-4" />
+              <span>Lead CRM</span>
+            </div>
+          </Link>
+          <Link href="/admin/services" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+            <div className="flex items-center gap-3">
+              <Icons.Briefcase className="w-4 h-4" />
+              <span>Services Manager</span>
+            </div>
           </Link>
           <Link href="/admin/partners" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <div className="flex items-center gap-3">

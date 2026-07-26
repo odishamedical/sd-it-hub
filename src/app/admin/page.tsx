@@ -126,20 +126,40 @@ export default function AdminDashboard() {
       </header>
 
       {/* High Level Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
         <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
           <div className="flex items-center gap-3 mb-2">
             <Icons.Server className="w-4 h-4 text-indigo-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Total Active Nodes</span>
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Nodes</span>
           </div>
           <span className="text-3xl font-black text-white">{tenants.length}</span>
         </div>
         <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
           <div className="flex items-center gap-3 mb-2">
             <Icons.Users className="w-4 h-4 text-emerald-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Wholesale Partners</span>
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Partners</span>
           </div>
           <span className="text-3xl font-black text-white">1</span>
+        </div>
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+          <div className="flex items-center gap-3 mb-2">
+            <Icons.Inbox className="w-4 h-4 text-amber-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">New Leads</span>
+          </div>
+          <span className="text-3xl font-black text-white flex items-center gap-2">
+            View
+            <a href="/admin/leads" className="text-xs text-amber-400 ml-2 hover:underline">CRM &rarr;</a>
+          </span>
+        </div>
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+          <div className="flex items-center gap-3 mb-2">
+            <Icons.Briefcase className="w-4 h-4 text-purple-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Services</span>
+          </div>
+          <span className="text-3xl font-black text-white flex items-center gap-2">
+            Mgmt
+            <a href="/admin/services" className="text-xs text-purple-400 ml-2 hover:underline">Manage &rarr;</a>
+          </span>
         </div>
         <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
           <div className="flex items-center gap-3 mb-2">

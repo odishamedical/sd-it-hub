@@ -102,6 +102,14 @@ export default function ClientPortal() {
     "jewel-modern": "#0f172a",
     "jewel-prestige": "#000000"
   });
+  const [installingTemplate, setInstallingTemplate] = useState<any | null>(null);
+  const [templateConfig, setTemplateConfig] = useState({
+    domain: "",
+    shopId: "",
+    shopName: "",
+    tagline: ""
+  });
+  const [isDeployingTemplate, setIsDeployingTemplate] = useState(false);
 
   // Domain Management States
   const [selectedDomain, setSelectedDomain] = useState<any | null>(null);
@@ -947,7 +955,10 @@ export default function ClientPortal() {
                       </div>
 
                       {/* Action */}
-                      <button className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">
+                      <button 
+                        onClick={() => setInstallingTemplate(template)}
+                        className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
+                      >
                         <Icons.Download className="w-4 h-4" />
                         Install Template
                       </button>
@@ -1164,11 +1175,130 @@ export default function ClientPortal() {
                   </button>
                 )}
               </div>
-
             </div>
           </div>
         </div>
       )}
+
+      {/* TEMPLATE INSTALLATION MODAL */}
+      {installingTemplate && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            {/* Header */}
+            <div className="p-6 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-white">Configure {installingTemplate.name}</h2>
+                <p className="text-sm text-slate-400">Link your domain and connect to your Gold Hub inventory.</p>
+              </div>
+              <button onClick={() => setInstallingTemplate(null)} className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors">
+                <Icons.X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Form Content */}
+            <div className="p-6 overflow-y-auto flex-1 space-y-6">
+              
+              {/* Domain Linking */}
+              <div>
+                <label className="block text-sm font-bold text-slate-300 mb-2">Target Domain</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Icons.Globe2 className="h-5 w-5 text-slate-500" />
+                  </div>
+                  <select 
+                    className="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500 appearance-none"
+                    value={templateConfig.domain}
+                    onChange={(e) => setTemplateConfig({...templateConfig, domain: e.target.value})}
+                  >
+                    <option value="">Select an active domain...</option>
+                    <option value="omjewelers.com">omjewelers.com (Ready)</option>
+                    <option value="shreeramgold.in">shreeramgold.in (Ready)</option>
+                  </select>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">The template will be instantly deployed to this domain.</p>
+              </div>
+
+              {/* Data Source */}
+              <div className="bg-emerald-500/10 border border-emerald-500/20 p-5 rounded-xl">
+                <h3 className="font-bold text-emerald-400 flex items-center gap-2 mb-4">
+                  <Icons.Database className="w-4 h-4" /> Connect Data Source (Gold Hub)
+                </h3>
+                <label className="block text-sm font-bold text-slate-300 mb-2">Your Shop ID</label>
+                <input 
+                  type="text"
+                  placeholder="e.g. SHOP-8F392A"
+                  className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  value={templateConfig.shopId}
+                  onChange={(e) => setTemplateConfig({...templateConfig, shopId: e.target.value})}
+                />
+                <p className="text-xs text-slate-400 mt-2">
+                  This uniquely identifies your shop in the Master Database. The template will dynamically pull your live inventory, gold rates, and contact details automatically.
+                </p>
+              </div>
+
+              {/* Branding Overrides */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2">Shop Display Name</label>
+                  <input 
+                    type="text"
+                    placeholder="e.g. Om Jewelers"
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                    value={templateConfig.shopName}
+                    onChange={(e) => setTemplateConfig({...templateConfig, shopName: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-300 mb-2">Hero Tagline</label>
+                  <input 
+                    type="text"
+                    placeholder="e.g. Purity you can trust."
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                    value={templateConfig.tagline}
+                    onChange={(e) => setTemplateConfig({...templateConfig, tagline: e.target.value})}
+                  />
+                </div>
+              </div>
+
+            </div>
+
+            {/* Footer Action */}
+            <div className="p-6 border-t border-slate-800 bg-slate-950 flex justify-end gap-3">
+              <button 
+                onClick={() => setInstallingTemplate(null)}
+                className="px-6 py-2.5 rounded-xl font-bold text-slate-400 hover:bg-slate-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={async () => {
+                  if(!templateConfig.domain || !templateConfig.shopId) {
+                    showToast("Domain and Shop ID are required.");
+                    return;
+                  }
+                  setIsDeployingTemplate(true);
+                  // Simulating deployment latency
+                  setTimeout(() => {
+                    setIsDeployingTemplate(false);
+                    setInstallingTemplate(null);
+                    showToast(`Success! ${templateConfig.domain} is now live with your new template.`);
+                    setActiveTab("dashboard");
+                  }, 2000);
+                }}
+                disabled={isDeployingTemplate}
+                className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-500/20 flex items-center gap-2"
+              >
+                {isDeployingTemplate ? (
+                  <><Icons.Loader2 className="w-4 h-4 animate-spin" /> Deploying to Vercel Edge...</>
+                ) : (
+                  <><Icons.Rocket className="w-4 h-4" /> Launch Website</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db, collection, getDocs, setDoc, doc, query, where, serverTimestamp } from "@/utils/firebase";
+import { db, collection, getDocs, addDoc, query, where, serverTimestamp } from "@/utils/firebase";
 
 export async function POST(request: Request) {
   try {
@@ -49,8 +49,7 @@ export async function POST(request: Request) {
       
       // If domain doesn't exist in our Firebase, add it
       if (snapshot.empty) {
-        const newDomainRef = doc(domainsRef);
-        await setDoc(newDomainRef, {
+        await addDoc(domainsRef, {
           domainName: rcDomain.domainname,
           ownerEmail: rcDomain.customerid ? `customer-${rcDomain.customerid}@resellerclub.com` : "Unknown",
           isAllocated: rcDomain.currentstatus === "Active",

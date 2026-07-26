@@ -101,7 +101,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-xs uppercase tracking-wider font-mono font-bold text-white hover:text-purple-400 transition-colors">Login</Link>
+                <button onClick={() => window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.origin + '/portal')}`} className="text-xs uppercase tracking-wider font-mono font-bold text-white hover:text-purple-400 transition-colors">Login</button>
                 <Link href="/portal" className="px-5 py-2.5 bg-[#a855f7] hover:bg-[#8b5cf6] text-white text-sm font-semibold rounded-xl transition-colors shadow-lg shadow-purple-950/20">
                   Get Started
                 </Link>
@@ -133,7 +133,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link href="https://sd-auth-center.vercel.app?redirect_uri=https://sd-it-hub-w3sk.vercel.app/portal" className="text-white font-medium">Login</Link>
+                <button onClick={() => { setIsMobileMenuOpen(false); window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.origin + '/portal')}`; }} className="text-white font-medium text-left">Login</button>
                 <Link href="/portal" className="text-center py-3 bg-[#a855f7] text-white font-bold rounded-lg">Get Started</Link>
               </>
             )}

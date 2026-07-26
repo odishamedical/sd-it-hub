@@ -78,7 +78,7 @@ export default function ClientPortal() {
     const sso_name = params.get("sso_name");
     const sso_role = params.get("sso_role");
 
-    if (token === "sd_user_sso_token" && sso_email) {
+    if (sso_email) {
       localStorage.setItem("sd_current_user_email", sso_email);
       localStorage.setItem("sd_current_user_name", sso_name || "User");
       localStorage.setItem("sd_current_user_role", sso_role || "user");

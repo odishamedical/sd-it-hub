@@ -63,7 +63,7 @@ export default function Header() {
               <Icons.Box className="w-6 h-6 text-purple-450" />
             </div>
             <span className="text-xl font-bold tracking-wider text-white font-serif uppercase">
-              IT <span className="text-purple-400">HUB</span>
+              Shyam<span className="text-purple-400">Dash</span>
             </span>
           </Link>
 

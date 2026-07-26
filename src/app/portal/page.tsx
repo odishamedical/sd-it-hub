@@ -308,7 +308,7 @@ export default function ClientPortal() {
               <Icons.Box className="w-6 h-6 text-sky-400" />
             </div>
             <div>
-              <span className="text-sm font-bold tracking-tight text-white block">IT HUB</span>
+              <span className="text-sm font-bold tracking-tight text-white block">Shyam<span className="text-sky-400">Dash</span></span>
               <span className="text-[9px] text-sky-400 tracking-wider uppercase block">Client Portal</span>
             </div>
           </Link>
@@ -525,7 +525,7 @@ export default function ClientPortal() {
                   <div className="relative z-10 max-w-2xl">
                     <h3 className="text-xl font-black text-white mb-2 flex items-center gap-2">
                       <Icons.Rocket className="w-6 h-6 text-emerald-400 animate-pulse" />
-                      Scale your business. Become an IT Hub Partner.
+                      Scale your business. Become a ShyamDash Partner.
                     </h3>
                     <p className="text-sm text-sky-200 leading-relaxed">
                       Join our exclusive wholesale network. Get deep B2B discounts on domains and premium SaaS templates. Resell them to your local clients at your own retail prices and keep <strong className="text-white">100% of the margin</strong>.

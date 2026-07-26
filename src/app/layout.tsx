@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SD IT Hub — Enterprise IT Services & SaaS Hosting Solutions",
-  description: "Sovereign cloud hosting, custom Next.js web development, cross-platform React Native apps, and white-label templates powered by Shyam Dash Creation.",
+  title: "ShyamDash — Enterprise IT Services & SaaS Hosting Solutions",
+  description: "Complete domain booking, SaaS template deployment, and cloud infrastructure for businesses.",
 };
 
 export default function RootLayout({

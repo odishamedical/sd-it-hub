@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="w-8 h-8 bg-purple-950/20 border border-purple-500/20 rounded flex items-center justify-center">
             <Icons.Box className="w-4 h-4 text-purple-400" />
           </div>
-          <span className="text-white font-bold tracking-wider">IT HUB</span>
+          <span className="text-white font-bold tracking-wider">Shyam<span className="text-purple-400">Dash</span></span>
         </div>
         
         <div className="flex gap-6 text-sm">

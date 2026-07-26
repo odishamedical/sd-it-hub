@@ -44,7 +44,7 @@ export default function PartnerRegistrationPage() {
         {/* Header */}
         <div className="text-center mb-10 relative z-10">
           <Icons.ShieldCheck className="w-12 h-12 text-sky-400 mx-auto mb-4" />
-          <h1 className="text-3xl font-black mb-2">IT Hub Partner Application</h1>
+          <h1 className="text-3xl font-black mb-2">ShyamDash Partner Application</h1>
           <p className="text-slate-400 text-sm">Join the exclusive Wholesale Agency Network.</p>
         </div>
 

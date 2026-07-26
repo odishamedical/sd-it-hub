@@ -143,7 +143,7 @@ export default function Home() {
             </div>
             <div className="relative z-10 w-full max-w-lg">
               <div className="w-12 h-12 bg-pink-500/20 border border-pink-500/30 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm">
-                <Icons.Instagram className="w-6 h-6 text-pink-400" />
+                <Icons.Megaphone className="w-6 h-6 text-pink-400" />
               </div>
               <h3 className="text-2xl font-bold font-serif text-white mb-2">Digital Influencer & Promotion</h3>
               <p className="text-slate-300 text-sm leading-relaxed mb-6">

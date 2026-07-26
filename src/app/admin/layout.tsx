@@ -97,6 +97,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Icons.Server className="w-4 h-4" />
             <span>Tenant Deployments</span>
           </Link>
+          <Link href="/admin/domains" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+            <Icons.Globe className="w-4 h-4" />
+            <span>Domain Registry</span>
+          </Link>
           <Link href="/admin/templates" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
             <Icons.Database className="w-4 h-4" />
             <span>SaaS Template Library</span>

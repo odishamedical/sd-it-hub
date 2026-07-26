@@ -91,6 +91,13 @@ export default function Home() {
                       <option value=".com">.com</option>
                       <option value=".in">.in</option>
                       <option value=".org">.org</option>
+                      <option value=".net">.net</option>
+                      <option value=".co">.co</option>
+                      <option value=".info">.info</option>
+                      <option value=".biz">.biz</option>
+                      <option value=".co.in">.co.in</option>
+                      <option value=".io">.io</option>
+                      <option value=".ai">.ai</option>
                     </select>
 
                     <button 

@@ -56,7 +56,7 @@ export default function Home() {
 
             <div className="relative z-20 flex-1 max-w-2xl text-center lg:text-left">
               <h1 className="text-4xl lg:text-6xl font-serif font-black text-white mb-4 tracking-tight leading-tight">
-                ShyamDash: <br/>
+                <span className="text-sm md:text-base font-mono text-[#a855f7] uppercase tracking-widest block mb-4 font-bold">Global IT & Web Services</span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#6366f1]">We Build the Internet.</span>
               </h1>
               <p className="text-lg text-slate-300 font-light mb-10 tracking-wide">

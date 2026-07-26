@@ -62,7 +62,7 @@ export default function Header() {
             <div className="w-10 h-10 bg-purple-950/20 rounded-xl border border-purple-500/30 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
               <Icons.Box className="w-6 h-6 text-purple-450" />
             </div>
-            <span className="text-xl font-bold tracking-wider text-white font-serif uppercase">
+            <span className="text-xl font-bold tracking-wider text-white font-serif">
               Shyam<span className="text-purple-400">Dash</span>
             </span>
           </Link>

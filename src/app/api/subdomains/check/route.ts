@@ -56,9 +56,11 @@ export async function GET(request: Request) {
   // If state is provided
   if (state) {
     const cleanState = state.toLowerCase().trim();
+    const categorySegment = category ? `${category.toLowerCase().trim()}/` : '';
+    
     suggestions.push({
       id: 'path-state',
-      name: `${baseExt}/${cleanState}/${cleanDomain}`,
+      name: `${baseExt}/${cleanState}/${categorySegment}${cleanDomain}`,
       price: '499',
       available: isAvailable,
       description: 'State Level Path'
@@ -69,7 +71,7 @@ export async function GET(request: Request) {
       const cleanCity = city.toLowerCase().trim();
       suggestions.push({
         id: 'path-city',
-        name: `${baseExt}/${cleanState}/${cleanCity}/${cleanDomain}`,
+        name: `${baseExt}/${cleanState}/${cleanCity}/${categorySegment}${cleanDomain}`,
         price: '199',
         available: isAvailable,
         description: 'City Level Path'

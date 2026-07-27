@@ -954,13 +954,23 @@ export default function ClientPortal() {
                       </div>
 
                       {/* Action */}
-                      <button 
-                        onClick={() => setInstallingTemplate(template)}
-                        className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
-                      >
-                        <Icons.Download className="w-4 h-4" />
-                        Install Template
-                      </button>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Link 
+                          href={`/preview/${template.id}?color=${encodeURIComponent(selectedTemplateColor[template.id])}`}
+                          target="_blank"
+                          className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2 border border-slate-700 hover:border-slate-500"
+                        >
+                          <Icons.Eye className="w-4 h-4" />
+                          Preview
+                        </Link>
+                        <button 
+                          onClick={() => setInstallingTemplate(template)}
+                          className="w-full py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
+                        >
+                          <Icons.Download className="w-4 h-4" />
+                          Install
+                        </button>
+                      </div>
                     </div>
 
                   </div>

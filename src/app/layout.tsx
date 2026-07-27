@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ShyamDash — Enterprise IT Services & SaaS Hosting Solutions",
   description: "Complete domain booking, SaaS template deployment, and cloud infrastructure for businesses.",
+  other: {
+    "google-adsense-account": "ca-pub-1792783864518197"
+  }
 };
 
 export default function RootLayout({

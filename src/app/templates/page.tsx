@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import * as Icons from "lucide-react";
 import { db, collection, addDoc, serverTimestamp } from "@/utils/firebase";
@@ -14,7 +15,6 @@ const TEMPLATES = [
     id: "gld-1",
     name: "Aura Gold Modern",
     category: "Gold Jewelry",
-    price: "Enterprise Only",
     image: "/gold-1.png",
     description: "Sleek dark mode UI with glowing gold accents. Perfect for high-end luxury showrooms.",
     previewUrl: "https://shyamdash.com",
@@ -23,7 +23,6 @@ const TEMPLATES = [
     id: "gld-2",
     name: "Heritage Royal",
     category: "Gold Jewelry",
-    price: "Included in Pro",
     image: "/gold-2.png",
     description: "Classic traditional Indian jewellery layout with a rich royal red and gold theme.",
     previewUrl: "https://shyamdash.com",
@@ -32,7 +31,6 @@ const TEMPLATES = [
     id: "gld-3",
     name: "Minimalist Diamond",
     category: "Gold Jewelry",
-    price: "Included in Pro",
     image: "/gold-3.png",
     description: "Clean white background focusing on single high-value pieces and elegant typography.",
     previewUrl: "https://shyamdash.com",
@@ -42,7 +40,6 @@ const TEMPLATES = [
     id: "sar-1",
     name: "Vibrant Ikat",
     category: "Handloom",
-    price: "Included in Pro",
     image: "/saree-1.png",
     description: "Colorful and engaging UI highlighting rich Sambalpuri ikat patterns and textiles.",
     previewUrl: "https://bhulia.com",
@@ -51,7 +48,6 @@ const TEMPLATES = [
     id: "sar-2",
     name: "Silk Elegance",
     category: "Handloom",
-    price: "Enterprise Only",
     image: "/saree-2.png",
     description: "Sophisticated pastel high-fashion boutique for premium silk sarees.",
     previewUrl: "https://bhulia.com",
@@ -60,7 +56,6 @@ const TEMPLATES = [
     id: "sar-3",
     name: "Weaver's Legacy",
     category: "Handloom",
-    price: "Included in Pro",
     image: "/saree-3.png",
     description: "Earthy artisan portfolio focusing on storytelling and traditional weaver craftsmanship.",
     previewUrl: "https://bhulia.com",
@@ -70,7 +65,6 @@ const TEMPLATES = [
     id: "hlt-1",
     name: "CareClinic Portal",
     category: "Healthcare",
-    price: "Included in Pro",
     image: "/health-1.png",
     description: "Clean medical blue theme with integrated patient appointment booking dashboard.",
     previewUrl: "https://dehapa.com",
@@ -79,7 +73,6 @@ const TEMPLATES = [
     id: "hlt-2",
     name: "Medica Hospital",
     category: "Healthcare",
-    price: "Enterprise Only",
     image: "/health-2.png",
     description: "Large multi-specialty hospital portal with trustworthy corporate medical design.",
     previewUrl: "https://dehapa.com",
@@ -88,7 +81,6 @@ const TEMPLATES = [
     id: "hlt-3",
     name: "PharmaCorp Sciences",
     category: "Healthcare",
-    price: "Included in Pro",
     image: "/health-3.png",
     description: "Clean laboratory scientific aesthetic for pharmaceutical manufacturing companies.",
     previewUrl: "https://dehapa.com",
@@ -98,7 +90,6 @@ const TEMPLATES = [
     id: "nws-1",
     name: "The Daily Express",
     category: "News Portal",
-    price: "Enterprise Only",
     image: "/news-1.png",
     description: "Dense informational layout with breaking news banners and live ticker integration.",
     previewUrl: "#",
@@ -108,7 +99,6 @@ const TEMPLATES = [
     id: "tpl-2",
     name: "Nexus Corporate",
     category: "Corporate",
-    price: "Free",
     image: "/template-corporate.png",
     description: "Sleek, dark-themed corporate website for B2B SaaS and IT agencies.",
     previewUrl: "#",
@@ -117,7 +107,6 @@ const TEMPLATES = [
     id: "tpl-6",
     name: "Local Biz Directory",
     category: "Corporate",
-    price: "Free",
     image: "/business-directory.png",
     description: "Clean layout for local businesses to showcase their services, map, and reviews.",
     previewUrl: "https://directory.bhulia.com",
@@ -127,21 +116,18 @@ const TEMPLATES = [
 const CATEGORIES = ["All", "Gold Jewelry", "Handloom", "Healthcare", "News Portal", "Corporate"];
 
 export default function TemplatesPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("All");
 
   const handleRequestDeployment = async (template: any) => {
-    try {
-      await addDoc(collection(db, "support_tickets"), {
-        title: `Deploy Template: ${template.name}`,
-        category: "Infrastructure",
-        status: "Open",
-        createdAt: serverTimestamp()
-      });
-      alert(`Deployment request for '${template.name}' has been submitted to the Support Desk! Our cloud team will provision your node shortly.`);
-    } catch (e) {
-      console.error("Error requesting deployment", e);
-      alert("Failed to submit deployment request. Please try again.");
+    const email = localStorage.getItem("sd_current_user_email");
+    if (!email) {
+      alert(`To use the ${template.name} template, please log in and claim your domain bundle. These premium templates are exclusively available for esteemed clients of the ShyamDash ecosystem.`);
+      window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.href)}`;
+      return;
     }
+    // If logged in, send them to portal configure
+    router.push(`/portal/configure?template=${template.id}`);
   };
 
   const filteredTemplates = TEMPLATES.filter((tpl) => 
@@ -164,6 +150,14 @@ export default function TemplatesPage() {
           </p>
         </div>
       </section>
+
+      {/* Notification Banner */}
+      <div className="bg-sky-50 border-b border-sky-100 py-3 px-4 text-center">
+        <p className="text-sm text-sky-800 font-medium max-w-4xl mx-auto">
+          <Icons.Info className="w-4 h-4 inline-block mr-2 -mt-0.5" />
+          These premium templates are exclusively available for esteemed clients of the ShyamDash ecosystem. Claim a subdomain or custom URL on Gold Dunia, Bhulia, or Dehapa to unlock your template.
+        </p>
+      </div>
 
       {/* Main Content */}
       <section className="py-16 flex-grow">
@@ -216,7 +210,6 @@ export default function TemplatesPage() {
                     <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded">
                       {template.category}
                     </span>
-                    <span className="text-xs font-bold text-slate-500">{template.price}</span>
                   </div>
                   
                   <h3 className="text-xl font-extrabold text-slate-900 mb-2">{template.name}</h3>
@@ -227,15 +220,9 @@ export default function TemplatesPage() {
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => handleRequestDeployment(template)}
-                      className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded transition-colors text-sm"
-                    >
-                      View Specs
-                    </button>
-                    <button 
-                      onClick={() => handleRequestDeployment(template)}
                       className="flex-1 py-3 bg-[#001529] hover:bg-[#0ea5e9] text-white font-bold rounded transition-colors text-sm"
                     >
-                      Request Deployment
+                      Claim Template Bundle
                     </button>
                   </div>
                 </div>

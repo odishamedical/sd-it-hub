@@ -43,7 +43,12 @@ export async function GET(request: Request) {
 
   // If category is provided, generate a category path
   if (category) {
-    const cleanCategory = category.toLowerCase().trim();
+    let cleanCategory = category.toLowerCase().trim();
+    // SEO Upgrade: "shop" on golddunia is now "gold-shop"
+    if (ext === '.golddunia.com' && cleanCategory === 'shop') {
+      cleanCategory = 'gold-shop';
+    }
+    
     suggestions.push({
       id: 'path-category',
       name: `${baseExt}/${cleanCategory}/${cleanDomain}`,
@@ -56,7 +61,12 @@ export async function GET(request: Request) {
   // If state is provided
   if (state) {
     const cleanState = state.toLowerCase().trim();
-    const categorySegment = category ? `${category.toLowerCase().trim()}/` : '';
+    let categorySegment = '';
+    if (category) {
+      let cleanCat = category.toLowerCase().trim();
+      if (ext === '.golddunia.com' && cleanCat === 'shop') cleanCat = 'gold-shop';
+      categorySegment = `${cleanCat}/`;
+    }
     
     suggestions.push({
       id: 'path-state',

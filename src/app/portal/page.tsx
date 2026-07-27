@@ -20,7 +20,7 @@ const TEMPLATES = [
     name: "Classic Elegance",
     industry: "Gold Jewellery",
     description: "A traditional, luxurious layout perfect for established heritage jewelers.",
-    image: "https://images.unsplash.com/photo-1599643477874-5c91fce90a19?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
     colors: [
       { name: "Ruby Red", value: "#991b1b" },
       { name: "Emerald", value: "#065f46" },
@@ -33,7 +33,7 @@ const TEMPLATES = [
     name: "Modern Minimalist",
     industry: "Gold Jewellery",
     description: "Clean, spacious design focusing on high-quality product imagery and contemporary style.",
-    image: "https://images.unsplash.com/photo-1588444650733-d0767b753cb8?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800",
     colors: [
       { name: "Slate", value: "#0f172a" },
       { name: "Rose Gold", value: "#b45309" },
@@ -46,7 +46,7 @@ const TEMPLATES = [
     name: "Prestige Gallery",
     industry: "Gold Jewellery",
     description: "Dark-themed, high-contrast layout designed for premium, exclusive collections.",
-    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1599643478524-fb66f723666a?auto=format&fit=crop&q=80&w=800",
     colors: [
       { name: "Onyx", value: "#000000" },
       { name: "Crimson", value: "#881337" },

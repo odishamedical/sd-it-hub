@@ -81,15 +81,17 @@ export default function Footer() {
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="https://facebook.com/shyamdash" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-purple-400 transition-colors">
-              <Icons.Facebook className="w-4 h-4" />
+          <div className="flex items-center gap-4 text-sm font-bold text-slate-500">
+            <a href="https://facebook.com/shyamdash" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors flex items-center gap-1">
+              Facebook
             </a>
-            <a href="https://instagram.com/shyamdash" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-purple-400 transition-colors">
-              <Icons.Instagram className="w-4 h-4" />
+            <span className="text-slate-800">|</span>
+            <a href="https://instagram.com/shyamdash" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors flex items-center gap-1">
+              Instagram
             </a>
-            <a href="https://youtube.com/@shyamdashlive" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-purple-400 transition-colors">
-              <Icons.Youtube className="w-5 h-5" />
+            <span className="text-slate-800">|</span>
+            <a href="https://youtube.com/@shyamdashlive" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition-colors flex items-center gap-1">
+              YouTube
             </a>
           </div>
           <p className="text-xs">&copy; {new Date().getFullYear()} Shyam Dash Creation. All rights reserved.</p>

@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import Link from 'next/link';

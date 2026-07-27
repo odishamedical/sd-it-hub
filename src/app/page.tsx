@@ -10,7 +10,7 @@ import QuickContactForm from "@/components/QuickContactForm";
 
 export default function Home() {
   const [domainSearch, setDomainSearch] = useState("");
-  const [domainExt, setDomainExt] = useState(".com");
+  const [domainExt, setDomainExt] = useState(".golddunia.com");
   
   // Search State
   const [isSearching, setIsSearching] = useState(false);
@@ -20,11 +20,21 @@ export default function Home() {
     e.preventDefault();
     if (!domainSearch.trim()) return;
 
+    if (domainExt === "custom") {
+      setSearchResult({
+        domain: domainSearch,
+        custom: true,
+        message: "Contact us below to book a custom top-level domain."
+      });
+      document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     setIsSearching(true);
     setSearchResult(null);
 
     try {
-      const res = await fetch(`/api/domains/search?domain=${encodeURIComponent(domainSearch)}&tld=${encodeURIComponent(domainExt)}`);
+      const res = await fetch(`/api/subdomains/check?domain=${encodeURIComponent(domainSearch)}&ext=${encodeURIComponent(domainExt)}`);
       const data = await res.json();
       setSearchResult(data);
     } catch (err) {
@@ -60,7 +70,7 @@ export default function Home() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a855f7] to-[#6366f1]">We Build the Internet.</span>
               </h1>
               <p className="text-base sm:text-lg text-slate-300 font-light mb-8 lg:mb-10 tracking-wide">
-                Your Complete IT & Promotion Agency. Domain booking, custom web development, and digital marketing—all in one place.
+                Your Complete IT & Promotion Agency. Reserve your Dehapa, Bhulia and Golddunia subdomain before anybody takes it. Search and book:
               </p>
 
               {/* Domain Search UI */}
@@ -88,16 +98,10 @@ export default function Home() {
                       onChange={(e) => setDomainExt(e.target.value)}
                       className="flex-1 sm:flex-none bg-[#020610]/80 sm:bg-[#020610]/50 text-slate-300 px-4 sm:px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-900 transition-colors font-mono text-sm border-r border-slate-700/50 sm:border-r-0"
                     >
-                      <option value=".com">.com</option>
-                      <option value=".in">.in</option>
-                      <option value=".org">.org</option>
-                      <option value=".net">.net</option>
-                      <option value=".co">.co</option>
-                      <option value=".info">.info</option>
-                      <option value=".biz">.biz</option>
-                      <option value=".co.in">.co.in</option>
-                      <option value=".io">.io</option>
-                      <option value=".ai">.ai</option>
+                      <option value=".golddunia.com">.golddunia.com</option>
+                      <option value=".bhulia.com">.bhulia.com</option>
+                      <option value=".dehapa.com">.dehapa.com</option>
+                      <option value="custom">Custom URL</option>
                     </select>
 
                     <button 
@@ -113,21 +117,31 @@ export default function Home() {
                 {/* Search Results */}
                 {searchResult && (
                   <div className="absolute top-full left-0 w-full mt-4 bg-[#070d1e]/95 border border-[#a855f7]/30 shadow-[0_10px_40px_rgba(168,85,247,0.2)] backdrop-blur-xl rounded-2xl p-6 z-30 animate-in fade-in slide-in-from-top-4 text-left">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-2xl font-bold text-white font-mono">{searchResult.domain}</span>
-                      {searchResult.available ? (
-                        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-full border border-emerald-500/20">AVAILABLE</span>
-                      ) : (
-                        <span className="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono font-bold rounded-full border border-rose-500/20">TAKEN</span>
-                      )}
-                    </div>
-                    {searchResult.available ? (
-                      <div className="flex items-center justify-between">
-                        <span className="text-3xl font-black text-white font-mono">₹{searchResult.price} <span className="text-sm text-slate-400 font-sans font-medium">/yr</span></span>
-                        <button className="px-6 py-3 bg-[#a855f7] text-white font-bold rounded-xl text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-purple-900/50">Book Now</button>
+                    {searchResult.custom ? (
+                      <div>
+                        <span className="text-2xl font-bold text-white font-mono mb-2 block">Custom Domain Request</span>
+                        <p className="text-sm text-slate-300 mb-4">{searchResult.message}</p>
+                        <button onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-3 bg-[#a855f7] text-white font-bold rounded-xl text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-purple-900/50">Start Project</button>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-400">This domain is registered. Please try another search above.</p>
+                      <>
+                        <div className="flex justify-between items-center mb-4">
+                          <span className="text-xl md:text-2xl font-bold text-white font-mono break-all">{searchResult.domain}{searchResult.ext}</span>
+                          {searchResult.available ? (
+                            <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-full border border-emerald-500/20 shrink-0">AVAILABLE</span>
+                          ) : (
+                            <span className="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono font-bold rounded-full border border-rose-500/20 shrink-0">TAKEN</span>
+                          )}
+                        </div>
+                        {searchResult.available ? (
+                          <div className="flex items-center justify-between">
+                            <span className="text-xl md:text-3xl font-black text-emerald-400 font-mono">Free <span className="text-xs md:text-sm text-slate-400 font-sans font-medium uppercase">for Members</span></span>
+                            <button onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Claim Now</button>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-slate-400">This subdomain is already registered in our ecosystem. Please try another name.</p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
@@ -175,7 +189,7 @@ export default function Home() {
           </div>
 
           {/* TILE 3: Quick Contact */}
-          <div className="md:col-span-2 lg:col-span-4 bg-gradient-to-b from-[#111827] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group p-6 sm:p-8 flex flex-col justify-between">
+          <div id="contact-section" className="md:col-span-2 lg:col-span-4 bg-gradient-to-b from-[#111827] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group p-6 sm:p-8 flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
                 <Icons.MessageSquare className="w-6 h-6 text-blue-400" />

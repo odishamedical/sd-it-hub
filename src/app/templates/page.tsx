@@ -18,6 +18,12 @@ const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
     description: "A traditional, luxurious layout perfect for established heritage jewelers.",
     previewUrl: "https://shyamdash.com",
+    colors: [
+      { name: "Ruby Red", value: "#991b1b" },
+      { name: "Emerald", value: "#065f46" },
+      { name: "Royal Blue", value: "#1e3a8a" },
+      { name: "Gold", value: "#854d0e" },
+    ]
   },
   {
     id: "jewel-modern",
@@ -26,6 +32,12 @@ const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800",
     description: "Clean, spacious design focusing on high-quality product imagery and contemporary style.",
     previewUrl: "https://shyamdash.com",
+    colors: [
+      { name: "Slate", value: "#0f172a" },
+      { name: "Rose Gold", value: "#b45309" },
+      { name: "Sapphire", value: "#0369a1" },
+      { name: "Pearl", value: "#d6d3d1" },
+    ]
   },
   {
     id: "jewel-prestige",
@@ -34,6 +46,12 @@ const TEMPLATES = [
     image: "https://images.unsplash.com/photo-1599643478524-fb66f723666a?auto=format&fit=crop&q=80&w=800",
     description: "Dark-themed, high-contrast layout designed for premium, exclusive collections.",
     previewUrl: "https://shyamdash.com",
+    colors: [
+      { name: "Onyx", value: "#000000" },
+      { name: "Crimson", value: "#881337" },
+      { name: "Midnight", value: "#172554" },
+      { name: "Deep Forest", value: "#14532d" },
+    ]
   },
   // SAMBALPURI SAREE
   {
@@ -119,6 +137,12 @@ export default function TemplatesPage() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("All");
 
+  const [selectedTemplateColor, setSelectedTemplateColor] = useState<Record<string, string>>({
+    "jewel-classic": "#991b1b",
+    "jewel-modern": "#0f172a",
+    "jewel-prestige": "#000000"
+  });
+
   const handleRequestDeployment = async (template: any) => {
     const email = localStorage.getItem("sd_current_user_email");
     if (!email) {
@@ -186,14 +210,19 @@ export default function TemplatesPage() {
               <div key={template.id} className="glass-panel-dark rounded-2xl shadow-lg border border-slate-800 overflow-hidden flex flex-col group hover:-translate-y-2 transition-transform duration-300">
                 {/* Image Preview */}
                 <div className="relative h-64 w-full bg-slate-900 border-b border-slate-800 overflow-hidden">
+                  {/* Dynamic Color Overlay based on selected swatch */}
+                  <div 
+                    className="absolute inset-0 mix-blend-color transition-colors duration-500 z-0 opacity-50"
+                    style={{ backgroundColor: selectedTemplateColor[template.id] || "transparent" }}
+                  />
                   <img 
                     src={template.image} 
                     alt={template.name} 
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm z-10">
                     <a 
-                      href={template.previewUrl} 
+                      href={template.colors ? `/preview/${template.id}?color=${encodeURIComponent(selectedTemplateColor[template.id] || "")}` : template.previewUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="px-6 py-2.5 bg-sky-500 text-white font-bold rounded shadow-[0_0_20px_rgba(14,165,233,0.3)] flex items-center gap-2 hover:bg-sky-400 transition-colors"
@@ -215,6 +244,33 @@ export default function TemplatesPage() {
                   <p className="text-sm text-slate-400 mb-6 flex-grow leading-relaxed">
                     {template.description}
                   </p>
+
+                  {/* Color Swatches */}
+                  {template.colors && (
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Color Theme</span>
+                        <span className="text-[10px] text-sky-400 font-bold">
+                          {template.colors.find(c => c.value === selectedTemplateColor[template.id])?.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {template.colors.map(color => (
+                          <button
+                            key={color.value}
+                            onClick={() => setSelectedTemplateColor({...selectedTemplateColor, [template.id]: color.value})}
+                            className={`w-8 h-8 rounded-full border-2 transition-all ${
+                              selectedTemplateColor[template.id] === color.value 
+                                ? "border-sky-400 scale-110 shadow-[0_0_10px_rgba(56,189,248,0.5)]" 
+                                : "border-transparent hover:scale-110 hover:border-slate-500"
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex items-center gap-2">
                     <button 

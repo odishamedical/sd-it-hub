@@ -12,27 +12,27 @@ import Footer from "@/components/Footer";
 const TEMPLATES = [
   // GOLD JEWELRY
   {
-    id: "gld-1",
-    name: "Aura Gold Modern",
+    id: "jewel-classic",
+    name: "Classic Elegance",
     category: "Gold Jewelry",
-    image: "/gold-1.png",
-    description: "Sleek dark mode UI with glowing gold accents. Perfect for high-end luxury showrooms.",
+    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
+    description: "A traditional, luxurious layout perfect for established heritage jewelers.",
     previewUrl: "https://shyamdash.com",
   },
   {
-    id: "gld-2",
-    name: "Heritage Royal",
+    id: "jewel-modern",
+    name: "Modern Minimalist",
     category: "Gold Jewelry",
-    image: "/gold-2.png",
-    description: "Classic traditional Indian jewellery layout with a rich royal red and gold theme.",
+    image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800",
+    description: "Clean, spacious design focusing on high-quality product imagery and contemporary style.",
     previewUrl: "https://shyamdash.com",
   },
   {
-    id: "gld-3",
-    name: "Minimalist Diamond",
+    id: "jewel-prestige",
+    name: "Prestige Gallery",
     category: "Gold Jewelry",
-    image: "/gold-3.png",
-    description: "Clean white background focusing on single high-value pieces and elegant typography.",
+    image: "https://images.unsplash.com/photo-1599643478524-fb66f723666a?auto=format&fit=crop&q=80&w=800",
+    description: "Dark-themed, high-contrast layout designed for premium, exclusive collections.",
     previewUrl: "https://shyamdash.com",
   },
   // SAMBALPURI SAREE
@@ -135,7 +135,7 @@ export default function TemplatesPage() {
   );
 
   return (
-    <main className="relative min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden flex flex-col">
+    <main className="relative min-h-screen bg-[#001529] text-white font-sans overflow-x-hidden flex flex-col">
       <Header />
 
       {/* Page Header */}
@@ -152,8 +152,8 @@ export default function TemplatesPage() {
       </section>
 
       {/* Notification Banner */}
-      <div className="bg-sky-50 border-b border-sky-100 py-3 px-4 text-center">
-        <p className="text-sm text-sky-800 font-medium max-w-4xl mx-auto">
+      <div className="bg-sky-500/10 border-b border-sky-500/20 py-3 px-4 text-center">
+        <p className="text-sm text-sky-400 font-medium max-w-4xl mx-auto">
           <Icons.Info className="w-4 h-4 inline-block mr-2 -mt-0.5" />
           These premium templates are exclusively available for esteemed clients of the ShyamDash ecosystem. Claim a subdomain or custom URL on Gold Dunia, Bhulia, or Dehapa to unlock your template.
         </p>
@@ -172,7 +172,7 @@ export default function TemplatesPage() {
                 className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${
                   activeCategory === cat
                     ? "bg-[#0ea5e9] text-white shadow-lg shadow-sky-500/30"
-                    : "bg-white text-slate-600 border border-slate-200 hover:border-sky-300 hover:text-sky-600"
+                    : "bg-slate-900 text-slate-400 border border-slate-800 hover:border-sky-500 hover:text-sky-400"
                 }`}
               >
                 {cat}
@@ -183,21 +183,20 @@ export default function TemplatesPage() {
           {/* Template Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredTemplates.map((template) => (
-              <div key={template.id} className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+              <div key={template.id} className="glass-panel-dark rounded-2xl shadow-lg border border-slate-800 overflow-hidden flex flex-col group hover:-translate-y-2 transition-transform duration-300">
                 {/* Image Preview */}
-                <div className="relative h-64 w-full bg-slate-100 border-b border-slate-100 overflow-hidden">
-                  <Image 
+                <div className="relative h-64 w-full bg-slate-900 border-b border-slate-800 overflow-hidden">
+                  <img 
                     src={template.image} 
                     alt={template.name} 
-                    fill 
-                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500" 
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                     <a 
                       href={template.previewUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="px-6 py-2.5 bg-white text-slate-900 font-bold rounded shadow-xl flex items-center gap-2 hover:bg-sky-50 transition-colors"
+                      className="px-6 py-2.5 bg-sky-500 text-white font-bold rounded shadow-[0_0_20px_rgba(14,165,233,0.3)] flex items-center gap-2 hover:bg-sky-400 transition-colors"
                     >
                       <Icons.Eye className="w-4 h-4" /> Live Preview
                     </a>
@@ -207,20 +206,20 @@ export default function TemplatesPage() {
                 {/* Details */}
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded">
                       {template.category}
                     </span>
                   </div>
                   
-                  <h3 className="text-xl font-extrabold text-slate-900 mb-2">{template.name}</h3>
-                  <p className="text-sm text-slate-500 mb-6 flex-grow leading-relaxed">
+                  <h3 className="text-xl font-extrabold text-white mb-2">{template.name}</h3>
+                  <p className="text-sm text-slate-400 mb-6 flex-grow leading-relaxed">
                     {template.description}
                   </p>
 
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => handleRequestDeployment(template)}
-                      className="flex-1 py-3 bg-[#001529] hover:bg-[#0ea5e9] text-white font-bold rounded transition-colors text-sm"
+                      className="flex-1 py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-sky-500/20"
                     >
                       Claim Template Bundle
                     </button>

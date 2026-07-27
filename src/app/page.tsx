@@ -22,23 +22,23 @@ export default function Home() {
     e.preventDefault();
     if (!domainSearch.trim()) return;
 
+    if (domainExt === "custom") {
+      setSearchResult({
+        domain: domainSearch,
+        custom: true,
+        message: "Contact us below to book a custom top-level domain."
+      });
+      document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     setIsSearching(true);
     setSearchResult(null);
 
-    const isSubdomain = domainExt.includes("golddunia") || domainExt.includes("bhulia") || domainExt.includes("dehapa");
-
     try {
-      if (isSubdomain) {
-        const res = await fetch(`/api/subdomains/check?domain=${encodeURIComponent(domainSearch)}&ext=${encodeURIComponent(domainExt)}`);
-        const data = await res.json();
-        setSearchResult({ ...data, type: "subdomain" });
-      } else {
-        // Strip leading dot for the TLD if ResellerClub API expects it (e.g. .com -> com)
-        // Note: The previous code sent .com directly, so we maintain that
-        const res = await fetch(`/api/domains/search?domain=${encodeURIComponent(domainSearch)}&tld=${encodeURIComponent(domainExt)}`);
-        const data = await res.json();
-        setSearchResult({ ...data, type: "custom" });
-      }
+      const res = await fetch(`/api/subdomains/check?domain=${encodeURIComponent(domainSearch)}&ext=${encodeURIComponent(domainExt)}`);
+      const data = await res.json();
+      setSearchResult(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -100,19 +100,10 @@ export default function Home() {
                       onChange={(e) => setDomainExt(e.target.value)}
                       className="flex-1 sm:flex-none bg-[#020610]/80 sm:bg-[#020610]/50 text-slate-300 px-4 sm:px-6 py-4 outline-none font-bold cursor-pointer hover:bg-slate-900 transition-colors font-mono text-sm border-r border-slate-700/50 sm:border-r-0"
                     >
-                      <optgroup label="Ecosystem (Free)">
-                        <option value=".golddunia.com">.golddunia.com</option>
-                        <option value=".bhulia.com">.bhulia.com</option>
-                        <option value=".dehapa.com">.dehapa.com</option>
-                      </optgroup>
-                      <optgroup label="Custom Domains">
-                        <option value=".com">.com</option>
-                        <option value=".in">.in</option>
-                        <option value=".co.in">.co.in</option>
-                        <option value=".org">.org</option>
-                        <option value=".net">.net</option>
-                        <option value=".info">.info</option>
-                      </optgroup>
+                      <option value=".golddunia.com">.golddunia.com</option>
+                      <option value=".bhulia.com">.bhulia.com</option>
+                      <option value=".dehapa.com">.dehapa.com</option>
+                      <option value="custom">Custom URL</option>
                     </select>
 
                     <button 
@@ -128,32 +119,31 @@ export default function Home() {
                 {/* Search Results */}
                 {searchResult && (
                   <div className="w-full mt-4 bg-[#070d1e]/95 border border-[#a855f7]/30 shadow-[0_10px_40px_rgba(168,85,247,0.2)] backdrop-blur-xl rounded-2xl p-6 z-30 animate-in fade-in text-left">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-xl md:text-2xl font-bold text-white font-mono break-all">{searchResult.domain}{searchResult.ext || searchResult.tld || domainExt}</span>
-                      {searchResult.available ? (
-                        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-full border border-emerald-500/20 shrink-0">AVAILABLE</span>
-                      ) : (
-                        <span className="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono font-bold rounded-full border border-rose-500/20 shrink-0">TAKEN</span>
-                      )}
-                    </div>
-
-                    {searchResult.available ? (
-                      <div className="flex items-center justify-between">
-                        {searchResult.type === "subdomain" ? (
-                          <span className="text-xl md:text-3xl font-black text-emerald-400 font-mono">Free <span className="text-xs md:text-sm text-slate-400 font-sans font-medium uppercase">for Members</span></span>
-                        ) : (
-                          <span className="text-xl md:text-3xl font-black text-white font-mono">₹{searchResult.price || "899"} <span className="text-xs md:text-sm text-slate-400 font-sans font-medium">/yr</span></span>
-                        )}
-                        <button onClick={() => router.push(`/checkout?type=domain&item=${encodeURIComponent(searchResult.domain + (searchResult.ext || searchResult.tld || domainExt))}&amount=${searchResult.type === 'subdomain' ? '0' : (searchResult.price || '899')}`)} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">
-                          {searchResult.type === "subdomain" ? "Claim Now" : "Book Now"}
-                        </button>
+                    {searchResult.custom ? (
+                      <div>
+                        <span className="text-2xl font-bold text-white font-mono mb-2 block">Custom Domain Request</span>
+                        <p className="text-sm text-slate-300 mb-4">{searchResult.message}</p>
+                        <button onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-3 bg-[#a855f7] text-white font-bold rounded-xl text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-purple-900/50">Start Project</button>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-400">
-                        {searchResult.type === "subdomain" 
-                          ? "This subdomain is already registered in our ecosystem. Please try another name." 
-                          : "This custom domain is currently registered. Please try another domain or extension."}
-                      </p>
+                      <>
+                        <div className="flex justify-between items-center mb-4">
+                          <span className="text-xl md:text-2xl font-bold text-white font-mono break-all">{searchResult.domain}{searchResult.ext}</span>
+                          {searchResult.available ? (
+                            <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-full border border-emerald-500/20 shrink-0">AVAILABLE</span>
+                          ) : (
+                            <span className="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono font-bold rounded-full border border-rose-500/20 shrink-0">TAKEN</span>
+                          )}
+                        </div>
+                        {searchResult.available ? (
+                          <div className="flex items-center justify-between">
+                            <span className="text-xl md:text-3xl font-black text-emerald-400 font-mono">Free <span className="text-xs md:text-sm text-slate-400 font-sans font-medium uppercase">for Members</span></span>
+                            <button onClick={() => router.push(`/checkout?type=domain&item=${encodeURIComponent(searchResult.domain + searchResult.ext)}&amount=0`)} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Claim Now</button>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-slate-400">This subdomain is already registered in our ecosystem. Please try another name.</p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}

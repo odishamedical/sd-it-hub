@@ -4,6 +4,7 @@ import React from 'react';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import Link from 'next/link';
 import * as Icons from 'lucide-react';
+import { useParams, useSearchParams } from 'next/navigation';
 
 const MOCK_SHOP = {
   id: "mock-shop-001",
@@ -54,9 +55,13 @@ const MOCK_PRODUCTS = [
   },
 ];
 
-export default function TemplatePreview({ params, searchParams }: { params: { templateId: string }, searchParams: { color?: string } }) {
-  const { templateId } = params;
-  const themeColor = searchParams.color || "#0f172a";
+import { Suspense } from 'react';
+
+function TemplatePreviewInner() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const templateId = params?.templateId as string;
+  const themeColor = searchParams?.get('color') || "#0f172a";
 
   const config = {
     shopName: "Jewel Craft Mockup",
@@ -107,5 +112,13 @@ export default function TemplatePreview({ params, searchParams }: { params: { te
         )}
       </div>
     </>
+  );
+}
+
+export default function TemplatePreview() {
+  return (
+    <Suspense fallback={<div className="bg-slate-950 min-h-screen flex items-center justify-center text-white">Loading...</div>}>
+      <TemplatePreviewInner />
+    </Suspense>
   );
 }

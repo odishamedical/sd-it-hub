@@ -1277,13 +1277,27 @@ export default function ClientPortal() {
                     return;
                   }
                   setIsDeployingTemplate(true);
-                  // Simulating deployment latency
-                  setTimeout(() => {
+                  try {
+                    await setDoc(doc(db, "deployments", templateConfig.domain), {
+                      domain: templateConfig.domain,
+                      shopId: templateConfig.shopId,
+                      shopName: templateConfig.shopName,
+                      tagline: templateConfig.tagline,
+                      templateId: installingTemplate.id,
+                      themeColor: selectedTemplateColor[installingTemplate.id],
+                      status: "ACTIVE",
+                      deployedAt: serverTimestamp()
+                    });
+                    
                     setIsDeployingTemplate(false);
                     setInstallingTemplate(null);
                     showToast(`Success! ${templateConfig.domain} is now live with your new template.`);
                     setActiveTab("dashboard");
-                  }, 2000);
+                  } catch (e: any) {
+                    console.error("Deploy error:", e);
+                    showToast("Failed to deploy template: " + e.message);
+                    setIsDeployingTemplate(false);
+                  }
                 }}
                 disabled={isDeployingTemplate}
                 className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-500/20 flex items-center gap-2"

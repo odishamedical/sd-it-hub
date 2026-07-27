@@ -7,6 +7,30 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+const ECOSYSTEM_ROLES: Record<string, string[]> = {
+  ".golddunia.com": ["Shop", "Wholesaler", "Manufacturer"],
+  ".bhulia.com": ["Weaver", "Store", "Wholesaler", "Supplier"],
+  ".dehapa.com": ["Doctor", "Clinic", "Pharmacy", "Hospital"]
+};
+
+const INDIAN_STATES = [
+  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam",
+  "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu",
+  "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
+  "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh",
+  "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
+  "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+];
+
+const ODISHA_DISTRICTS = [
+  "Angul", "Balangir", "Balasore", "Bargarh", "Bhadrak", "Boudh", "Cuttack",
+  "Deogarh", "Dhenkanal", "Gajapati", "Ganjam", "Jagatsinghpur", "Jajpur",
+  "Jharsuguda", "Kalahandi", "Kandhamal", "Kendrapara", "Kendujhar (Keonjhar)",
+  "Khordha", "Koraput", "Malkangiri", "Mayurbhanj", "Nabarangpur", "Nayagarh",
+  "Nuapada", "Puri", "Rayagada", "Sambalpur", "Subarnapur (Sonepur)", "Sundargarh"
+];
+
 function AdvancedSearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -112,7 +136,8 @@ function AdvancedSearchContent() {
                 </select>
               </div>
 
-              {domainExt.includes("dunia") || domainExt.includes("bhulia") || domainExt.includes("dehapa") ? (
+              {/* Ecosystem Filters */}
+              {(domainExt === ".golddunia.com" || domainExt === ".bhulia.com" || domainExt === ".dehapa.com") && (
                 <>
                   <div className="pt-4 border-t border-slate-800">
                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Category (Optional)</label>
@@ -122,10 +147,9 @@ function AdvancedSearchContent() {
                       className="w-full bg-[#020610] border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 appearance-none"
                     >
                       <option value="">Any Category</option>
-                      <option value="doctor">Doctor</option>
-                      <option value="goldshop">Gold Shop</option>
-                      <option value="weaver">Weaver</option>
-                      <option value="supplier">Supplier</option>
+                      {ECOSYSTEM_ROLES[domainExt]?.map(role => (
+                        <option key={role} value={role.toLowerCase()}>{role}</option>
+                      ))}
                     </select>
                   </div>
 
@@ -135,31 +159,44 @@ function AdvancedSearchContent() {
                       value={state}
                       onChange={(e) => {
                         setState(e.target.value);
-                        if (!e.target.value) setCity(""); // clear city if state is cleared
+                        setCity(""); // clear city when state changes
                       }}
                       className="w-full bg-[#020610] border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 appearance-none"
                     >
                       <option value="">Any State</option>
-                      <option value="odisha">Odisha</option>
-                      <option value="bihar">Bihar</option>
-                      <option value="maharashtra">Maharashtra</option>
+                      {INDIAN_STATES.map(st => (
+                        <option key={st} value={st.toLowerCase()}>{st}</option>
+                      ))}
                     </select>
                   </div>
 
                   {state && (
                     <div className="animate-in fade-in slide-in-from-top-2">
-                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">City (Optional)</label>
-                      <input 
-                        type="text" 
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className="w-full bg-[#020610] border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500"
-                        placeholder="e.g. Sambalpur"
-                      />
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">District / City (Optional)</label>
+                      {state.toLowerCase() === "odisha" ? (
+                        <select 
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          className="w-full bg-[#020610] border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 appearance-none"
+                        >
+                          <option value="">Any District</option>
+                          {ODISHA_DISTRICTS.map(dist => (
+                            <option key={dist} value={dist.toLowerCase()}>{dist}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input 
+                          type="text" 
+                          value={city}
+                          onChange={(e) => setCity(e.target.value)}
+                          className="w-full bg-[#020610] border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500"
+                          placeholder="Enter City Name"
+                        />
+                      )}
                     </div>
                   )}
                 </>
-              ) : null}
+              )}
 
               <button 
                 type="submit" 

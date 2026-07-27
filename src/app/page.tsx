@@ -163,9 +163,9 @@ export default function Home() {
 
           {/* TILE 2: Digital Influencer & Social Promo */}
           <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[320px] sm:min-h-[360px]">
-            <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
+            <div className="relative w-full h-[240px] md:h-full md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-100 md:opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-transparent" />
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#020610]/90 via-[#020610]/40 to-transparent" />
               <div className="md:hidden absolute inset-0 bg-gradient-to-t from-[#070d1e] via-transparent to-transparent" />
               <div className="md:hidden absolute bottom-4 left-4 right-4 flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 p-2 pr-4 rounded-2xl shadow-lg">
                 <div className="w-10 h-10 bg-pink-500/30 rounded-xl flex items-center justify-center shrink-0">
@@ -205,9 +205,9 @@ export default function Home() {
 
           {/* TILE 4: IT Consultation (Code) */}
           <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
-            <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
+            <div className="relative w-full h-[240px] md:h-full md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-100 md:opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-              <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#020610]/90 via-[#020610]/40 to-transparent" />
               <div className="md:hidden absolute inset-0 bg-gradient-to-t from-[#070d1e] via-transparent to-transparent" />
               <div className="md:hidden absolute bottom-4 left-4 right-4 flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 p-2 pr-4 rounded-2xl shadow-lg">
                 <div className="w-10 h-10 bg-emerald-500/30 rounded-xl flex items-center justify-center shrink-0">
@@ -234,9 +234,9 @@ export default function Home() {
 
           {/* TILE 5: Ecosystem Integration */}
           <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
-            <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
+            <div className="relative w-full h-[240px] md:h-full md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-100 md:opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-              <div className="hidden md:block absolute inset-0 bg-gradient-to-l from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />
+              <div className="hidden md:block absolute inset-0 bg-gradient-to-l from-[#020610]/90 via-[#020610]/40 to-transparent" />
               <div className="md:hidden absolute inset-0 bg-gradient-to-t from-[#070d1e] via-transparent to-transparent" />
               <div className="md:hidden absolute bottom-4 left-4 right-4 flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 p-2 pr-4 rounded-2xl shadow-lg">
                 <div className="w-10 h-10 bg-amber-500/30 rounded-xl flex items-center justify-center shrink-0">

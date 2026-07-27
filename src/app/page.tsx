@@ -126,24 +126,38 @@ export default function Home() {
                         <button onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-6 py-3 bg-[#a855f7] text-white font-bold rounded-xl text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-purple-900/50">Start Project</button>
                       </div>
                     ) : (
-                      <>
-                        <div className="flex justify-between items-center mb-4">
-                          <span className="text-xl md:text-2xl font-bold text-white font-mono break-all">{searchResult.domain}{searchResult.ext}</span>
-                          {searchResult.available ? (
-                            <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold rounded-full border border-emerald-500/20 shrink-0">AVAILABLE</span>
-                          ) : (
-                            <span className="px-3 py-1 bg-rose-500/10 text-rose-400 text-xs font-mono font-bold rounded-full border border-rose-500/20 shrink-0">TAKEN</span>
-                          )}
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center justify-between border-b border-slate-700/50 pb-3 mb-2">
+                          <h4 className="text-lg font-bold text-white font-mono">Available Names</h4>
+                          <span className="text-xs text-slate-400 uppercase tracking-widest font-bold">Price</span>
                         </div>
-                        {searchResult.available ? (
-                          <div className="flex items-center justify-between">
-                            <span className="text-xl md:text-3xl font-black text-emerald-400 font-mono">Free <span className="text-xs md:text-sm text-slate-400 font-sans font-medium uppercase">for Members</span></span>
-                            <button onClick={() => router.push(`/checkout?type=domain&item=${encodeURIComponent(searchResult.domain + searchResult.ext)}&amount=0`)} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Claim Now</button>
+                        {searchResult.suggestions?.map((suggestion: any) => (
+                          <div key={suggestion.id} className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/50 hover:border-purple-500/30 transition-colors">
+                            <div>
+                              <div className="flex items-center gap-3 mb-1">
+                                <span className="text-lg font-bold text-white font-mono break-all">{suggestion.name}</span>
+                                {suggestion.available ? (
+                                  <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-bold rounded flex shrink-0">AVAILABLE</span>
+                                ) : (
+                                  <span className="px-2 py-0.5 bg-rose-500/10 text-rose-400 text-[10px] font-mono font-bold rounded flex shrink-0">TAKEN</span>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-400">{suggestion.description}</p>
+                            </div>
+                            
+                            {suggestion.available ? (
+                              <div className="flex items-center gap-4 shrink-0 justify-between md:justify-end">
+                                <span className="text-xl font-black text-emerald-400 font-mono">₹{suggestion.price} <span className="text-xs text-slate-400 font-sans font-medium uppercase">/yr</span></span>
+                                <button onClick={() => router.push(`/checkout?type=domain&item=${encodeURIComponent(suggestion.name)}&amount=${suggestion.price}`)} className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Book Now</button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-end">
+                                <span className="text-sm font-bold text-slate-500 font-mono">Unavailable</span>
+                              </div>
+                            )}
                           </div>
-                        ) : (
-                          <p className="text-sm text-slate-400">This subdomain is already registered in our ecosystem. Please try another name.</p>
-                        )}
-                      </>
+                        ))}
+                      </div>
                     )}
                   </div>
                 )}

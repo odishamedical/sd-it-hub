@@ -3,12 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuickContactForm from "@/components/QuickContactForm";
 
 export default function Home() {
+  const router = useRouter();
   const [domainSearch, setDomainSearch] = useState("");
   const [domainExt, setDomainExt] = useState(".golddunia.com");
   
@@ -116,7 +118,7 @@ export default function Home() {
 
                 {/* Search Results */}
                 {searchResult && (
-                  <div className="absolute top-full left-0 w-full mt-4 bg-[#070d1e]/95 border border-[#a855f7]/30 shadow-[0_10px_40px_rgba(168,85,247,0.2)] backdrop-blur-xl rounded-2xl p-6 z-30 animate-in fade-in slide-in-from-top-4 text-left">
+                  <div className="w-full mt-4 bg-[#070d1e]/95 border border-[#a855f7]/30 shadow-[0_10px_40px_rgba(168,85,247,0.2)] backdrop-blur-xl rounded-2xl p-6 z-30 animate-in fade-in text-left">
                     {searchResult.custom ? (
                       <div>
                         <span className="text-2xl font-bold text-white font-mono mb-2 block">Custom Domain Request</span>
@@ -136,7 +138,7 @@ export default function Home() {
                         {searchResult.available ? (
                           <div className="flex items-center justify-between">
                             <span className="text-xl md:text-3xl font-black text-emerald-400 font-mono">Free <span className="text-xs md:text-sm text-slate-400 font-sans font-medium uppercase">for Members</span></span>
-                            <button onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Claim Now</button>
+                            <button onClick={() => router.push(`/checkout?type=domain&item=${encodeURIComponent(searchResult.domain + searchResult.ext)}&amount=0`)} className="px-4 md:px-6 py-2 md:py-3 bg-emerald-500 hover:bg-emerald-400 text-[#020610] font-bold rounded-xl text-xs md:text-sm uppercase tracking-wide hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20 shrink-0">Claim Now</button>
                           </div>
                         ) : (
                           <p className="text-sm text-slate-400">This subdomain is already registered in our ecosystem. Please try another name.</p>
@@ -160,7 +162,7 @@ export default function Home() {
           </div>
 
           {/* TILE 2: Digital Influencer & Social Promo */}
-          <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden group flex flex-col md:block md:min-h-[320px] sm:min-h-[360px]">
+          <div className="md:col-span-2 lg:col-span-8 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[320px] sm:min-h-[360px]">
             <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-influencer.png" alt="Digital Promotion" fill className="object-cover opacity-100 md:opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
               <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-transparent" />
@@ -202,7 +204,7 @@ export default function Home() {
           </div>
 
           {/* TILE 4: IT Consultation (Code) */}
-          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
+          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
             <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-code.png" alt="IT Consultation" fill className="object-cover opacity-100 md:opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
               <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />
@@ -231,7 +233,7 @@ export default function Home() {
           </div>
 
           {/* TILE 5: Ecosystem Integration */}
-          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
+          <div className="md:col-span-2 lg:col-span-6 bg-[#070d1e] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group flex flex-col md:block md:min-h-[280px] sm:min-h-[300px]">
             <div className="relative w-full h-[240px] md:absolute md:inset-0 z-0">
               <Image src="/stock/bento-ecosystem.png" alt="Ecosystem Integration" fill className="object-cover opacity-100 md:opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
               <div className="hidden md:block absolute inset-0 bg-gradient-to-l from-[#020610] via-[#020610]/70 md:via-[#020610]/80 to-[#020610]/40 md:to-transparent" />

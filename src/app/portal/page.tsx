@@ -4,13 +4,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
-import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where, doc, updateDoc } from "@/utils/firebase";
+import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where, doc, updateDoc, setDoc } from "@/utils/firebase";
 
 interface Ticket {
   id: string;
   title: string;
   category: string;
-  status: "Open" | "In-Progress" | "Resolved";
   status: "Open" | "In-Progress" | "Resolved";
   date: string;
 }

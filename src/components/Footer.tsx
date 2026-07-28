@@ -58,18 +58,12 @@ export default function Footer() {
           {/* Statutory Credentials */}
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-4">Statutory Credentials</h4>
-            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 space-y-3">
-              <div>
-                <span className="block text-[10px] text-slate-500 uppercase font-bold">D&B D-U-N-S® Number</span>
-                <span className="text-sm font-mono text-purple-300 font-bold">581779723</span>
-              </div>
-              <div>
-                <span className="block text-[10px] text-slate-500 uppercase font-bold">Udyam Registration</span>
-                <span className="text-sm font-mono text-slate-300">UDYAM-OD-28-0024355</span>
-              </div>
-              <div>
-                <span className="block text-[10px] text-slate-500 uppercase font-bold">Income Tax PAN</span>
-                <span className="text-sm font-mono text-slate-300">AFSPD2630L</span>
+            <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4">
+              <div className="flex items-start gap-3">
+                <Icons.ShieldCheck className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  We are a recognized Indian startup, operating with an authorized Udyam registration and a verified D-U-N-S® Number. We proudly maintain strict compliance with all applicable Indian laws and regulatory frameworks.
+                </p>
               </div>
             </div>
           </div>

@@ -55,7 +55,7 @@ export default function QuickContactForm() {
         onChange={(e) => setName(e.target.value)}
         required
         disabled={status === "submitting"}
-        className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors disabled:opacity-50" 
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-white/10 transition-colors disabled:opacity-50" 
       />
       <input 
         type="email" 
@@ -64,7 +64,7 @@ export default function QuickContactForm() {
         onChange={(e) => setEmail(e.target.value)}
         required
         disabled={status === "submitting"}
-        className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors disabled:opacity-50" 
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-white/10 transition-colors disabled:opacity-50" 
       />
       <textarea 
         placeholder="How can we help?" 
@@ -73,7 +73,7 @@ export default function QuickContactForm() {
         onChange={(e) => setMessage(e.target.value)}
         required
         disabled={status === "submitting"}
-        className="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-slate-900 transition-colors resize-none disabled:opacity-50"
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-blue-500/50 focus:bg-white/10 transition-colors resize-none disabled:opacity-50"
       ></textarea>
       
       {status === "error" && (

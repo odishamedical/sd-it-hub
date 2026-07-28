@@ -217,13 +217,22 @@ export default function Home() {
           </div>
 
           {/* TILE 3: Quick Contact */}
-          <div id="contact-section" className="md:col-span-2 lg:col-span-4 bg-gradient-to-b from-[#111827] to-[#020610] rounded-[32px] border border-slate-800/60 shadow-xl overflow-hidden relative group p-6 sm:p-8 flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
+          <div id="contact-section" className="md:col-span-2 lg:col-span-4 rounded-[32px] overflow-hidden relative group p-6 sm:p-8 flex flex-col justify-between shadow-2xl border border-white/10">
+            {/* Background Image Layer */}
+            <div className="absolute inset-0 z-0">
+              <Image src="/stock/bento-domain-bg.png" alt="Contact Background" fill className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000" />
+            </div>
+
+            {/* Glassmorphism Overlay */}
+            <div className="absolute inset-0 z-10 bg-[#050b1a]/40 backdrop-blur-xl"></div>
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent z-20" />
+
+            <div className="relative z-20">
+              <div className="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-md shadow-lg">
                 <Icons.MessageSquare className="w-6 h-6 text-blue-400" />
               </div>
               <h3 className="text-xl font-bold font-serif text-white mb-2">Start a Project</h3>
-              <p className="text-slate-400 text-xs mb-6">Send us a quick message. Our consultants will get back to you immediately.</p>
+              <p className="text-slate-300 text-xs mb-6 leading-relaxed">Send us a quick message. Our consultants will get back to you immediately.</p>
               
               <QuickContactForm />
             </div>

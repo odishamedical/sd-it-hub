@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function JewelModernTemplate({ config, shop, products }: { config: any, shop: any, products: any[] }) {
   const primaryColor = config.themeColor || '#0f172a';
@@ -10,7 +11,9 @@ export default function JewelModernTemplate({ config, shop, products }: { config
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {shop.logoUrl ? (
-              <img src={shop.logoUrl} alt={config.shopName} className="h-10 w-auto" />
+              <div className="relative h-10 w-32">
+                <Image src={shop.logoUrl} alt={config.shopName} fill sizes="128px" className="object-contain object-left" />
+              </div>
             ) : (
               <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold" style={{ backgroundColor: primaryColor }}>
                 {config.shopName.charAt(0)}
@@ -30,10 +33,11 @@ export default function JewelModernTemplate({ config, shop, products }: { config
       {/* HERO SECTION */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
+          <Image 
             src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1588444650733-d0767b753cb8?auto=format&fit=crop&q=80&w=1600"} 
             alt="Hero"
-            className="w-full h-full object-cover"
+            fill sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 opacity-80" style={{ backgroundColor: primaryColor }} />
         </div>
@@ -59,10 +63,11 @@ export default function JewelModernTemplate({ config, shop, products }: { config
             {products.length > 0 ? products.map(product => (
               <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group">
                 <div className="relative h-80 overflow-hidden bg-slate-100">
-                  <img 
+                  <Image 
                     src={product.images[0]} 
                     alt={product.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    fill sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   {product.stoneDetails?.hasStones && (
                     <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold rounded-full text-slate-800">

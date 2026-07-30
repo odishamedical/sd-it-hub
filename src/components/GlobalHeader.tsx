@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, collection, addDoc, onSnapshot, query, where } from "firebase/firestore";
+import Image from "next/image";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBz0OIk4xmOZras83es5HmJc03Ae60sMg8",
@@ -357,11 +358,14 @@ export default function GlobalHeader({ activeProject }: GlobalHeaderProps) {
               className="flex items-center gap-1 md:gap-2 focus:outline-none cursor-pointer"
             >
               {userAvatar ? (
-                <img 
-                  src={userAvatar} 
-                  alt="" 
-                  className="w-6 h-6 rounded-full object-cover border-2 border-[#C5A059] hover:scale-105 transition-transform" 
-                />
+                <div className="relative w-6 h-6 rounded-full border-2 border-[#C5A059] hover:scale-105 transition-transform overflow-hidden">
+                  <Image 
+                    src={userAvatar} 
+                    alt="" 
+                    fill sizes="24px"
+                    className="object-cover" 
+                  />
+                </div>
               ) : (
                 <div className="w-6 h-6 rounded-full bg-[#C5A059] text-[#0A1021] flex items-center justify-center font-bold text-[10px] border-2 border-[#C5A059] hover:scale-105 transition-transform">
                   {userName ? userName.charAt(0).toUpperCase() : userEmail.charAt(0).toUpperCase()}

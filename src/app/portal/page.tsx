@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as Icons from "lucide-react";
 import { db, collection, getDocs, addDoc, serverTimestamp, query, orderBy, where, doc, updateDoc, setDoc } from "@/utils/firebase";
@@ -544,7 +545,9 @@ export default function ClientPortal() {
                           <tr key={idx} className="hover:bg-slate-800/30 transition-colors">
                             <td className="p-4 font-bold text-white flex items-center gap-3">
                               {dep.logoUrl ? (
-                                <img src={dep.logoUrl} className="w-6 h-6 object-contain rounded bg-white" alt="logo" />
+                                <div className="relative w-6 h-6 rounded bg-white overflow-hidden shrink-0">
+                                  <Image src={dep.logoUrl} fill sizes="24px" className="object-contain" alt="logo" />
+                                </div>
                               ) : (
                                 <Icons.LayoutTemplate className="w-6 h-6 text-sky-400" />
                               )}
@@ -908,10 +911,12 @@ export default function ClientPortal() {
                         style={{ backgroundColor: selectedTemplateColor[template.id] }}
                       />
                       
-                      <img 
+                      <Image 
                         src={template.image} 
                         alt={template.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                       
                       <div className="absolute top-3 right-3 z-20">

@@ -215,10 +215,11 @@ export default function TemplatesPage() {
                     className="absolute inset-0 mix-blend-color transition-colors duration-500 z-0 opacity-50"
                     style={{ backgroundColor: selectedTemplateColor[template.id] || "transparent" }}
                   />
-                  <img 
+                  <Image 
                     src={template.image} 
                     alt={template.name} 
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
+                    fill sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500" 
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm z-10">
                     <a 

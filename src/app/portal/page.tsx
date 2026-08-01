@@ -231,6 +231,20 @@ export default function ClientPortal() {
       localStorage.setItem("sd_current_user_role", "partner");
       setIsPartner(true);
       setActiveTab("reseller");
+
+      // Persist the role in the database matrix
+      import('firebase/firestore').then(({ doc, updateDoc, collection, query, where, getDocs }) => {
+        const email = localStorage.getItem("sd_current_user_email");
+        if (email) {
+          const q = query(collection(db, "users"), where("email", "==", email));
+          getDocs(q).then(snap => {
+            if (!snap.empty) {
+              const userDocRef = doc(db, "users", snap.docs[0].id);
+              updateDoc(userDocRef, { "roles.it-hub": "partner" }).catch(console.error);
+            }
+          }).catch(console.error);
+        }
+      });
     }
   }, []);
 

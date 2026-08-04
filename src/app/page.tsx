@@ -174,6 +174,19 @@ export default function Home() {
                   </div>
                 )}
               </div>
+
+              {/* Knowledge Hub Promo Button */}
+              <div className="mt-8">
+                <Link 
+                  href="/knowledge" 
+                  className="inline-flex items-center justify-center px-6 py-3 bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold rounded-full border border-slate-700 transition-all group shadow-lg"
+                >
+                  <Icons.BookOpen className="w-5 h-5 mr-2 text-indigo-400 group-hover:text-indigo-300" />
+                  Explore Our Knowledge Hub
+                  <Icons.ArrowRight className="w-4 h-4 ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </Link>
+              </div>
+
             </div>
 
             {/* Decorative Right Side */}

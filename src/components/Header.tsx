@@ -69,14 +69,15 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-widest font-mono font-bold text-slate-300">
+            <Link href="/knowledge" className="text-indigo-400 hover:text-indigo-300 transition-colors">Knowledge Hub</Link>
             <Link href="/#domains" className="hover:text-purple-400 transition-colors">Domains</Link>
             <Link href="/templates" className="hover:text-purple-400 transition-colors">Templates</Link>
             <Link href="/#services" className="hover:text-purple-400 transition-colors">Services</Link>
             <Link href="/partner" className="text-purple-400 font-bold flex items-center gap-1 hover:text-purple-300 transition-colors">
               <Icons.BadgeCheck className="w-4 h-4" /> Partner
             </Link>
-            <Link href="/#about" className="hover:text-purple-400 transition-colors">About</Link>
-            <Link href="/#contact" className="hover:text-purple-400 transition-colors">Contact</Link>
+            <Link href="/about" className="hover:text-purple-400 transition-colors">About</Link>
+            <Link href="/contact" className="hover:text-purple-400 transition-colors">Contact</Link>
           </nav>
 
           {/* Actions */}

@@ -118,51 +118,62 @@ export default function AdminDashboard() {
         <p className="text-slate-400 text-sm mt-1">Monitor all wholesale partner activity and infrastructure allocations.</p>
       </header>
 
-      {/* High Level Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Icons.Server className="w-4 h-4 text-indigo-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Nodes</span>
+      {/* Ecosystem Pillar Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {/* Pillar 1: IT Hub */}
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-[40px] group-hover:bg-cyan-500/10 transition-colors pointer-events-none"></div>
+          <div className="flex items-center gap-3 mb-2 relative z-10">
+            <Icons.Server className="w-4 h-4 text-cyan-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">IT Hub Nodes</span>
           </div>
-          <span className="text-3xl font-black text-white">{tenants.length}</span>
+          <span className="text-3xl font-black text-white relative z-10">{tenants.length}</span>
+          <div className="mt-4 pt-4 border-t border-slate-800/50 relative z-10 flex justify-between items-center">
+            <span className="text-xs text-slate-500">Active Deployments</span>
+            <a href="/admin/deployments" className="text-xs text-cyan-400 hover:underline">Manage &rarr;</a>
+          </div>
         </div>
-        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Icons.Users className="w-4 h-4 text-emerald-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Partners</span>
+
+        {/* Pillar 2: Jobs */}
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-[40px] group-hover:bg-emerald-500/10 transition-colors pointer-events-none"></div>
+          <div className="flex items-center gap-3 mb-2 relative z-10">
+            <Icons.Briefcase className="w-4 h-4 text-emerald-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Global Jobs</span>
           </div>
-          <span className="text-3xl font-black text-white">1</span>
+          <span className="text-3xl font-black text-white relative z-10">420+</span>
+          <div className="mt-4 pt-4 border-t border-slate-800/50 relative z-10 flex justify-between items-center">
+            <span className="text-xs text-slate-500">Active Listings</span>
+            <a href="#" className="text-xs text-emerald-400 hover:underline">Approvals &rarr;</a>
+          </div>
         </div>
-        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Icons.Inbox className="w-4 h-4 text-amber-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">New Leads</span>
+
+        {/* Pillar 3: Directory */}
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/5 rounded-full blur-[40px] group-hover:bg-fuchsia-500/10 transition-colors pointer-events-none"></div>
+          <div className="flex items-center gap-3 mb-2 relative z-10">
+            <Icons.MapPin className="w-4 h-4 text-fuchsia-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Directory</span>
           </div>
-          <span className="text-3xl font-black text-white flex items-center gap-2">
-            View
-            <a href="/admin/leads" className="text-xs text-amber-400 ml-2 hover:underline">CRM &rarr;</a>
-          </span>
+          <span className="text-3xl font-black text-white relative z-10">8,540</span>
+          <div className="mt-4 pt-4 border-t border-slate-800/50 relative z-10 flex justify-between items-center">
+            <span className="text-xs text-slate-500">Verified Businesses</span>
+            <a href="#" className="text-xs text-fuchsia-400 hover:underline">Claims &rarr;</a>
+          </div>
         </div>
-        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Icons.Briefcase className="w-4 h-4 text-purple-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Services</span>
+
+        {/* Billing & CRM */}
+        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-[40px] group-hover:bg-amber-500/10 transition-colors pointer-events-none"></div>
+          <div className="flex items-center gap-3 mb-2 relative z-10">
+            <Icons.CreditCard className="w-4 h-4 text-amber-400" />
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Master Billing</span>
           </div>
-          <span className="text-3xl font-black text-white flex items-center gap-2">
-            Mgmt
-            <a href="/admin/services" className="text-xs text-purple-400 ml-2 hover:underline">Manage &rarr;</a>
-          </span>
-        </div>
-        <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
-          <div className="flex items-center gap-3 mb-2">
-            <Icons.Activity className="w-4 h-4 text-sky-400" />
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Platform Status</span>
+          <span className="text-3xl font-black text-white relative z-10">142</span>
+          <div className="mt-4 pt-4 border-t border-slate-800/50 relative z-10 flex justify-between items-center">
+            <span className="text-xs text-slate-500">Active Pro Subscribers</span>
+            <a href="#" className="text-xs text-amber-400 hover:underline">Revenue &rarr;</a>
           </div>
-          <span className="text-xl font-bold text-emerald-400 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-            All Systems Nominal
-          </span>
         </div>
       </div>
 

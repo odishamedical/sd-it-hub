@@ -70,45 +70,94 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </Link>
 
-        <nav className="space-y-2 flex-1">
-          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <Icons.Activity className="w-4 h-4" />
-            <span>Platform Overview</span>
-          </Link>
-          <Link href="/admin/leads" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <div className="flex items-center gap-3">
-              <Icons.Inbox className="w-4 h-4" />
-              <span>Lead CRM</span>
+        <nav className="space-y-6 flex-1 overflow-y-auto custom-scrollbar pb-6 pr-2">
+          
+          {/* Main Dashboard */}
+          <div>
+            <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <Icons.Activity className="w-4 h-4" />
+              <span>Platform Overview</span>
+            </Link>
+          </div>
+
+          {/* IT Hub Pillar */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Pillar 1: IT Hub</h3>
+            <div className="space-y-1">
+              <Link href="/admin/deployments" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Server className="w-4 h-4" />
+                <span>Tenant Deployments</span>
+              </Link>
+              <Link href="/admin/templates" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Database className="w-4 h-4" />
+                <span>SaaS Template Library</span>
+              </Link>
+              <Link href="/admin/domains" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Globe className="w-4 h-4" />
+                <span>Domain Registry</span>
+              </Link>
+              <Link href="/admin/services" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Briefcase className="w-4 h-4" />
+                <span>IT Services Manager</span>
+              </Link>
             </div>
-          </Link>
-          <Link href="/admin/services" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <div className="flex items-center gap-3">
-              <Icons.Briefcase className="w-4 h-4" />
-              <span>Services Manager</span>
+          </div>
+
+          {/* Global Jobs Pillar */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Pillar 2: Global Jobs</h3>
+            <div className="space-y-1">
+              <Link href="/admin/job-scraper" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-emerald-500/10 hover:text-emerald-400">
+                <Icons.Bot className="w-4 h-4" />
+                <span>Job Aggregator AI</span>
+              </Link>
+              <Link href="#" className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <div className="flex items-center gap-3">
+                  <Icons.UserCheck className="w-4 h-4" />
+                  <span>Employer Approvals</span>
+                </div>
+                <span className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center text-[8px] text-amber-950 font-black">3</span>
+              </Link>
             </div>
-          </Link>
-          <Link href="/admin/partners" className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <div className="flex items-center gap-3">
-              <Icons.Users className="w-4 h-4" />
-              <span>Partner Agencies</span>
+          </div>
+
+          {/* Directory Pillar */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Pillar 3: Directory</h3>
+            <div className="space-y-1">
+              <Link href="#" className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <div className="flex items-center gap-3">
+                  <Icons.MapPin className="w-4 h-4" />
+                  <span>Claim Requests</span>
+                </div>
+                <span className="w-4 h-4 bg-fuchsia-500 rounded-full flex items-center justify-center text-[8px] text-white font-black">8</span>
+              </Link>
+              <Link href="#" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.ListTree className="w-4 h-4" />
+                <span>Category Manager</span>
+              </Link>
             </div>
-          </Link>
-          <Link href="/admin/deployments" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <Icons.Server className="w-4 h-4" />
-            <span>Tenant Deployments</span>
-          </Link>
-          <Link href="/admin/domains" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <Icons.Globe className="w-4 h-4" />
-            <span>Domain Registry</span>
-          </Link>
-          <Link href="/admin/templates" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <Icons.Database className="w-4 h-4" />
-            <span>SaaS Template Library</span>
-          </Link>
-          <Link href="/admin/job-scraper" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
-            <Icons.Bot className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-400">Job Aggregator</span>
-          </Link>
+          </div>
+
+          {/* CRM & Billing */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Ecosystem CRM</h3>
+            <div className="space-y-1">
+              <Link href="/admin/leads" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Inbox className="w-4 h-4" />
+                <span>Global Lead CRM</span>
+              </Link>
+              <Link href="/admin/partners" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.Users className="w-4 h-4" />
+                <span>Partner Agencies</span>
+              </Link>
+              <Link href="#" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <Icons.CreditCard className="w-4 h-4" />
+                <span>Subscriptions & Billing</span>
+              </Link>
+            </div>
+          </div>
+
         </nav>
 
         <div className="pt-6 border-t border-slate-800 mt-6">

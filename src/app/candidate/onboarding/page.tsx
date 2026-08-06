@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, MapPin, Briefcase, GraduationCap, Link2, Upload, CheckCircle2, ChevronRight, FileText } from "lucide-react";
+import { User, MapPin, Briefcase, GraduationCap, Link2, Upload, CheckCircle2, ChevronRight, FileText, XCircle } from "lucide-react";
 import Image from "next/image";
 
 const INDUSTRIES = ["IT Services", "Healthcare", "Retail & E-Commerce", "Manufacturing", "Finance", "Hospitality", "Education", "Other"];

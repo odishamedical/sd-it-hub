@@ -69,7 +69,7 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-widest font-mono font-bold text-slate-300">
-            <Link href="/#it-services" className="hover:text-purple-400 transition-colors">IT Services</Link>
+            <Link href="/it-services" className="hover:text-cyan-400 transition-colors">IT Services</Link>
             <Link href="/jobs" className="hover:text-purple-400 transition-colors">Global Jobs</Link>
             <Link href="/directory" className="hover:text-purple-400 transition-colors">Directory</Link>
             <Link href="/blog" className="text-indigo-400 hover:text-indigo-300 transition-colors">Blog</Link>
@@ -120,7 +120,7 @@ export default function Header() {
         {/* Mobile Dropdown */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-20 left-0 w-full bg-[#050B1B] border-b border-slate-900 flex flex-col p-4 space-y-4 shadow-xl">
-            <Link href="/#it-services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>IT Services</Link>
+            <Link href="/it-services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>IT Services</Link>
             <Link href="/jobs" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Global Jobs</Link>
             <Link href="/directory" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Directory</Link>
             <Link href="/blog" className="text-indigo-400 font-medium" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>

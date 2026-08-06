@@ -82,7 +82,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-4">
             {userEmail ? (
               <>
-                <Link href="/portal" className="flex items-center gap-2 px-4 py-2 bg-slate-950/40 border border-slate-900 hover:border-purple-550/50 rounded-xl transition-colors">
+                <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="flex items-center gap-2 px-4 py-2 bg-slate-950/40 border border-slate-900 hover:border-purple-550/50 rounded-xl transition-colors">
                   <div className="w-6 h-6 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-[10px]">
                     {userName.substring(0, 2).toUpperCase()}
                   </div>

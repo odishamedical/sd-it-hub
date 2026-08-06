@@ -51,12 +51,26 @@ const db = (0, firestore_1.getFirestore)();
 exports.fetchGoogleJobs = functions.pubsub.schedule("0 2 * * *").timeZone("Asia/Kolkata").onRun(async (context) => {
     var _a, _b, _c, _d, _e;
     console.log("Starting daily Google Jobs aggregation via SerpApi...");
-    // Note: For Phase 2 launch, we are using the Free Tier (100 queries/month = ~3 queries/day)
-    const queries = [
+    // Note: For Phase 2 launch, we are using the Free Tier (250 queries/month = ~8 queries/day)
+    let queries = [
         "IT Services jobs in Odisha",
         "Healthcare jobs in Bhubaneswar",
         "Retail Management jobs in India"
     ];
+    try {
+        const settingsDoc = await db.collection("shyamdash_scraper_settings").doc("global").get();
+        if (settingsDoc.exists) {
+            const data = settingsDoc.data();
+            if (data && Array.isArray(data.queries) && data.queries.length > 0) {
+                queries = data.queries;
+            }
+        }
+    }
+    catch (error) {
+        console.error("Failed to fetch custom queries, falling back to defaults:", error);
+    }
+    // Cap at 8 queries strictly to prevent going over 250/month Free Tier
+    queries = queries.slice(0, 8);
     const serpApiKey = (0, params_1.defineString)("SERPAPI_KEY");
     const apiKey = serpApiKey.value();
     let totalJobsAdded = 0;

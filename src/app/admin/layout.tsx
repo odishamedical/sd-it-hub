@@ -105,6 +105,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Icons.Database className="w-4 h-4" />
             <span>SaaS Template Library</span>
           </Link>
+          <Link href="/admin/job-scraper" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+            <Icons.Bot className="w-4 h-4 text-emerald-400" />
+            <span className="text-emerald-400">Job Aggregator</span>
+          </Link>
         </nav>
 
         <div className="pt-6 border-t border-slate-800 mt-6">

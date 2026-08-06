@@ -3,6 +3,7 @@
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
+    "esModuleInterop": true,
     "rootDir": "src",
     "outDir": "lib",
     "sourceMap": true,

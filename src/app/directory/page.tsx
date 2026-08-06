@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Search, MapPin, Stethoscope, Wrench, Laptop, Utensils, Home, Car, Star, Navigation, Map } from "lucide-react";
 import Image from "next/image";
+import { db, collection, getDocs } from "@/utils/firebase";
 
 export default function DirectoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,11 +20,23 @@ export default function DirectoryPage() {
     { name: "Automotive Services", icon: <Car className="w-8 h-8" />, color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/30" },
   ];
 
-  const featuredListings = [
-    { name: "Apollo MedCare Hospital", category: "Healthcare", rating: 4.8, reviews: 1240, location: "Bhubaneswar, Odisha", image: "https://ui-avatars.com/api/?name=Apollo+MedCare&background=e11d48&color=fff&size=150" },
-    { name: "TechNova Solutions", category: "Tech Agencies", rating: 5.0, reviews: 89, location: "Remote / Global", image: "https://ui-avatars.com/api/?name=TechNova&background=c026d3&color=fff&size=150" },
-    { name: "QuickFix Plumbers", category: "Repairs", rating: 4.2, reviews: 312, location: "Cuttack, Odisha", image: "https://ui-avatars.com/api/?name=QuickFix&background=d97706&color=fff&size=150" },
-  ];
+  const [listings, setListings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "shyamdash_directory"));
+        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setListings(data);
+      } catch (err) {
+        console.error("Error fetching directory listings:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchListings();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#050B1B] text-slate-200 font-sans pb-20">
@@ -108,41 +121,66 @@ export default function DirectoryPage() {
           <div className="w-full lg:w-3/5 space-y-6">
             <h2 className="text-2xl font-bold text-white mb-6">Trending near you</h2>
             
-            {featuredListings.map((listing, i) => (
-              <div key={i} className="flex flex-col sm:flex-row gap-6 p-6 bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl hover:border-fuchsia-500/30 transition-all group cursor-pointer">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shrink-0 border border-slate-700 bg-slate-800">
-                  <Image src={listing.image} alt={listing.name} width={128} height={128} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+            {loading ? (
+              <div className="space-y-4">
+                {[1,2,3].map(n => (
+                  <div key={n} className="h-32 bg-slate-900/40 rounded-2xl border border-slate-800/50 animate-pulse"></div>
+                ))}
+              </div>
+            ) : listings.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center bg-slate-900/40 border border-slate-800 rounded-2xl">
+                <div className="w-16 h-16 bg-fuchsia-500/10 rounded-full flex items-center justify-center mb-4 border border-fuchsia-500/20">
+                  <MapPin className="w-8 h-8 text-fuchsia-400" />
                 </div>
-                
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-bold text-white group-hover:text-fuchsia-400 transition-colors">{listing.name}</h3>
-                      <div className="flex items-center gap-1 bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-amber-500/20">
-                        <Star className="w-3.5 h-3.5 fill-amber-400" />
-                        {listing.rating}
+                <h3 className="text-xl font-bold text-white mb-2">No Businesses Found</h3>
+                <p className="text-slate-500 max-w-sm mb-6">Our global directory is currently empty. Be the very first to claim your business listing in this area!</p>
+                <button className="px-6 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-xl transition-colors shadow-[0_0_20px_rgba(217,70,239,0.3)]">
+                  Add Your Business
+                </button>
+              </div>
+            ) : (
+              listings.map((listing) => (
+                <div key={listing.id} className="flex flex-col sm:flex-row gap-6 p-6 bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl hover:border-fuchsia-500/30 transition-all group cursor-pointer">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shrink-0 border border-slate-700 bg-slate-800">
+                    {listing.image ? (
+                      <Image src={listing.image} alt={listing.name || "Business"} width={128} height={128} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-slate-800 text-slate-500">
+                        <Home className="w-8 h-8" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-xl font-bold text-white group-hover:text-fuchsia-400 transition-colors">{listing.name || "Unnamed Business"}</h3>
+                        <div className="flex items-center gap-1 bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-amber-500/20">
+                          <Star className="w-3.5 h-3.5 fill-amber-400" />
+                          {listing.rating || "New"}
+                        </div>
+                      </div>
+                      
+                      <span className="inline-block px-3 py-1 bg-slate-800 text-slate-300 text-xs font-medium rounded-full border border-slate-700 mb-3">
+                        {listing.category || "Uncategorized"}
+                      </span>
+                      
+                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                        <MapPin className="w-4 h-4" />
+                        {listing.location || "Location not specified"}
                       </div>
                     </div>
                     
-                    <span className="inline-block px-3 py-1 bg-slate-800 text-slate-300 text-xs font-medium rounded-full border border-slate-700 mb-3">
-                      {listing.category}
-                    </span>
-                    
-                    <div className="flex items-center gap-2 text-sm text-slate-400">
-                      <MapPin className="w-4 h-4" />
-                      {listing.location}
+                    <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between">
+                      <span className="text-sm text-slate-500">{listing.reviews || 0} verified reviews</span>
+                      <button className="text-sm font-bold text-fuchsia-400 hover:text-fuchsia-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        View Profile <Navigation className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-                  
-                  <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between">
-                    <span className="text-sm text-slate-500">{listing.reviews} verified reviews</span>
-                    <button className="text-sm font-bold text-fuchsia-400 hover:text-fuchsia-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      View Profile <Navigation className="w-4 h-4" />
-                    </button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {/* Interactive Map Placeholder */}

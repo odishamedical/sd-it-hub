@@ -1,10 +1,11 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { getFirestore, FieldValue, Timestamp } from "firebase-admin/firestore";
 import axios from "axios";
 
 // Initialize Firebase Admin
 admin.initializeApp();
-const db = admin.firestore();
+const db = getFirestore();
 
 // ----------------------------------------------------------------------
 // CRON JOB 1: GoogleJobsFetcher (Runs daily at 2:00 AM)
@@ -58,8 +59,8 @@ export const fetchGoogleJobs = functions.pubsub.schedule("0 2 * * *").timeZone("
           posted: job.detected_extensions?.posted_at || "Just now",
           source: "external",
           applyLink: job.related_links?.[0]?.link || "https://google.com/search?q=jobs",
-          createdAt: admin.firestore.FieldValue.serverTimestamp(),
-          expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+          createdAt: FieldValue.serverTimestamp(),
+          expiresAt: Timestamp.fromDate(expiresAt),
           verified: false
         };
 
@@ -84,7 +85,7 @@ export const fetchGoogleJobs = functions.pubsub.schedule("0 2 * * *").timeZone("
 export const cleanExpiredJobs = functions.pubsub.schedule("0 3 * * *").timeZone("Asia/Kolkata").onRun(async (context) => {
   console.log("Starting daily cleanup of expired external jobs...");
   
-  const now = admin.firestore.Timestamp.now();
+  const now = Timestamp.now();
   
   try {
     // Find all jobs where expiresAt is less than the current time

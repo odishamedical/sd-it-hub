@@ -139,6 +139,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
+          {/* Content Hub */}
+          <div>
+            <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Content Hub</h3>
+            <div className="space-y-1">
+              <Link href="/admin/blog" className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+                <div className="flex items-center gap-3">
+                  <Icons.BookOpen className="w-4 h-4" />
+                  <span>Blog Manager</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+
           {/* CRM & Billing */}
           <div>
             <h3 className="text-[10px] uppercase tracking-widest text-slate-500 font-bold px-4 mb-3">Ecosystem CRM</h3>

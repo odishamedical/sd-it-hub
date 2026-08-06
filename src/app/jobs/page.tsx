@@ -153,7 +153,7 @@ export default function GlobalJobSearch() {
                       <div className="flex items-center gap-2 text-sm text-slate-400 mt-0.5">
                         <Building2 className="w-3.5 h-3.5" />
                         <span>{job.company}</span>
-                        {job.verified && <ShieldCheck className="w-4 h-4 text-teal-400" title="Verified Employer" />}
+                        {job.verified && <span title="Verified Employer"><ShieldCheck className="w-4 h-4 text-teal-400" /></span>}
                       </div>
                     </div>
                   </div>

@@ -1,4 +1,5 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions/v1";
+import { defineString } from "firebase-functions/params";
 import * as admin from "firebase-admin";
 import { getFirestore, FieldValue, Timestamp } from "firebase-admin/firestore";
 import axios from "axios";
@@ -20,8 +21,8 @@ export const fetchGoogleJobs = functions.pubsub.schedule("0 2 * * *").timeZone("
     "Retail Management jobs in India"
   ];
   
-  // You will set this via Firebase CLI: firebase functions:config:set serpapi.key="YOUR_KEY"
-  const apiKey = functions.config().serpapi?.key || "MOCK_KEY_FOR_TESTING";
+  const serpApiKey = defineString("SERPAPI_KEY");
+  const apiKey = serpApiKey.value();
   
   let totalJobsAdded = 0;
 

@@ -2,9 +2,17 @@
   "name": "functions",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +24,6 @@
     "firebase-functions": "^7.3.2"
   },
   "devDependencies": {
-    "firebase-functions-test": "^3.5.0",
-    "typescript": "^7.0.2"
+    "typescript": "^5.5.4"
   }
 }

@@ -81,23 +81,27 @@ export default function Header() {
           {/* Actions */}
           <div className="hidden lg:flex items-center gap-4">
             {userEmail ? (
-              <>
-                <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="flex items-center gap-2 px-4 py-2 bg-slate-950/40 border border-slate-900 hover:border-purple-550/50 rounded-xl transition-colors">
+              <div className="relative group">
+                <button className="flex items-center gap-2 px-4 py-2 bg-slate-950/40 border border-slate-900 group-hover:border-purple-550/50 rounded-xl transition-colors cursor-pointer">
                   <div className="w-6 h-6 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-[10px]">
                     {userName.substring(0, 2).toUpperCase()}
                   </div>
                   <span className="text-sm font-medium text-white">{userName}</span>
-                </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="text-xs font-mono font-bold text-slate-400 hover:text-red-400 transition-colors uppercase tracking-wider"
-                >
-                  Sign Out
+                  <Icons.ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-purple-400 transition-colors" />
                 </button>
-                <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="px-5 py-2.5 bg-purple-600 hover:bg-[#8b5cf6] text-white text-sm font-semibold rounded-xl transition-colors shadow-lg ml-2 shadow-purple-950/20">
-                  Dashboard
-                </Link>
-              </>
+                
+                <div className="absolute right-0 top-full mt-2 w-48 bg-[#0a0f1c] border border-slate-800 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[250]">
+                  <Link href={(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "/admin" : "/portal"} className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800/50 transition-colors">
+                    <Icons.LayoutDashboard className="w-4 h-4 text-purple-400" />
+                    {(userRole === "super_admin" || userRole === "admin" || userEmail === "odishamedical@gmail.com") ? "Admin Panel" : "Client Portal"}
+                  </Link>
+                  <div className="h-px bg-slate-800/50 my-1 w-full"></div>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-red-400 transition-colors">
+                    <Icons.LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </div>
+              </div>
             ) : (
               <>
                 <button onClick={() => window.location.href = `https://sd-auth-center.vercel.app?redirect_uri=${encodeURIComponent(window.location.origin + '/portal')}`} className="text-xs uppercase tracking-wider font-mono font-bold text-white hover:text-purple-400 transition-colors">Login</button>

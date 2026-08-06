@@ -1,7 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { BookOpen, TrendingUp, MonitorPlay, Target, Laptop, Smartphone, Database, Users, Briefcase } from "lucide-react";
 
 export const metadata = {
@@ -62,14 +60,8 @@ const topics = [
 
 export default function KnowledgeHub() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-indigo-500/30">
-      <Header />
-      
-      <main className="pt-32 pb-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          
-          {/* Hero Section */}
-          <div className="text-center max-w-3xl mx-auto mb-20">
+    <>
+      <div className="text-center max-w-3xl mx-auto mb-20">
             <div className="inline-flex items-center justify-center p-2 bg-indigo-500/10 rounded-2xl mb-6 ring-1 ring-indigo-500/20">
               <BookOpen className="w-5 h-5 text-indigo-400 mr-2" />
               <span className="text-sm font-medium text-indigo-300">Open Resource Library</span>
@@ -86,7 +78,7 @@ export default function KnowledgeHub() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {topics.map((topic) => (
               <Link 
-                href={`/knowledge/${topic.slug}`} 
+                href={`/blog/${topic.slug}`} 
                 key={topic.slug}
                 className={`group relative flex flex-col p-8 rounded-3xl bg-slate-900/50 backdrop-blur-sm border ${topic.border} hover:bg-slate-800/50 transition-all duration-300 overflow-hidden`}
               >
@@ -132,10 +124,6 @@ export default function KnowledgeHub() {
             </div>
           </div>
 
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

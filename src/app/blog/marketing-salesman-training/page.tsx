@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Users, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
@@ -11,11 +9,8 @@ export const metadata = {
 
 export default function MarketingSalesmanTrainingPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200">
-      <Header />
-      
-      <main className="pt-32 pb-24">
-        <article className="max-w-4xl mx-auto px-6 lg:px-8">
+    <>
+        <article className="w-full">
           
           {/* Header Section */}
           <header className="mb-16 text-center">
@@ -107,9 +102,6 @@ export default function MarketingSalesmanTrainingPage() {
           </div>
 
         </article>
-      </main>
-      
-      <Footer />
-    </div>
+    </>
   );
 }

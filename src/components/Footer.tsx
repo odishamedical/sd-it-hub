@@ -72,7 +72,7 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-slate-900">
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm">
-            <Link href="/knowledge" className="hover:text-white transition-colors text-indigo-400">Knowledge Hub</Link>
+            <Link href="/blog" className="hover:text-white transition-colors text-indigo-400">Knowledge Hub / Blog</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>

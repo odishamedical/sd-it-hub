@@ -10,18 +10,18 @@ export const metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="relative min-h-screen bg-[#020610] text-[#e2e8f0] font-sans">
+    <main className="relative min-h-screen bg-slate-950 text-slate-200 font-sans">
       <Header />
       
       <div className="pt-32 pb-24 px-4 sm:px-6 max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-black font-serif text-white mb-6">Privacy Policy</h1>
-        <p className="text-purple-400 font-mono text-sm tracking-widest uppercase mb-12">Last Updated: July 2026</p>
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-6">Privacy Policy</h1>
+        <p className="text-indigo-400 font-mono text-sm tracking-widest uppercase mb-12">Last Updated: July 2026</p>
 
         <div className="space-y-12 text-slate-300 leading-relaxed">
           
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Shield className="text-purple-500 w-6 h-6" />
+              <Icons.Shield className="text-indigo-500 w-6 h-6" />
               1. Information We Collect
             </h2>
             <p className="mb-4">
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Eye className="text-purple-500 w-6 h-6" />
+              <Icons.Eye className="text-indigo-500 w-6 h-6" />
               2. How We Use Your Information
             </h2>
             <p className="mb-4">We use the collected data for various purposes:</p>
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Cookie className="text-purple-500 w-6 h-6" />
+              <Icons.Cookie className="text-indigo-500 w-6 h-6" />
               3. Google AdSense & Advertising Cookies
             </h2>
             <p className="mb-4">
@@ -59,14 +59,13 @@ export default function PrivacyPolicyPage() {
             <p className="mb-4">
               Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our sites and/or other sites on the Internet.
             </p>
-            <p>
-              Users may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">Ads Settings</a>. Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://aboutads.info" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">www.aboutads.info</a>.
+              Users may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">Ads Settings</a>. Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://aboutads.info" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">www.aboutads.info</a>.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Users className="text-purple-500 w-6 h-6" />
+              <Icons.Users className="text-indigo-500 w-6 h-6" />
               4. Third-Party Services
             </h2>
             <p className="mb-4">
@@ -76,7 +75,7 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Mail className="text-purple-500 w-6 h-6" />
+              <Icons.Mail className="text-indigo-500 w-6 h-6" />
               5. Contact Us
             </h2>
             <p>

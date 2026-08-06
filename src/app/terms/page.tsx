@@ -10,18 +10,18 @@ export const metadata = {
 
 export default function TermsOfServicePage() {
   return (
-    <main className="relative min-h-screen bg-[#020610] text-[#e2e8f0] font-sans">
+    <main className="relative min-h-screen bg-slate-950 text-slate-200 font-sans">
       <Header />
       
       <div className="pt-32 pb-24 px-4 sm:px-6 max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-black font-serif text-white mb-6">Terms of Service</h1>
-        <p className="text-purple-400 font-mono text-sm tracking-widest uppercase mb-12">Last Updated: July 2026</p>
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-6">Terms of Service</h1>
+        <p className="text-indigo-400 font-mono text-sm tracking-widest uppercase mb-12">Last Updated: July 2026</p>
 
         <div className="space-y-12 text-slate-300 leading-relaxed">
           
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.FileText className="text-purple-500 w-6 h-6" />
+              <Icons.FileText className="text-indigo-500 w-6 h-6" />
               1. Acceptance of Terms
             </h2>
             <p className="mb-4">
@@ -31,7 +31,7 @@ export default function TermsOfServicePage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Globe className="text-purple-500 w-6 h-6" />
+              <Icons.Globe className="text-indigo-500 w-6 h-6" />
               2. Description of Services
             </h2>
             <p className="mb-4">
@@ -41,7 +41,7 @@ export default function TermsOfServicePage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.CreditCard className="text-purple-500 w-6 h-6" />
+              <Icons.CreditCard className="text-indigo-500 w-6 h-6" />
               3. Payments, Renewals, and Refunds
             </h2>
             <ul className="list-disc pl-6 space-y-2 text-slate-400">
@@ -53,7 +53,7 @@ export default function TermsOfServicePage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.ShieldAlert className="text-purple-500 w-6 h-6" />
+              <Icons.ShieldAlert className="text-indigo-500 w-6 h-6" />
               4. User Conduct and Content
             </h2>
             <p className="mb-4">
@@ -69,7 +69,7 @@ export default function TermsOfServicePage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.Settings className="text-purple-500 w-6 h-6" />
+              <Icons.Settings className="text-indigo-500 w-6 h-6" />
               5. Limitation of Liability
             </h2>
             <p className="mb-4">
@@ -79,7 +79,7 @@ export default function TermsOfServicePage() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-              <Icons.MapPin className="text-purple-500 w-6 h-6" />
+              <Icons.MapPin className="text-indigo-500 w-6 h-6" />
               6. Governing Law
             </h2>
             <p>

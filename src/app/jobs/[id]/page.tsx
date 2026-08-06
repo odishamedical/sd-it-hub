@@ -21,6 +21,8 @@ const JOB = {
   applicants: 124,
   vacancies: 2,
   experience: "5-8 Years",
+  source: "external", // can be "internal" or "external"
+  applyLink: "https://example.com/apply", // original source URL
   skills: ["React", "TypeScript", "Node.js", "Redux", "AWS", "System Design"],
   description: `We are looking for an experienced Senior React Developer to lead our frontend architecture and mentor junior developers. 
 
@@ -154,12 +156,23 @@ export default function JobDetail() {
                    </div>
                 </div>
                 
-                <button className="w-full bg-blue-500 hover:bg-blue-400 text-slate-950 font-black text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all flex items-center justify-center gap-2 group">
-                   1-Click Apply
-                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                {JOB.source === "internal" ? (
+                   <button className="w-full bg-blue-500 hover:bg-blue-400 text-slate-950 font-black text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all flex items-center justify-center gap-2 group">
+                      1-Click Apply
+                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                   </button>
+                ) : (
+                   <a href={JOB.applyLink} target="_blank" rel="noopener noreferrer" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-black text-lg py-4 rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2 group block text-center">
+                      Apply Externally
+                      <svg className="w-5 h-5 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                   </a>
+                )}
+                
                 <p className="text-xs text-center text-slate-500 mt-4">
-                   Your Universal Shyamdash Profile will be securely shared with the employer.
+                   {JOB.source === "internal" 
+                     ? "Your Universal Shyamdash Profile will be securely shared with the employer."
+                     : "You will be redirected to the employer's website to complete your application."
+                   }
                 </p>
              </div>
 

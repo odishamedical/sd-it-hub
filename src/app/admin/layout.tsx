@@ -164,7 +164,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Icons.Users className="w-4 h-4" />
                 <span>Partner Agencies</span>
               </Link>
-              <Link href="#" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+              <Link href="/admin/billing" className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                 <Icons.CreditCard className="w-4 h-4" />
                 <span>Subscriptions & Billing</span>
               </Link>

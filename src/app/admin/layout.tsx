@@ -111,12 +111,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Icons.Bot className="w-4 h-4" />
                 <span>Job Aggregator AI</span>
               </Link>
-              <Link href="#" className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
+              <Link href="/admin/jobs/approvals" className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:bg-slate-800 hover:text-white">
                 <div className="flex items-center gap-3">
                   <Icons.UserCheck className="w-4 h-4" />
                   <span>Employer Approvals</span>
                 </div>
-                <span className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center text-[8px] text-amber-950 font-black">3</span>
+                <span className="w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center text-[8px] text-amber-950 font-black">0</span>
               </Link>
             </div>
           </div>

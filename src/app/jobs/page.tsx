@@ -5,6 +5,7 @@ import * as Icons from "lucide-react";
 import { Search, MapPin, Briefcase, Filter, ChevronDown, ChevronLeft, ChevronRight, UserCircle, FileText, LayoutList, MessageSquare, Settings, Bell, CircleUser, MoreVertical, Building2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/Header";
 import { db, collection, getDocs } from "@/utils/firebase";
 
 export default function JobPortalATS() {
@@ -44,7 +45,9 @@ export default function JobPortalATS() {
   });
 
   return (
-    <div className="flex h-screen bg-[#0a0e17] text-slate-300 font-sans overflow-hidden">
+    <>
+      <Header />
+      <div className="flex pt-20 h-screen bg-[#0a0e17] text-slate-300 font-sans overflow-hidden">
       
       {/* Sidebar */}
       <aside className="w-[280px] bg-[#0d131f] border-r border-slate-800/50 flex flex-col shrink-0 hidden lg:flex">
@@ -318,6 +321,7 @@ export default function JobPortalATS() {
         </div>
       </main>
 
-    </div>
+      </div>
+    </>
   );
 }

@@ -69,15 +69,13 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8 text-xs uppercase tracking-widest font-mono font-bold text-slate-300">
-            <Link href="/knowledge" className="text-indigo-400 hover:text-indigo-300 transition-colors">Knowledge Hub</Link>
-            <Link href="/#domains" className="hover:text-purple-400 transition-colors">Domains</Link>
-            <Link href="/templates" className="hover:text-purple-400 transition-colors">Templates</Link>
-            <Link href="/#services" className="hover:text-purple-400 transition-colors">Services</Link>
+            <Link href="/#it-services" className="hover:text-purple-400 transition-colors">IT Services</Link>
+            <Link href="/jobs" className="hover:text-purple-400 transition-colors">Global Jobs</Link>
+            <Link href="/directory" className="hover:text-purple-400 transition-colors">Directory</Link>
+            <Link href="/blog" className="text-indigo-400 hover:text-indigo-300 transition-colors">Blog</Link>
             <Link href="/partner" className="text-purple-400 font-bold flex items-center gap-1 hover:text-purple-300 transition-colors">
               <Icons.BadgeCheck className="w-4 h-4" /> Partner
             </Link>
-            <Link href="/about" className="hover:text-purple-400 transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-purple-400 transition-colors">Contact</Link>
           </nav>
 
           {/* Actions */}
@@ -122,9 +120,10 @@ export default function Header() {
         {/* Mobile Dropdown */}
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-20 left-0 w-full bg-[#050B1B] border-b border-slate-900 flex flex-col p-4 space-y-4 shadow-xl">
-            <Link href="/#domains" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Domains</Link>
-            <Link href="/templates" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Templates</Link>
-            <Link href="/#services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+            <Link href="/#it-services" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>IT Services</Link>
+            <Link href="/jobs" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Global Jobs</Link>
+            <Link href="/directory" className="text-white font-medium" onClick={() => setIsMobileMenuOpen(false)}>Directory</Link>
+            <Link href="/blog" className="text-indigo-400 font-medium" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
             <Link href="/partner" className="text-purple-400 font-bold flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}><Icons.BadgeCheck className="w-5 h-5" /> Partner Program</Link>
             <div className="h-px bg-slate-900 w-full my-2"></div>
             {userEmail ? (

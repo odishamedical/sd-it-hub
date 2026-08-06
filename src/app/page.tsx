@@ -11,24 +11,8 @@ import Footer from "@/components/Footer";
 export default function Home() {
   const router = useRouter();
 
-  // Mock data for tickets matching the mockup
-  const tickets = {
-    itIncidents: {
-      activeCases: 1402,
-      networkStatus: "99.8% Uptime",
-      resolvedTickets: 1
-    },
-    jobTrends: {
-      newOpenings: "+781",
-      topRoles: "AI Dev, Cloud Eng.",
-      applicationsProcessed: "4,510"
-    },
-    businessHub: {
-      verifiedCompanies: "15,200+",
-      activeConnections: "67k",
-      leadsGenerated: "1.2M+"
-    }
-  };
+  // We are using skeleton loaders (Option 3) while we build the backend for these modules.
+  // Real data will be mapped here once Phase 2 and Phase 4 are completed.
 
   return (
     <main className="relative min-h-screen bg-[#050B1B] text-[#e2e8f0] font-sans overflow-x-hidden pb-20">
@@ -88,18 +72,18 @@ export default function Home() {
             <div className="bg-[#0c1226]/80 backdrop-blur-md rounded-2xl border border-purple-500/30 p-6 shadow-lg shadow-purple-900/20 text-left hover:border-purple-500/60 transition-colors">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6 pb-4 border-b border-purple-500/20">Live IT Incidents</h4>
               
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">active cases</span>
-                  <span className="text-sky-400 font-mono font-bold text-lg">{tickets.itIncidents.activeCases.toLocaleString()}</span>
+                  <div className="h-5 w-16 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Network status</span>
-                  <span className="text-sky-400 font-mono font-bold text-lg">{tickets.itIncidents.networkStatus}</span>
+                  <div className="h-5 w-24 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Resolved tickets</span>
-                  <span className="text-sky-400 font-mono font-bold text-lg">{tickets.itIncidents.resolvedTickets}</span>
+                  <div className="h-5 w-10 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -108,18 +92,18 @@ export default function Home() {
             <div className="bg-[#0c1226]/80 backdrop-blur-md rounded-2xl border border-purple-500/30 p-6 shadow-lg shadow-purple-900/20 text-left hover:border-purple-500/60 transition-colors">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6 pb-4 border-b border-purple-500/20">Global Job Trends</h4>
               
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">New Openings (24h):</span>
-                  <span className="text-white font-mono font-bold text-lg">{tickets.jobTrends.newOpenings}</span>
+                  <div className="h-5 w-12 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Top Roles:</span>
-                  <span className="text-indigo-300 font-bold text-sm bg-indigo-900/30 px-2 py-1 rounded">{tickets.jobTrends.topRoles}</span>
+                  <div className="h-6 w-32 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Applications Processed:</span>
-                  <span className="text-white font-mono font-bold text-lg">{tickets.jobTrends.applicationsProcessed}</span>
+                  <div className="h-5 w-20 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -128,18 +112,18 @@ export default function Home() {
             <div className="bg-[#0c1226]/80 backdrop-blur-md rounded-2xl border border-purple-500/30 p-6 shadow-lg shadow-purple-900/20 text-left hover:border-purple-500/60 transition-colors">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-6 pb-4 border-b border-purple-500/20">Business Hub Activity</h4>
               
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Verified Companies:</span>
-                  <span className="text-white font-mono font-bold text-lg">{tickets.businessHub.verifiedCompanies}</span>
+                  <div className="h-5 w-20 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Active Connections:</span>
-                  <span className="text-white font-mono font-bold text-lg">{tickets.businessHub.activeConnections}</span>
+                  <div className="h-5 w-16 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-sm">Leads Generated:</span>
-                  <span className="text-emerald-400 font-mono font-bold text-lg">{tickets.businessHub.leadsGenerated}</span>
+                  <div className="h-5 w-24 bg-slate-800/80 rounded animate-pulse"></div>
                 </div>
               </div>
             </div>

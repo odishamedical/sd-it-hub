@@ -1,191 +1,323 @@
 "use client";
 
-import React, { useState } from "react";
-import { Search, MapPin, Briefcase, Filter, ChevronDown, Clock, Building2, ShieldCheck } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import * as Icons from "lucide-react";
+import { Search, MapPin, Briefcase, Filter, ChevronDown, ChevronLeft, ChevronRight, UserCircle, FileText, LayoutList, MessageSquare, Settings, Bell, CircleUser, MoreVertical, Building2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { db, collection, getDocs } from "@/utils/firebase";
 
-const INDUSTRIES = ["All", "IT Services", "Healthcare", "Retail & E-Commerce", "Finance", "Manufacturing"];
-const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Remote"];
+export default function JobPortalATS() {
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const MOCK_JOBS = [
-  { id: "job-1", title: "Senior React Developer", company: "Acme Corp", location: "Remote", type: "Full-time", industry: "IT Services", salary: "₹30L - ₹40L", posted: "2d ago", logo: "https://ui-avatars.com/api/?name=Acme+Corp&background=random", verified: true },
-  { id: "job-2", title: "ICU Head Nurse", company: "Apollo Care", location: "Bhubaneswar, Odisha", type: "Full-time", industry: "Healthcare", salary: "Not Disclosed", posted: "5h ago", logo: "https://ui-avatars.com/api/?name=Apollo+Care&background=random", verified: true },
-  { id: "job-3", title: "Retail Store Manager", company: "MegaMart", location: "Cuttack, Odisha", type: "Contract", industry: "Retail & E-Commerce", salary: "₹5L - ₹8L", posted: "1w ago", logo: "https://ui-avatars.com/api/?name=Mega+Mart&background=random", verified: false },
-  { id: "job-4", title: "Backend Systems Architect", company: "TechNova", location: "Remote", type: "Full-time", industry: "IT Services", salary: "₹45L - ₹60L", posted: "3d ago", logo: "https://ui-avatars.com/api/?name=Tech+Nova&background=random", verified: true },
-];
-
-export default function GlobalJobSearch() {
-  const [activeIndustry, setActiveIndustry] = useState("All");
+  // Search States
   const [searchQuery, setSearchQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
+  const [industryQuery, setIndustryQuery] = useState("Technology");
+  
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "shyamdash_jobs"));
+        const jobsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setJobs(jobsList);
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
 
-  const filteredJobs = MOCK_JOBS.filter(job => {
-    if (activeIndustry !== "All" && job.industry !== activeIndustry) return false;
-    if (searchQuery && !job.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    if (locationQuery && !job.location.toLowerCase().includes(locationQuery.toLowerCase())) return false;
+  const filteredJobs = jobs.filter(job => {
+    const title = (job.title || "").toLowerCase();
+    const company = (job.company_name || "").toLowerCase();
+    const loc = (job.location || "").toLowerCase();
+    const q = searchQuery.toLowerCase();
+    const l = locationQuery.toLowerCase();
+    
+    if (q && !title.includes(q) && !company.includes(q)) return false;
+    if (l && !loc.includes(l)) return false;
     return true;
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans">
+    <div className="flex h-screen bg-[#0a0e17] text-slate-300 font-sans overflow-hidden">
       
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-500/20 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-teal-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+      {/* Sidebar */}
+      <aside className="w-[280px] bg-[#0d131f] border-r border-slate-800/50 flex flex-col shrink-0 hidden lg:flex">
         
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Great Opportunity</span></h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-            Search thousands of jobs across IT, Healthcare, Retail, and more on the Universal Shyamdash ATS.
-          </p>
-
-          {/* Search Bar */}
-          <div className="max-w-4xl mx-auto bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-2 md:p-3 flex flex-col md:flex-row gap-3 shadow-2xl">
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-              <input 
-                type="text" 
-                placeholder="Job title, skills, or company" 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent border-none focus:ring-0 text-white pl-12 pr-4 py-3 md:py-4 placeholder-slate-500"
-              />
-            </div>
-            <div className="hidden md:block w-px bg-white/10 my-2"></div>
-            <div className="flex-1 relative">
-              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-              <input 
-                type="text" 
-                placeholder="City, State, or 'Remote'" 
-                value={locationQuery}
-                onChange={e => setLocationQuery(e.target.value)}
-                className="w-full bg-transparent border-none focus:ring-0 text-white pl-12 pr-4 py-3 md:py-4 placeholder-slate-500"
-              />
-            </div>
-            <button className="bg-blue-500 hover:bg-blue-400 text-slate-950 font-bold px-8 py-3 md:py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-              Search Jobs
-            </button>
-          </div>
-
-          {/* Industry Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
-            {INDUSTRIES.map(ind => (
-              <button 
-                key={ind}
-                onClick={() => setActiveIndustry(ind)}
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-all border ${activeIndustry === ind ? 'bg-white text-slate-950 border-white' : 'bg-slate-900 border-white/10 text-slate-300 hover:border-white/30'}`}
-              >
-                {ind}
-              </button>
-            ))}
-          </div>
+        {/* Header */}
+        <div className="h-20 flex items-center px-6 border-b border-slate-800/50 shrink-0">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Briefcase className="w-6 h-6 text-emerald-400" />
+            <span className="text-xl font-bold text-white tracking-wide">Job Board</span>
+          </Link>
+          <button className="ml-auto text-slate-500 hover:text-white transition-colors">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
         </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-8">
-        
-        {/* Filters Sidebar */}
-        <aside className="w-full lg:w-64 shrink-0 space-y-8">
-          <div className="flex items-center justify-between lg:hidden">
-            <h3 className="font-bold text-lg">Filters</h3>
-            <button className="p-2 bg-slate-900 rounded-lg border border-white/10"><Filter className="w-5 h-5"/></button>
+        {/* Navigation */}
+        <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto custom-scrollbar">
+          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
+            <UserCircle className="w-5 h-5" />
+            <span className="font-medium text-sm">My Profile</span>
+          </a>
+          
+          <a href="#" className="flex flex-col gap-3 px-4 py-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all">
+            <div className="flex items-center gap-3">
+              <FileText className="w-5 h-5" />
+              <span className="font-bold text-sm">Resumes & Uploads</span>
+            </div>
+            <button className="w-full bg-emerald-500 hover:bg-emerald-400 text-[#0a0e17] font-bold text-xs py-2 rounded-lg flex items-center justify-center gap-2 uppercase tracking-wider transition-colors shadow-lg shadow-emerald-500/20">
+              <Icons.Upload className="w-3.5 h-3.5" /> Upload CV/Resume
+            </button>
+          </a>
+
+          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
+            <LayoutList className="w-5 h-5" />
+            <span className="font-medium text-sm">My Applications</span>
+          </a>
+          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
+            <Icons.Calendar className="w-5 h-5" />
+            <span className="font-medium text-sm">Interviews</span>
+          </a>
+          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
+            <MessageSquare className="w-5 h-5" />
+            <span className="font-medium text-sm">Messages</span>
+          </a>
+          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
+            <Settings className="w-5 h-5" />
+            <span className="font-medium text-sm">Settings</span>
+          </a>
+
+          {/* Candidate Profile Preview */}
+          <div className="pt-6 mt-6 border-t border-slate-800/50">
+            <div className="flex items-center justify-between px-4 mb-4">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Candidate Profile</span>
+              <Icons.PlusCircle className="w-4 h-4 text-slate-500 hover:text-emerald-400 cursor-pointer" />
+            </div>
+            
+            <div className="space-y-3 px-2">
+              <div className="flex items-center gap-3 p-2 bg-slate-800/30 border border-slate-700/30 rounded-xl">
+                <Image src="https://ui-avatars.com/api/?name=Alex+Thompson&background=10b981&color=fff" alt="User" width={32} height={32} className="rounded-full" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-white leading-tight">Alex Thompson</span>
+                  <span className="text-xs text-emerald-400">(Available)</span>
+                </div>
+                <div className="ml-auto w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.5)]">
+                  <Icons.Check className="w-3 h-3 text-[#0a0e17]" />
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3 p-2 hover:bg-slate-800/30 rounded-xl transition-colors opacity-60">
+                <Image src="https://ui-avatars.com/api/?name=Sarah+Chen&background=6366f1&color=fff" alt="User" width={32} height={32} className="rounded-full" />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-white leading-tight">Sarah Chen</span>
+                  <span className="text-xs text-slate-400">(In Review)</span>
+                </div>
+              </div>
+            </div>
           </div>
+        </nav>
+      </aside>
 
-          <div className="hidden lg:block space-y-8">
-            <div>
-              <h3 className="font-bold text-white mb-4">Job Type</h3>
-              <div className="space-y-3">
-                {JOB_TYPES.map(type => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer group">
-                    <div className="w-5 h-5 rounded border border-white/20 bg-slate-900 group-hover:border-blue-500 transition-colors flex items-center justify-center"></div>
-                    <span className="text-slate-300 text-sm">{type}</span>
-                  </label>
-                ))}
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-w-0 bg-[#0a0e17] relative">
+        {/* Decorative Background */}
+        <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-emerald-500/5 blur-[150px] rounded-full pointer-events-none z-0"></div>
+
+        {/* Top Navbar */}
+        <header className="h-20 flex items-center justify-between px-8 border-b border-slate-800/50 z-10 relative">
+          <h1 className="text-xl font-bold text-white">Advanced Search</h1>
+          <div className="flex items-center gap-6">
+            <Icons.LineChart className="w-5 h-5 text-slate-400 hover:text-white cursor-pointer transition-colors" />
+            <div className="relative">
+              <Bell className="w-5 h-5 text-slate-400 hover:text-white cursor-pointer transition-colors" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border border-[#0a0e17]"></span>
+            </div>
+            <div className="w-8 h-8 rounded-full border border-slate-700 bg-slate-800 flex items-center justify-center cursor-pointer">
+              <CircleUser className="w-5 h-5 text-slate-300" />
+            </div>
+          </div>
+        </header>
+
+        {/* Search & Filters */}
+        <div className="p-8 pb-4 z-10 relative">
+          <div className="flex flex-wrap lg:flex-nowrap gap-4">
+            
+            <div className="flex-1 min-w-[250px]">
+              <label className="text-xs font-bold text-slate-500 mb-2 block">Main keyword</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <input 
+                  type="text" 
+                  placeholder="e.g. Senior Software Engineer"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900 transition-all shadow-inner"
+                />
               </div>
             </div>
 
-            <div className="pt-8 border-t border-white/10">
-              <h3 className="font-bold text-white mb-4">Salary Range</h3>
-              <input type="range" className="w-full accent-blue-500" />
-              <div className="flex justify-between text-xs text-slate-500 mt-2">
-                <span>₹1L</span>
-                <span>₹50L+</span>
+            <div className="w-full sm:w-[200px]">
+              <label className="text-xs font-bold text-slate-500 mb-2 block">Location</label>
+              <div className="relative">
+                <select 
+                  value={locationQuery}
+                  onChange={(e) => setLocationQuery(e.target.value)}
+                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">All Locations</option>
+                  <option value="San Francisco">San Francisco, CA</option>
+                  <option value="New York">New York, NY</option>
+                  <option value="Remote">Remote</option>
+                  <option value="Odisha">Odisha, India</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="w-full sm:w-[180px]">
+              <label className="text-xs font-bold text-slate-500 mb-2 block">Industry</label>
+              <div className="relative">
+                <select 
+                  value={industryQuery}
+                  onChange={(e) => setIndustryQuery(e.target.value)}
+                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="Technology">Technology</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Finance">Finance</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
               </div>
             </div>
             
-            <div className="pt-8 border-t border-white/10">
-              <h3 className="font-bold text-white mb-4">Experience Level</h3>
-              <div className="space-y-3">
-                {["Fresher", "1-3 Years", "3-5 Years", "5+ Years"].map(type => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer group">
-                    <div className="w-5 h-5 rounded border border-white/20 bg-slate-900 group-hover:border-blue-500 transition-colors"></div>
-                    <span className="text-slate-300 text-sm">{type}</span>
-                  </label>
-                ))}
+            <div className="w-full sm:w-[160px]">
+              <label className="text-xs font-bold text-slate-500 mb-2 block">Experience Level</label>
+              <div className="relative">
+                <select className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer">
+                  <option>Experience</option>
+                  <option>Entry Level</option>
+                  <option>Mid Level</option>
+                  <option>Senior Level</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
               </div>
             </div>
+
+            <div className="w-full sm:w-[160px]">
+              <label className="text-xs font-bold text-slate-500 mb-2 block">Salary Range</label>
+              <div className="relative">
+                <select className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer">
+                  <option>Salary Range</option>
+                  <option>$50k - $100k</option>
+                  <option>$100k - $150k</option>
+                  <option>$150k+</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+              </div>
+            </div>
+
           </div>
-        </aside>
+        </div>
 
-        {/* Job Listings Grid */}
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">{filteredJobs.length} Jobs Found</h2>
-            <button className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
-              Sort by: Newest <ChevronDown className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredJobs.map(job => (
-              <Link href={`/jobs/${job.id}`} key={job.id} className="bg-slate-900 border border-white/5 hover:border-blue-500/30 rounded-2xl p-6 transition-all group hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] block">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-white/5 rounded-xl border border-white/10 overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
-                      <Image src={job.logo} alt={job.company} width={56} height={56} className="object-cover" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors line-clamp-1">{job.title}</h3>
-                      <div className="flex items-center gap-2 text-sm text-slate-400 mt-0.5">
-                        <Building2 className="w-3.5 h-3.5" />
-                        <span>{job.company}</span>
-                        {job.verified && <span title="Verified Employer"><ShieldCheck className="w-4 h-4 text-teal-400" /></span>}
-                      </div>
-                    </div>
-                  </div>
-                  <button className="text-slate-500 hover:text-blue-400 transition-colors p-2" onClick={(e) => { e.preventDefault(); }}>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-300 flex items-center gap-1.5"><MapPin className="w-3 h-3"/>{job.location}</span>
-                  <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-slate-300 flex items-center gap-1.5"><Briefcase className="w-3 h-3"/>{job.type}</span>
-                  <span className="px-3 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-full text-xs font-medium">💰 {job.salary}</span>
-                </div>
-
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs text-slate-500">
-                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/> {job.posted}</span>
-                  <span className="font-bold text-blue-400 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">Apply Now &rarr;</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+        {/* Job Grid */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-8 pt-4 z-10 relative">
           
-          {filteredJobs.length === 0 && (
-            <div className="text-center py-20 bg-slate-900/50 rounded-2xl border border-white/5">
-              <Search className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">No jobs found</h3>
-              <p className="text-slate-400">Try adjusting your filters or search terms.</p>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[1,2,3,4,5,6,7,8].map(n => (
+                <div key={n} className="h-[250px] bg-slate-900/40 rounded-2xl border border-slate-800/50 animate-pulse"></div>
+              ))}
+            </div>
+          ) : filteredJobs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 text-center">
+              <Search className="w-12 h-12 text-slate-700 mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">No Jobs Found</h3>
+              <p className="text-slate-500">We couldn't find any jobs matching your current filters.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredJobs.map((job) => (
+                <div key={job.id} className="group flex flex-col bg-[#131b2c]/80 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-5 hover:border-emerald-500/50 hover:bg-[#151f33] transition-all hover:shadow-[0_10px_40px_rgba(16,185,129,0.1)] relative cursor-pointer">
+                  
+                  {/* Top Bar */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
+                        {job.thumbnail ? (
+                          <img src={job.thumbnail} alt={job.company_name} className="w-full h-full object-contain p-1 bg-white" />
+                        ) : (
+                          <Building2 className="w-5 h-5 text-slate-400" />
+                        )}
+                      </div>
+                      <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider truncate max-w-[120px]">{job.company_name || 'Company Name'}</h4>
+                    </div>
+                    <button className="text-slate-500 hover:text-white transition-colors">
+                      <MoreVertical className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Title & Meta */}
+                  <h3 className="text-lg font-bold text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors line-clamp-2">
+                    {job.title}
+                  </h3>
+                  
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-4">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span className="truncate">{job.location || 'Remote'}</span>
+                  </div>
+
+                  {/* Salary Badge */}
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-4 w-fit shadow-inner">
+                    <span>$</span>
+                    <span>{job.extensions?.[1] || '$150k - $190k/year'}</span>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {(job.extensions?.[0] || 'Remote').split(',').map((tag: string, i: number) => (
+                      <span key={i} className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">
+                        {tag.trim()}
+                      </span>
+                    ))}
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">React</span>
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">Node.js</span>
+                  </div>
+
+                  {/* Apply Button */}
+                  <div className="mt-auto">
+                    <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-emerald-400 text-white font-bold text-sm uppercase tracking-wide hover:brightness-110 transition-all opacity-90 hover:opacity-100 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                      Quick Apply
+                    </button>
+                  </div>
+
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!loading && filteredJobs.length > 0 && (
+            <div className="flex items-center justify-center gap-4 mt-8 pb-8">
+              <button className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-slate-700 hover:text-white transition-colors">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-sm font-medium text-slate-400">1 of 25 Pages</span>
+              <button className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-slate-700 hover:text-white transition-colors">
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           )}
 
         </div>
-      </section>
+      </main>
+
     </div>
   );
 }

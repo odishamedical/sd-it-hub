@@ -1,215 +1,261 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Search, MapPin, Stethoscope, Wrench, Laptop, Utensils, Home, Car, Star, Navigation, Map } from "lucide-react";
-import Image from "next/image";
-import { db, collection, getDocs } from "@/utils/firebase";
 
 export default function DirectoryPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [locationQuery, setLocationQuery] = useState("");
-
-  const categories = [
-    { name: "Hospitals & Clinics", icon: <Stethoscope className="w-8 h-8" />, color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/30" },
-    { name: "Plumbers & Repairs", icon: <Wrench className="w-8 h-8" />, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30" },
-    { name: "Tech Agencies", icon: <Laptop className="w-8 h-8" />, color: "text-fuchsia-400", bg: "bg-fuchsia-500/10", border: "border-fuchsia-500/30" },
-    { name: "Restaurants & Cafes", icon: <Utensils className="w-8 h-8" />, color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/30" },
-    { name: "Real Estate", icon: <Home className="w-8 h-8" />, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/30" },
-    { name: "Automotive Services", icon: <Car className="w-8 h-8" />, color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/30" },
-  ];
-
-  const [listings, setListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  React.useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "shyamdash_directory"));
-        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setListings(data);
-      } catch (err) {
-        console.error("Error fetching directory listings:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchListings();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-[#050B1B] text-slate-200 font-sans pb-20">
+    <main className="min-h-screen bg-[#020610] text-slate-200 font-sans selection:bg-amber-500/30">
+      
+      {/* Background Ambience */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Image src="/stock/bg.png" alt="Cosmic Tech Background" fill className="object-cover opacity-60" priority />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020610]/40 via-[#020610]/80 to-[#020610] mix-blend-multiply"></div>
+      </div>
+
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-24 flex flex-col items-center justify-center overflow-hidden">
-        {/* Decorative Background */}
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10"></div>
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-fuchsia-500/20 blur-[150px] rounded-full pointer-events-none z-0"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-purple-500/20 blur-[150px] rounded-full pointer-events-none z-0"></div>
+      <div className="relative z-10">
         
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center w-full">
-          <h1 className="text-4xl md:text-6xl font-black mb-6 text-white tracking-tight">
-            The Global <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-400">Business Hub</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12">
-            Search thousands of verified businesses, services, and professionals across our master directory ecosystem.
-          </p>
-
-          {/* Master Search Bar (JustDial Style) */}
-          <div className="bg-slate-900/80 backdrop-blur-xl border border-fuchsia-500/30 p-2 md:p-3 rounded-2xl flex flex-col md:flex-row gap-2 shadow-[0_0_40px_rgba(217,70,239,0.15)] mx-auto max-w-4xl">
-            
-            <div className="flex-1 relative flex items-center">
-              <Search className="absolute left-4 w-5 h-5 text-slate-500" />
-              <input 
-                type="text" 
-                placeholder="What are you looking for? (e.g. Plumber, IT Agency)"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent border-none text-white focus:outline-none focus:ring-0 py-3 md:py-4 pl-12 pr-4 text-base placeholder-slate-500"
-              />
-            </div>
-            
-            <div className="hidden md:block w-px bg-slate-700/50 my-2"></div>
-            
-            <div className="flex-1 relative flex items-center">
-              <MapPin className="absolute left-4 w-5 h-5 text-slate-500" />
-              <input 
-                type="text" 
-                placeholder="City, State, or Pincode"
-                value={locationQuery}
-                onChange={(e) => setLocationQuery(e.target.value)}
-                className="w-full bg-transparent border-none text-white focus:outline-none focus:ring-0 py-3 md:py-4 pl-12 pr-4 text-base placeholder-slate-500"
-              />
-            </div>
-            
-            <button className="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-lg px-10 py-3 md:py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,70,239,0.4)]">
-              Search
-            </button>
+        {/* HERO SECTION (21:9 Aspect Ratio Focus) */}
+        <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
+          {/* Right-aligned Hero Image with Left Fade */}
+          <div className="absolute inset-0 z-0 flex justify-end">
+             <div className="relative w-full lg:w-3/4 h-full">
+               <Image 
+                 src="/stock/hero_directory.png" 
+                 alt="Local Business Directory" 
+                 fill 
+                 className="object-cover object-right"
+                 priority
+               />
+               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/80 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent"></div>
+             </div>
           </div>
-          
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* Categories Grid */}
-        <section className="mb-20">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-white">Popular Categories</h2>
-            <button className="text-fuchsia-400 hover:text-fuchsia-300 font-medium text-sm transition-colors">View All &rarr;</button>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
-              <div key={index} className="group cursor-pointer flex flex-col items-center justify-center p-6 bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl hover:bg-slate-800 transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-fuchsia-900/20 hover:border-fuchsia-500/50">
-                <div className={`w-16 h-16 rounded-2xl ${category.bg} ${category.color} ${category.border} border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  {category.icon}
-                </div>
-                <h3 className="text-sm font-bold text-center text-slate-300 group-hover:text-white">{category.name}</h3>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex">
+            <div className="w-full lg:w-3/5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-xl">
+                <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
+                <span className="text-xs font-semibold tracking-wide text-orange-200 uppercase">ShyamDash Directory</span>
               </div>
-            ))}
+              
+              <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl">
+                Find & Claim The Best <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500">Local Businesses</span>
+              </h1>
+              <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
+                Discover top-rated local services, restaurants, and professionals. Or, claim your own business profile to boost your local SEO and get more customers today.
+              </p>
+              
+              {/* Dual Input Search Bar */}
+              <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 max-w-3xl">
+                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-orange-500 transition-colors">
+                  <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                  <input type="text" placeholder="What are you looking for?" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                </div>
+                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-orange-500 transition-colors">
+                  <Icons.MapPin className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                  <input type="text" placeholder="City, Zip, or Neighborhood" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                </div>
+                <button className="px-8 py-3 bg-gradient-to-b from-orange-500 to-orange-700 hover:to-orange-600 text-white font-bold rounded shadow-[0_0_15px_rgba(234,88,12,0.5)] hover:shadow-[0_0_25px_rgba(234,88,12,0.8)] transition-all">
+                  Search
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <button className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">
+                  <Icons.CheckCircle2 className="w-4 h-4 text-orange-400" /> Browse Listings
+                </button>
+                <button className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">
+                  <Icons.CheckCircle2 className="w-4 h-4 text-orange-400" /> Claim Your Business
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Dual Layout: Listings + Map Placeholder */}
-        <section className="flex flex-col lg:flex-row gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24 relative z-10">
           
+          {/* Categories Grid */}
+          <section>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Explore Categories</h2>
+                <p className="text-slate-400">Find exactly what you need in your neighborhood.</p>
+              </div>
+              <div className="flex gap-2">
+                <button className="px-4 py-2 rounded bg-orange-600/20 text-orange-400 border border-orange-500/30 font-medium text-sm hover:bg-orange-600/40 transition-colors">View All Categories</button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <CategoryCard title="Restaurants & Cafes" count="1,245 Listings" icon={<Icons.Utensils className="w-6 h-6 text-orange-400" />} />
+              <CategoryCard title="Health & Wellness" count="842 Listings" icon={<Icons.Activity className="w-6 h-6 text-blue-400" />} />
+              <CategoryCard title="Home & Services" count="3,105 Listings" icon={<Icons.Wrench className="w-6 h-6 text-amber-400" />} />
+              <CategoryCard title="Shopping & Retail" count="950 Listings" icon={<Icons.ShoppingBag className="w-6 h-6 text-purple-400" />} />
+            </div>
+          </section>
+
           {/* Featured Listings */}
-          <div className="w-full lg:w-3/5 space-y-6">
-            <h2 className="text-2xl font-bold text-white mb-6">Trending near you</h2>
-            
-            {loading ? (
-              <div className="space-y-4">
-                {[1,2,3].map(n => (
-                  <div key={n} className="h-32 bg-slate-900/40 rounded-2xl border border-slate-800/50 animate-pulse"></div>
-                ))}
+          <section>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Featured Businesses</h2>
+                <p className="text-slate-400">Top-rated establishments recommended by locals.</p>
               </div>
-            ) : listings.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center bg-slate-900/40 border border-slate-800 rounded-2xl">
-                <div className="w-16 h-16 bg-fuchsia-500/10 rounded-full flex items-center justify-center mb-4 border border-fuchsia-500/20">
-                  <MapPin className="w-8 h-8 text-fuchsia-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">No Businesses Found</h3>
-                <p className="text-slate-500 max-w-sm mb-6">Our global directory is currently empty. Be the very first to claim your business listing in this area!</p>
-                <button className="px-6 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-xl transition-colors shadow-[0_0_20px_rgba(217,70,239,0.3)]">
-                  Add Your Business
-                </button>
-              </div>
-            ) : (
-              listings.map((listing) => (
-                <div key={listing.id} className="flex flex-col sm:flex-row gap-6 p-6 bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl hover:border-fuchsia-500/30 transition-all group cursor-pointer">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shrink-0 border border-slate-700 bg-slate-800">
-                    {listing.image ? (
-                      <Image src={listing.image} alt={listing.name || "Business"} width={128} height={128} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-slate-800 text-slate-500">
-                        <Home className="w-8 h-8" />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold text-white group-hover:text-fuchsia-400 transition-colors">{listing.name || "Unnamed Business"}</h3>
-                        <div className="flex items-center gap-1 bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-lg text-xs font-bold border border-amber-500/20">
-                          <Star className="w-3.5 h-3.5 fill-amber-400" />
-                          {listing.rating || "New"}
-                        </div>
-                      </div>
-                      
-                      <span className="inline-block px-3 py-1 bg-slate-800 text-slate-300 text-xs font-medium rounded-full border border-slate-700 mb-3">
-                        {listing.category || "Uncategorized"}
-                      </span>
-                      
-                      <div className="flex items-center gap-2 text-sm text-slate-400">
-                        <MapPin className="w-4 h-4" />
-                        {listing.location || "Location not specified"}
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between">
-                      <span className="text-sm text-slate-500">{listing.reviews || 0} verified reviews</span>
-                      <button className="text-sm font-bold text-fuchsia-400 hover:text-fuchsia-300 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        View Profile <Navigation className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Interactive Map Placeholder */}
-          <div className="w-full lg:w-2/5 relative">
-            <div className="sticky top-28 bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl overflow-hidden h-[600px] flex flex-col items-center justify-center p-8 text-center group">
-              <div className="absolute inset-0 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=20.2961,85.8245&zoom=12&size=600x600&maptype=roadmap&style=feature:all|element:geometry|color:0x202c3e&style=feature:all|element:labels.text.fill|color:0x8ba975&key=YOUR_API_KEY')] bg-cover bg-center opacity-30 group-hover:opacity-50 transition-opacity blur-[2px] grayscale"></div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050B1B] via-transparent to-[#050B1B]/50"></div>
-              
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-16 h-16 bg-fuchsia-500/20 rounded-full flex items-center justify-center mb-6 border border-fuchsia-500/50 shadow-[0_0_30px_rgba(217,70,239,0.3)] animate-pulse">
-                  <Map className="w-8 h-8 text-fuchsia-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Map Integration</h3>
-                <p className="text-slate-400 mb-8 max-w-sm">
-                  Interactive geographic search is currently disabled in Phase 4. It will be wired to the Gold and Bhulia Hubs in future updates.
-                </p>
-                <button className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-xl border border-slate-700 transition-colors cursor-not-allowed opacity-50">
-                  Search this area
-                </button>
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:px-0 md:pb-0 md:mx-0 hide-scrollbar">
+                <button className="whitespace-nowrap px-4 py-2 rounded bg-white/10 text-white font-medium text-sm border border-white/20 backdrop-blur-md">Top Rated</button>
+                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">New Listings</button>
+                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">Near Me</button>
               </div>
             </div>
-          </div>
-          
-        </section>
 
-      </main>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <ListingCard 
+                title="Cafe Delight" 
+                category="Coffee Shop" 
+                rating="4.8" 
+                reviews="124" 
+                location="Downtown Sambalpur"
+                tag="Open Now"
+              />
+              <ListingCard 
+                title="Elite Fitness Gym" 
+                category="Health & Wellness" 
+                rating="4.9" 
+                reviews="89" 
+                location="Budharaja, Sambalpur"
+                tag="Popular"
+              />
+              <ListingCard 
+                title="City Auto Repair" 
+                category="Automotive Services" 
+                rating="4.7" 
+                reviews="210" 
+                location="Ainthapali, Sambalpur"
+                tag="Trusted"
+              />
+            </div>
+            
+            <div className="mt-10 text-center">
+              <button className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded text-white font-medium transition-all hover:border-white/40 shadow-lg">
+                View All Businesses
+              </button>
+            </div>
+          </section>
 
+          {/* Claim Business Process */}
+          <section className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 md:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl"></div>
+            
+            <div className="text-center max-w-3xl mx-auto mb-12 relative z-10">
+              <h2 className="text-3xl font-bold text-white mb-4">Claim Your Business on ShyamDash</h2>
+              <p className="text-slate-300 text-lg">Take control of your local presence. Join thousands of businesses managing their profiles, responding to reviews, and growing their customer base.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+              <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-orange-500/0 via-orange-500/50 to-orange-500/0 z-0"></div>
+              
+              <ProcessStep 
+                number="1" 
+                title="Verify Details" 
+                desc="Find your listing and claim it by verifying your identity securely."
+              />
+              <ProcessStep 
+                number="2" 
+                title="Boost Visibility" 
+                desc="Add photos, update hours, and optimize your profile for local SEO."
+              />
+              <ProcessStep 
+                number="3" 
+                title="Get More Leads" 
+                desc="Respond to customer reviews and track your page analytics."
+              />
+            </div>
+
+            <div className="mt-12 text-center relative z-10">
+              <Link href="/partner" className="inline-block px-10 py-4 bg-gradient-to-b from-orange-500 to-orange-700 hover:to-orange-600 text-white font-bold rounded shadow-[0_0_20px_rgba(234,88,12,0.4)] hover:shadow-[0_0_30px_rgba(234,88,12,0.7)] transition-all hover:-translate-y-1 hover:scale-105">
+                Claim My Business Free
+              </Link>
+            </div>
+          </section>
+
+        </div>
+      </div>
+      
       <Footer />
+    </main>
+  );
+}
+
+function CategoryCard({ title, count, icon }: { title: string, count: string, icon: React.ReactNode }) {
+  return (
+    <div className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-orange-500/50 hover:shadow-[0_15px_40px_rgba(234,88,12,0.25)] hover:-translate-y-2 transition-all duration-300 flex items-center gap-4 cursor-pointer relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-500/10 to-transparent rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+      <div className="w-14 h-14 rounded-lg bg-slate-900/80 border border-white/10 flex items-center justify-center shrink-0 relative z-10 group-hover:border-orange-500/50 transition-colors shadow-inner">
+        {icon}
+      </div>
+      <div className="relative z-10">
+        <h3 className="font-bold text-white text-lg group-hover:text-orange-400 transition-colors">{title}</h3>
+        <p className="text-slate-400 text-sm">{count}</p>
+      </div>
+    </div>
+  );
+}
+
+function ListingCard({ title, category, rating, reviews, location, tag }: { title: string, category: string, rating: string, reviews: string, location: string, tag: string }) {
+  return (
+    <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-orange-500/70 hover:shadow-[0_15px_40px_rgba(234,88,12,0.3)] hover:-translate-y-2 transition-all duration-300 flex flex-col">
+      <div className="h-48 relative bg-slate-800 border-b border-white/10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-transparent mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity"></div>
+        <Image src="/stock/directory.png" alt={title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+        <div className="absolute top-4 left-4 z-20">
+          <span className="px-3 py-1 text-xs font-bold text-white bg-orange-600 rounded shadow-md">{tag}</span>
+        </div>
+      </div>
+      
+      <div className="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="font-bold text-xl text-white group-hover:text-orange-400 transition-colors">{title}</h3>
+            <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded text-sm font-bold text-amber-400 border border-white/10 backdrop-blur-md">
+              <Icons.Star className="w-3.5 h-3.5 fill-amber-400" /> {rating}
+            </div>
+          </div>
+          <p className="text-orange-300/90 text-sm font-medium mb-4">{category}</p>
+          
+          <div className="space-y-2 mb-6">
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+              <Icons.MapPin className="w-4 h-4 text-orange-400/70 shrink-0" />
+              <span className="truncate">{location}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+              <Icons.MessageSquare className="w-4 h-4 text-orange-400/70 shrink-0" />
+              <span>{reviews} Verified Reviews</span>
+            </div>
+          </div>
+        </div>
+        
+        <button className="w-full py-2.5 rounded bg-white/5 hover:bg-gradient-to-r hover:from-orange-600 hover:to-orange-500 text-slate-200 hover:text-white border border-white/10 hover:border-orange-400 font-bold transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(234,88,12,0.4)]">
+          View Profile
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ProcessStep({ number, title, desc }: { number: string, title: string, desc: string }) {
+  return (
+    <div className="relative z-10 flex flex-col items-center text-center group">
+      <div className="w-16 h-16 rounded-full bg-[#0a0f1c] border-2 border-orange-500/50 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(234,88,12,0.2)] group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-orange-500 group-hover:to-orange-600 group-hover:border-orange-400 transition-all duration-500">
+        <span className="text-2xl font-bold text-orange-400 group-hover:text-white">{number}</span>
+      </div>
+      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">{title}</h3>
+      <p className="text-slate-300 text-sm leading-relaxed max-w-xs">{desc}</p>
     </div>
   );
 }

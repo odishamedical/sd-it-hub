@@ -19,59 +19,54 @@ export default function JobsPage() {
 
       <div className="relative z-10">
         
-        {/* HERO SECTION (21:9 Aspect Ratio Focus) */}
-        <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
-          {/* Right-aligned Hero Image */}
-          <div className="absolute inset-0 z-0 flex justify-end">
-             <div className="relative w-full lg:w-3/4 h-full">
-               <Image 
-                 src="/stock/hero_job.png" 
-                 alt="Find Your Dream Job" 
-                 fill 
-                 className="object-cover object-right"
-                 priority
-               />
-               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/60 to-transparent"></div>
-               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent"></div>
-             </div>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex">
-            <div className="w-full lg:w-3/5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-xl">
-                <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
-                <span className="text-xs font-semibold tracking-wide text-purple-200 uppercase">ShyamDash Job Board</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl">
-                Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Dream Career</span>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
-                Connect with top employers, browse thousands of local opportunities, and take the next big step in your professional journey.
-              </p>
-              
-              {/* Dual Input Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 max-w-3xl">
-                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
-                  <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
-                  <input type="text" placeholder="Job title, keyword, or company" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
-                </div>
-                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
-                  <Icons.MapPin className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
-                  <input type="text" placeholder="City, state, or Remote" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
-                </div>
-                <button className="px-8 py-3 bg-gradient-to-b from-purple-500 to-purple-700 hover:to-purple-600 text-white font-bold rounded shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] transition-all">
-                  Find Jobs
-                </button>
-              </div>
-
-              <div className="flex flex-wrap gap-4 text-sm text-slate-400 font-medium items-center">
-                <span>Popular:</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Software Engineer</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Marketing</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Remote</span>
-              </div>
+        {/* HERO SECTION */}
+        <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 px-4 z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+          {/* Left Content */}
+          <div className="w-full lg:w-1/2 flex flex-col items-start text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-xl">
+              <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
+              <span className="text-xs font-semibold tracking-wide text-purple-200 uppercase">ShyamDash Job Board</span>
             </div>
+            
+            <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl">
+              Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Dream Career</span>
+            </h1>
+            <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
+              Connect with top employers, browse thousands of local opportunities, and take the next big step in your professional journey.
+            </p>
+            
+            {/* Dual Input Search Bar */}
+            <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 w-full">
+              <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
+                <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                <input type="text" placeholder="Job title, keyword, or company" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+              </div>
+              <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
+                <Icons.MapPin className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                <input type="text" placeholder="City, state, or Remote" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+              </div>
+              <button className="px-8 py-3 bg-gradient-to-b from-purple-500 to-purple-700 hover:to-purple-600 text-white font-bold rounded shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] transition-all">
+                Find Jobs
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-4 text-sm text-slate-400 font-medium items-center">
+              <span>Popular:</span>
+              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Software Engineer</span>
+              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Marketing</span>
+              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Remote</span>
+            </div>
+          </div>
+          
+          {/* Right Content - Hero Image */}
+          <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-[450px]">
+            <Image 
+              src="/stock/hero_job.png" 
+              alt="Find Your Dream Job" 
+              fill 
+              className="object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+              priority
+            />
           </div>
         </section>
 

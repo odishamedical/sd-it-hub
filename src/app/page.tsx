@@ -54,15 +54,15 @@ export default function Home() {
 
           {/* Triple CTAs */}
           <div className="flex flex-wrap gap-4">
-            <Link href="/jobs" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-blue-700 to-blue-950 hover:to-blue-900 border border-blue-500/50 rounded shadow-[0_0_15px_rgba(37,99,235,0.4)] text-white font-medium transition-all">
+            <Link href="/jobs" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-blue-700/90 to-blue-950/90 hover:to-blue-900 border border-blue-500/50 rounded shadow-[0_0_15px_rgba(37,99,235,0.4)] text-white font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(37,99,235,0.6)] backdrop-blur-md">
               <Icons.Briefcase className="w-4 h-4 text-blue-300" />
               Explore Jobs
             </Link>
-            <Link href="/directory" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-orange-600 to-orange-950 hover:to-orange-900 border border-orange-500/50 rounded shadow-[0_0_15px_rgba(234,88,12,0.4)] text-white font-medium transition-all">
+            <Link href="/directory" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-orange-600/90 to-orange-950/90 hover:to-orange-900 border border-orange-500/50 rounded shadow-[0_0_15px_rgba(234,88,12,0.4)] text-white font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(234,88,12,0.6)] backdrop-blur-md">
               <Icons.Building2 className="w-4 h-4 text-orange-300" />
               View Listings
             </Link>
-            <Link href="/portal" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-amber-500 to-amber-800 hover:to-amber-700 border border-amber-400/50 rounded shadow-[0_0_15px_rgba(245,158,11,0.4)] text-white font-medium transition-all">
+            <Link href="/portal" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-b from-amber-500/90 to-amber-800/90 hover:to-amber-700 border border-amber-400/50 rounded shadow-[0_0_15px_rgba(245,158,11,0.4)] text-white font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] backdrop-blur-md">
               <Icons.MonitorPlay className="w-4 h-4 text-amber-200" />
               Get Started
             </Link>
@@ -150,8 +150,8 @@ export default function Home() {
         {/* Featured Listings */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Job Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235] to-[#0a0f1c] rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500/50 transition-colors">
-            <div className="absolute top-0 left-0 w-full h-1 bg-amber-400"></div>
+          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.2)] hover:-translate-y-2 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-amber-400 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-10 h-10 bg-slate-800 rounded flex items-center justify-center shrink-0">
@@ -164,12 +164,12 @@ export default function Home() {
               </div>
               <p className="text-amber-400 font-semibold mb-6 text-lg">$100k - $130k / Year</p>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30">Learn More</button>
+            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Learn More</button>
           </div>
 
           {/* Business Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235] to-[#0a0f1c] rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-orange-500/50 transition-colors">
-            <div className="absolute top-0 left-0 w-full h-1 bg-blue-400"></div>
+          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-blue-500 hover:shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:-translate-y-2 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-10 h-10 bg-slate-800 rounded flex items-center justify-center shrink-0">
@@ -186,12 +186,12 @@ export default function Home() {
                 <span className="text-sm text-slate-400 font-normal border-l border-slate-600 pl-2 ml-2">Top Rated</span>
               </div>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-orange-600 to-orange-800 hover:to-orange-700 rounded text-white font-medium border border-orange-500/30">View Details</button>
+            <button className="w-full py-2 bg-gradient-to-b from-orange-600 to-orange-800 hover:to-orange-700 rounded text-white font-medium border border-orange-500/30 group-hover:scale-[1.02] transition-transform">View Details</button>
           </div>
 
           {/* Project Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235] to-[#0a0f1c] rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500/50 transition-colors">
-            <div className="absolute top-0 left-0 w-full h-1 bg-amber-400"></div>
+          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.2)] hover:-translate-y-2 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-amber-400 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-10 h-10 bg-slate-800 rounded flex items-center justify-center shrink-0">
@@ -204,7 +204,7 @@ export default function Home() {
               </div>
               <p className="text-slate-300 text-sm mb-6 line-clamp-2">Complete end-to-end e-commerce solution with inventory management.</p>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30">Read More</button>
+            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Read More</button>
           </div>
         </section>
 
@@ -279,17 +279,17 @@ export default function Home() {
         {/* Success Stories */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Story 1 */}
-          <div className="bg-slate-100 rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-2xl transition-all">
+          <div className="bg-slate-100/90 backdrop-blur-md rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-[0_15px_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300">
             <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-200 border border-slate-300">
-              <Image src="/stock/job.png" alt="Interview Tips" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+              <Image src="/stock/job.png" alt="Interview Tips" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
             </div>
             <div className="flex-1 flex flex-col justify-between h-full w-full py-2">
               <div>
-                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight">Ace Your Job Interview: Top Tips</h3>
+                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight group-hover:text-amber-600 transition-colors">Ace Your Job Interview: Top Tips</h3>
                 <p className="text-slate-600 text-sm font-medium">Career Tips</p>
               </div>
               <div className="mt-4 flex justify-end">
-                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 transition-colors">
+                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
                   READ MORE
                 </button>
               </div>
@@ -297,17 +297,17 @@ export default function Home() {
           </div>
 
           {/* Story 2 */}
-          <div className="bg-slate-100 rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-2xl transition-all">
+          <div className="bg-slate-100/90 backdrop-blur-md rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-[0_15px_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300">
             <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-200 border border-slate-300">
-              <Image src="/stock/directory.png" alt="Cafe Business" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+              <Image src="/stock/directory.png" alt="Cafe Business" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
             </div>
             <div className="flex-1 flex flex-col justify-between h-full w-full py-2">
               <div>
-                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight">Local Business Success:</h3>
+                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight group-hover:text-amber-600 transition-colors">Local Business Success:</h3>
                 <p className="text-slate-700 text-sm font-medium">How We Helped Cafe Delight Grow</p>
               </div>
               <div className="mt-4 flex justify-end">
-                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 transition-colors">
+                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
                   CASE STUDY
                 </button>
               </div>
@@ -358,7 +358,7 @@ function HubCard({ title, subtitle, btnText, btnColor, href }: { title: string, 
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white via-slate-100 to-slate-900 rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-500 transition-colors">
+    <div className="flex flex-col h-full bg-gradient-to-b from-white/95 via-slate-100/90 to-slate-900/90 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-400 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-0"></div>
       
       {/* Top Light Section */}
@@ -379,8 +379,8 @@ function HubCard({ title, subtitle, btnText, btnColor, href }: { title: string, 
 
 function ServiceCard({ icon, title, subtitle, btnText }: { icon: React.ReactNode, title: string, subtitle: string, btnText: string }) {
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white via-slate-200 to-slate-900 rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-500 transition-colors">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a1122]/90 z-0"></div>
+    <div className="flex flex-col h-full bg-gradient-to-b from-white/95 via-slate-200/90 to-slate-900/90 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-400 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a1122]/90 z-0 group-hover:to-[#0a1122]/80 transition-colors"></div>
       
       {/* Top Light Section */}
       <div className="p-6 text-center relative z-10 flex-1 flex flex-col justify-center items-center pt-8">

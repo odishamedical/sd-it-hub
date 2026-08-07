@@ -42,6 +42,14 @@ const DownCurveDivider = () => (
   </div>
 );
 
+const HorizontalGlowingDivider = () => (
+  <div className="w-full flex items-center justify-center py-12 relative z-20">
+    <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent relative">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 max-w-md h-[2px] bg-amber-400 shadow-[0_0_30px_10px_rgba(245,158,11,0.6)] blur-[1px]"></div>
+    </div>
+  </div>
+);
+
 
 export default function PartnerLandingPage() {
   return (
@@ -97,10 +105,8 @@ export default function PartnerLandingPage() {
       {/* Features / Benefits */}
       <section className="py-24 px-6 lg:px-12 relative bg-[#02050f]">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center w-full mb-16">
-            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-amber-500/50 max-w-xs"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white px-8 whitespace-nowrap drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">Why Partner With Us?</h2>
-            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-amber-500/50 max-w-xs"></div>
+          <div className="text-center w-full mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">Why Partner With Us?</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -146,13 +152,13 @@ export default function PartnerLandingPage() {
         </div>
       </section>
 
+      <HorizontalGlowingDivider />
+
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 px-6 lg:px-12 bg-gradient-to-b from-[#02050f] to-[#050b1a]">
+      <section id="how-it-works" className="py-16 px-6 lg:px-12 bg-gradient-to-b from-[#02050f] to-[#050b1a]">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="flex items-center justify-center w-full mb-16">
-            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-amber-500/50 max-w-xs"></div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white px-8 whitespace-nowrap drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">The Partnership Lifecycle</h2>
-            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-amber-500/50 max-w-xs"></div>
+          <div className="text-center w-full mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]">The Partnership Lifecycle</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">

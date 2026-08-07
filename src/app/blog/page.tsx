@@ -19,53 +19,97 @@ export default function KnowledgeHubPage() {
 
       <div className="relative z-10">
         
-        {/* HERO SECTION (21:9 Aspect Ratio Focus) */}
-        <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
-          {/* Right-aligned Hero Image with Left Fade */}
-          <div className="absolute inset-0 z-0 flex justify-end">
-             <div className="relative w-full lg:w-3/4 h-full">
-               <Image 
-                 src="/stock/hero_knowledge.png" 
-                 alt="Knowledge Hub & Blog" 
-                 fill 
-                 className="object-cover object-right"
-                 priority
-               />
-               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/80 to-transparent"></div>
-               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent"></div>
-             </div>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex">
-            <div className="w-full lg:w-3/5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-xl">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span className="text-xs font-semibold tracking-wide text-emerald-200 uppercase">ShyamDash Knowledge Hub</span>
-              </div>
+        {/* HERO SECTION (2-Column Layout) */}
+        <section className="w-full relative pt-24 pb-16 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               
-              <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl">
-                Insights to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Accelerate</span> Your Success
-              </h1>
-              <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
-                Expert tips, industry analysis, and comprehensive guides to help you grow your business and advance your career.
-              </p>
-              
-              {/* Single Input Search Bar for Blog */}
-              <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 max-w-xl">
-                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-emerald-500 transition-colors">
-                  <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
-                  <input type="text" placeholder="Search articles, topics, or authors..." className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+              {/* Left Column (Hero Content) */}
+              <div className="lg:col-span-2 pt-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#07302b] border border-emerald-500/30 mb-6">
+                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span className="text-[10px] font-bold tracking-widest text-emerald-300 uppercase">ShyamDash Knowledge Hub</span>
                 </div>
-                <button className="px-8 py-3 bg-gradient-to-b from-emerald-500 to-emerald-700 hover:to-emerald-600 text-white font-bold rounded shadow-[0_0_15px_rgba(16,185,129,0.5)] hover:shadow-[0_0_25px_rgba(16,185,129,0.8)] transition-all">
-                  Search
-                </button>
+                
+                <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl max-w-xl">
+                  Insights to <span className="text-emerald-400">Accelerate</span> Your Success
+                </h1>
+                <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed drop-shadow-md">
+                  Expert tips, industry analysis, and comprehensive guides to help you grow your business and advance your career.
+                </p>
+                
+                {/* Single Input Search Bar for Blog */}
+                <div className="flex flex-col sm:flex-row gap-2 bg-white/5 backdrop-blur-md p-2 rounded-lg border border-white/10 shadow-xl mb-6 max-w-xl">
+                  <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-emerald-500 transition-colors">
+                    <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                    <input type="text" placeholder="Search articles, topics, or authors..." className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                  </div>
+                  <button className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all">
+                    Search
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-3 text-sm items-center">
+                  <span className="text-slate-400 font-medium py-1">Trending Topics:</span>
+                  <span className="px-3 py-1 border border-emerald-500/30 text-emerald-400 rounded hover:bg-emerald-500/10 cursor-pointer transition-colors text-xs font-bold">SEO Strategies</span>
+                  <span className="px-3 py-1 border border-emerald-500/30 text-emerald-400 rounded hover:bg-emerald-500/10 cursor-pointer transition-colors text-xs font-bold">Web Development</span>
+                  <span className="px-3 py-1 border border-emerald-500/30 text-emerald-400 rounded hover:bg-emerald-500/10 cursor-pointer transition-colors text-xs font-bold">Interview Prep</span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-3 text-sm">
-                <span className="text-slate-400 font-medium py-1">Trending Topics:</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded text-emerald-300 hover:bg-white/10 hover:text-white cursor-pointer transition-colors">SEO Strategies</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded text-emerald-300 hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Web Development</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded text-emerald-300 hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Interview Prep</span>
+              {/* Right Column (Sidebar Elements) */}
+              <div className="lg:col-span-1 space-y-6">
+                
+                {/* Join Newsletter Box */}
+                <div className="bg-[#111827] border border-[#2d3748] rounded-xl p-6 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-4 right-4 opacity-10">
+                    <Icons.Mail className="w-16 h-16 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2 relative z-10">Join Our Newsletter</h3>
+                  <p className="text-slate-400 text-sm mb-4 relative z-10 leading-relaxed">
+                    Get the latest insights on tech and business delivered straight to your inbox.
+                  </p>
+                  <input type="email" placeholder="Enter your email" className="w-full bg-[#1f2937] border border-[#374151] rounded p-3 mb-3 text-white text-sm focus:outline-none focus:border-indigo-500" />
+                  <button className="w-full py-3 bg-[#6366f1] hover:bg-[#4f46e5] text-white font-bold rounded text-sm transition-colors shadow-lg">
+                    Subscribe Now
+                  </button>
+                </div>
+
+                {/* Popular Topics List */}
+                <div className="bg-[#0a0f1c]/80 border border-[#1f2937] rounded-xl p-6 shadow-xl">
+                  <h3 className="text-md font-bold text-slate-300 mb-4 flex items-center gap-2">
+                    <Icons.FolderOpen className="w-4 h-4" /> Popular Topics
+                  </h3>
+                  <ul className="space-y-1">
+                    <li className="flex items-center justify-between py-2 border-b border-[#1f2937] group cursor-pointer">
+                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">Digital Influencing</span>
+                      <Icons.ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-emerald-400" />
+                    </li>
+                    <li className="flex items-center justify-between py-2 border-b border-[#1f2937] group cursor-pointer">
+                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">Social Media Promotion</span>
+                      <Icons.ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-emerald-400" />
+                    </li>
+                    <li className="flex items-center justify-between py-2 border-b border-[#1f2937] group cursor-pointer">
+                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">Marketing & Sales</span>
+                      <Icons.ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-emerald-400" />
+                    </li>
+                    <li className="flex items-center justify-between py-2 group cursor-pointer">
+                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">Freelancing</span>
+                      <Icons.ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-emerald-400" />
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Custom IT Solutions CTA */}
+                <div className="bg-gradient-to-br from-[#6366f1] to-[#4f46e5] rounded-xl p-6 text-center shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                  <h3 className="text-xl font-bold text-white mb-2 relative z-10">Need Custom IT Solutions?</h3>
+                  <p className="text-indigo-100 text-sm mb-6 relative z-10">Transform your business with our enterprise-grade services.</p>
+                  <button className="px-6 py-2 bg-white text-indigo-600 font-bold rounded-full text-sm shadow-md hover:scale-105 transition-transform relative z-10">
+                    Contact Us
+                  </button>
+                </div>
+
               </div>
             </div>
           </div>

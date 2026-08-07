@@ -58,13 +58,16 @@ export default function JobsPage() {
             </div>
           </div>
           
-          {/* Right Content - Hero Image */}
+          {/* Right Content - Hero Image (Masked) */}
           <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-[450px]">
+            {/* Fading Masks matching Home Page */}
+            <div className="absolute inset-0 left-0 bg-gradient-to-r from-[#020610] via-transparent to-transparent z-10 w-1/3" />
+            <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent z-10 h-1/4" />
             <Image 
               src="/stock/hero_job.png" 
               alt="Find Your Dream Job" 
               fill 
-              className="object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+              className="object-cover object-right rounded-2xl lg:rounded-l-none lg:rounded-r-2xl"
               priority
             />
           </div>

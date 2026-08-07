@@ -14,7 +14,7 @@ export default function JobDetailsModal({ isOpen, onClose, job, onApplyClick }: 
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-800 w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col">
+      <div className="relative bg-gradient-to-br from-[#1c1814]/90 to-[#0a0806]/95 backdrop-blur-2xl border-2 border-amber-500/50 w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-[0_0_40px_rgba(245,158,11,0.2)] overflow-hidden flex flex-col before:absolute before:inset-0 before:bg-gradient-to-tr before:from-transparent before:via-amber-500/10 before:to-transparent before:pointer-events-none">
         <button onClick={onClose} className="absolute top-4 right-4 z-10 text-slate-400 hover:text-white bg-slate-900/50 p-1 rounded-full backdrop-blur-md">
           <Icons.X className="w-6 h-6" />
         </button>

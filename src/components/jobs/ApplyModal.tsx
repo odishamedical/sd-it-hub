@@ -178,7 +178,7 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#0b0f19] border border-slate-700 w-full max-w-2xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden relative flex flex-col">
+      <div className="relative bg-gradient-to-br from-[#1c1814]/90 to-[#0a0806]/95 backdrop-blur-2xl border-2 border-amber-500/50 w-full max-w-2xl max-h-[90vh] rounded-2xl shadow-[0_0_40px_rgba(245,158,11,0.2)] overflow-hidden flex flex-col before:absolute before:inset-0 before:bg-gradient-to-tr before:from-transparent before:via-amber-500/10 before:to-transparent before:pointer-events-none">
         <button onClick={resetAndClose} className="absolute top-4 right-4 text-slate-400 hover:text-white z-10 bg-slate-800/50 p-1.5 rounded-full backdrop-blur-md">
           <Icons.X className="w-5 h-5" />
         </button>
@@ -221,9 +221,9 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
               <h3 className="text-lg font-bold text-white mb-4 border-b border-slate-800 pb-2">Step 1: Basic Info & Documents</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="col-span-1 md:col-span-2">
+                <div className="col-span-1 md:col-span-2 relative z-10">
                   <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Profile Image</label>
-                  <input type="file" accept="image/*" onChange={(e) => setProfileImage(e.target.files?.[0] || null)} className="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-white hover:file:bg-slate-700 cursor-pointer border border-slate-800 rounded-lg" />
+                  <input type="file" accept="image/*" onChange={(e) => setProfileImage(e.target.files?.[0] || null)} className="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-purple-600 file:text-white hover:file:bg-purple-500 cursor-pointer border border-slate-800 rounded-lg bg-black/40" />
                 </div>
                 
                 <div>

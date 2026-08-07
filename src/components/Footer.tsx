@@ -4,8 +4,8 @@ import * as Icons from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#020610] text-slate-400 py-16 border-t border-slate-900 mt-auto">
-      <div className="container mx-auto px-4 lg:px-8">
+    <footer className="bg-[#0a0f1c]/80 backdrop-blur-xl text-slate-300 py-16 border-t border-white/10 mt-auto relative z-20 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
           {/* Brand & Firm Statement */}

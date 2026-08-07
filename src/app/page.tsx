@@ -150,7 +150,7 @@ export default function Home() {
         {/* Featured Listings */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Job Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.2)] hover:-translate-y-2 transition-all duration-300">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:-translate-y-2 transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-amber-400 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
@@ -168,7 +168,7 @@ export default function Home() {
           </div>
 
           {/* Business Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-blue-500 hover:shadow-[0_10px_30px_rgba(59,130,246,0.2)] hover:-translate-y-2 transition-all duration-300">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-blue-500 hover:shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:-translate-y-2 transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
@@ -190,7 +190,7 @@ export default function Home() {
           </div>
 
           {/* Project Listing */}
-          <div className="bg-gradient-to-b from-[#1a2235]/80 to-[#0a0f1c]/80 backdrop-blur-xl rounded-xl border border-slate-700/50 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.2)] hover:-translate-y-2 transition-all duration-300">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-amber-500 hover:shadow-[0_10px_30px_rgba(245,158,11,0.3)] hover:-translate-y-2 transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-amber-400 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.8)] transition-shadow"></div>
             <div>
               <div className="flex items-start gap-4 mb-4">
@@ -279,14 +279,14 @@ export default function Home() {
         {/* Success Stories */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Story 1 */}
-          <div className="bg-slate-100/90 backdrop-blur-md rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-[0_15px_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300">
-            <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-200 border border-slate-300">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-t border-l border-r border-amber-500/80 border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:shadow-[0_15px_40px_rgba(245,158,11,0.25)] hover:-translate-y-2 transition-all duration-300">
+            <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-800 border border-slate-700">
               <Image src="/stock/job.png" alt="Interview Tips" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
             </div>
             <div className="flex-1 flex flex-col justify-between h-full w-full py-2">
               <div>
-                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight group-hover:text-amber-600 transition-colors">Ace Your Job Interview: Top Tips</h3>
-                <p className="text-slate-600 text-sm font-medium">Career Tips</p>
+                <h3 className="font-bold text-white text-lg mb-1 leading-tight group-hover:text-amber-400 transition-colors">Ace Your Job Interview: Top Tips</h3>
+                <p className="text-amber-200/80 text-sm font-medium">Career Tips</p>
               </div>
               <div className="mt-4 flex justify-end">
                 <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
@@ -297,14 +297,14 @@ export default function Home() {
           </div>
 
           {/* Story 2 */}
-          <div className="bg-slate-100/90 backdrop-blur-md rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-amber-500 shadow-xl group hover:shadow-[0_15px_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300">
-            <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-200 border border-slate-300">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b-4 border-t border-l border-r border-amber-500/80 border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:shadow-[0_15px_40px_rgba(245,158,11,0.25)] hover:-translate-y-2 transition-all duration-300">
+            <div className="w-full sm:w-1/3 aspect-video sm:aspect-square relative rounded-lg overflow-hidden shrink-0 bg-slate-800 border border-slate-700">
               <Image src="/stock/directory.png" alt="Cafe Business" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
             </div>
             <div className="flex-1 flex flex-col justify-between h-full w-full py-2">
               <div>
-                <h3 className="font-bold text-slate-900 text-lg mb-1 leading-tight group-hover:text-amber-600 transition-colors">Local Business Success:</h3>
-                <p className="text-slate-700 text-sm font-medium">How We Helped Cafe Delight Grow</p>
+                <h3 className="font-bold text-white text-lg mb-1 leading-tight group-hover:text-amber-400 transition-colors">Local Business Success:</h3>
+                <p className="text-slate-300 text-sm font-medium">How We Helped Cafe Delight Grow</p>
               </div>
               <div className="mt-4 flex justify-end">
                 <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
@@ -358,13 +358,13 @@ function HubCard({ title, subtitle, btnText, btnColor, href }: { title: string, 
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white/95 via-slate-100/90 to-slate-900/90 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-400 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-0"></div>
+    <div className="flex flex-col h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative group border border-white/20 hover:border-white/40 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.7)] transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 z-0 pointer-events-none"></div>
       
       {/* Top Light Section */}
       <div className="p-8 text-center relative z-10 flex-1 flex flex-col justify-center items-center">
-        <h3 className="text-2xl font-bold text-slate-900 mb-2 leading-tight drop-shadow-sm">{title}</h3>
-        <p className="text-slate-700 text-sm font-medium">{subtitle}</p>
+        <h3 className="text-2xl font-bold text-white mb-2 leading-tight drop-shadow-md">{title}</h3>
+        <p className="text-slate-300 text-sm font-medium drop-shadow-sm">{subtitle}</p>
       </div>
       
       {/* Bottom Dark Section */}
@@ -379,16 +379,16 @@ function HubCard({ title, subtitle, btnText, btnColor, href }: { title: string, 
 
 function ServiceCard({ icon, title, subtitle, btnText }: { icon: React.ReactNode, title: string, subtitle: string, btnText: string }) {
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white/95 via-slate-200/90 to-slate-900/90 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl relative group border border-slate-700/50 hover:border-slate-400 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a1122]/90 z-0 group-hover:to-[#0a1122]/80 transition-colors"></div>
+    <div className="flex flex-col h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative group border border-white/20 hover:border-white/40 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(0,0,0,0.7)] transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a1122]/40 z-0 group-hover:to-[#0a1122]/30 transition-colors pointer-events-none"></div>
       
       {/* Top Light Section */}
       <div className="p-6 text-center relative z-10 flex-1 flex flex-col justify-center items-center pt-8">
         <div className="mb-4 drop-shadow-md">
           {icon}
         </div>
-        <h3 className="text-lg font-bold text-slate-900 mb-1 leading-tight">{title}</h3>
-        <p className="text-slate-700 text-sm font-medium">{subtitle}</p>
+        <h3 className="text-lg font-bold text-white mb-1 leading-tight">{title}</h3>
+        <p className="text-slate-300 text-sm font-medium">{subtitle}</p>
       </div>
       
       {/* Bottom Dark Section */}

@@ -23,11 +23,14 @@ export default function JobScraperAdmin() {
   const [manualLocation, setManualLocation] = useState("");
   const [manualJobType, setManualJobType] = useState("");
   const [manualIndustry, setManualIndustry] = useState("");
+  const [customIndustry, setCustomIndustry] = useState("");
   const [manualExperience, setManualExperience] = useState("");
+  const [manualWorkplace, setManualWorkplace] = useState("");
   
   const [scrapedResults, setScrapedResults] = useState<any[]>([]);
   const [isScraping, setIsScraping] = useState(false);
   const [grabbingJobs, setGrabbingJobs] = useState<Record<number, boolean>>({});
+  const [previewJob, setPreviewJob] = useState<any>(null);
 
   useEffect(() => {
     fetchQueries();
@@ -94,16 +97,32 @@ export default function JobScraperAdmin() {
     setIsScraping(true);
     setScrapedResults([]);
     
-    // TODO: Connect to actual scraping backend API here
-    // Simulating scraped data for now
-    setTimeout(() => {
-      setScrapedResults([
-        { title: "Senior React Developer", company: "TechNova Solutions", location: manualLocation || "Bhubaneswar", salary: "$120k - $150k", jobType: manualJobType || "Full-time", url: "https://example.com/job1" },
-        { title: "Frontend Engineer", company: "NextGen Apps", location: manualLocation || "Cuttack", salary: "₹8 LPA - ₹12 LPA", jobType: manualJobType || "Full-time", url: "https://example.com/job2" },
-      ]);
+    try {
+      const response = await fetch('/api/jobs/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          keyword: manualKeyword,
+          location: manualLocation,
+          industry: (manualIndustry === "Other" && customIndustry) ? customIndustry : manualIndustry,
+          jobType: manualJobType,
+          workplaceType: manualWorkplace,
+          experience: manualExperience
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.error || "Failed to scrape jobs");
+      
+      setScrapedResults(data.jobs || []);
+      toast.success(`Found ${data.jobs?.length || 0} jobs!`);
+    } catch (e: any) {
+      console.error(e);
+      toast.error(e.message || "Failed to connect to Scraper API");
+    } finally {
       setIsScraping(false);
-      toast.success("Found 2 jobs!");
-    }, 2000);
+    }
   };
 
   const handleGrabJob = async (job: any, index: number) => {
@@ -112,17 +131,16 @@ export default function JobScraperAdmin() {
     try {
       const jobsCol = collection(db, "shyamdash_jobs");
       
-      // ANTI-DUPLICATION CHECK
-      const q = query(
-        jobsCol, 
-        where("title", "==", job.title),
-        where("employerName", "==", job.company),
-        where("district", "==", job.location) // Using district as a generic location container for scraped jobs
-      );
-      
+      // IN-MEMORY ANTI-DUPLICATION CHECK
+      const q = query(jobsCol, where("title", "==", job.title));
       const existing = await getDocs(q);
       
-      if (!existing.empty) {
+      const isDuplicate = existing.docs.some(doc => {
+        const data = doc.data();
+        return data.employerName === job.company && data.district === job.location;
+      });
+      
+      if (isDuplicate) {
         toast.error("Duplicate detected! Job already exists.");
         setGrabbingJobs(prev => ({...prev, [index]: false}));
         return;
@@ -134,12 +152,15 @@ export default function JobScraperAdmin() {
         employerName: job.company,
         title: job.title,
         jobType: job.jobType,
+        workplaceType: job.workplace,
         salaryRange: job.salary,
         district: job.location,
         country: "India",
         state: "Odisha",
         block: "",
-        industryCategory: manualIndustry || "Other",
+        industryCategory: (manualIndustry === "Other" && customIndustry) ? customIndustry : (manualIndustry || "Other"),
+        description: job.description || "",
+        logoUrl: job.logoUrl || "",
         status: 'Active',
         sourceUrl: job.url,
         createdAt: new Date().toISOString(),
@@ -150,9 +171,9 @@ export default function JobScraperAdmin() {
       // Remove from list
       setScrapedResults(prev => prev.filter((_, i) => i !== index));
       
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      toast.error("Failed to grab job");
+      toast.error(`Failed: ${e.message || "Unknown error"}`);
     } finally {
       setGrabbingJobs(prev => ({...prev, [index]: false}));
     }
@@ -304,14 +325,27 @@ export default function JobScraperAdmin() {
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Location</label>
               <input type="text" value={manualLocation} onChange={e => setManualLocation(e.target.value)} placeholder="e.g. Bhubaneswar" className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none" />
             </div>
-            <div>
+            <div className="col-span-1 md:col-span-2">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Industry</label>
-              <select value={manualIndustry} onChange={e => setManualIndustry(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none">
-                <option value="">Any Industry</option>
-                <option value="IT Services">IT Services</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Retail">Retail</option>
-              </select>
+              <div className="flex gap-2">
+                <select value={manualIndustry} onChange={e => setManualIndustry(e.target.value)} className={`${manualIndustry === 'Other' ? 'w-1/2' : 'w-full'} bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none transition-all`}>
+                  <option value="">Any Industry</option>
+                  <option value="IT Services">IT Services</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Education">Education</option>
+                  <option value="Finance & Banking">Finance & Banking</option>
+                  <option value="Marketing & Advertising">Marketing & Advertising</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Customer Support">Customer Support</option>
+                  <option value="Hospitality">Hospitality</option>
+                  <option value="Other">Other / Custom</option>
+                </select>
+                {manualIndustry === "Other" && (
+                  <input type="text" value={customIndustry} onChange={e => setCustomIndustry(e.target.value)} placeholder="Type custom industry..." className="w-1/2 bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none animate-in fade-in" />
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Job Type</label>
@@ -320,6 +354,15 @@ export default function JobScraperAdmin() {
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Workplace Type</label>
+              <select value={manualWorkplace} onChange={e => setManualWorkplace(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-indigo-500 outline-none">
+                <option value="">Any Workplace</option>
+                <option value="On-site">On-site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
               </select>
             </div>
             <div>
@@ -355,22 +398,68 @@ export default function JobScraperAdmin() {
                       <p className="text-sm text-slate-400">{job.company} • {job.location}</p>
                       <div className="flex gap-2 mt-2">
                         <span className="text-[10px] uppercase font-bold px-2 py-1 bg-slate-800 rounded text-slate-300">{job.jobType}</span>
+                        <span className="text-[10px] uppercase font-bold px-2 py-1 bg-slate-800 rounded text-slate-300">{job.workplace}</span>
                         <span className="text-[10px] uppercase font-bold px-2 py-1 bg-slate-800 rounded text-slate-300">{job.salary}</span>
                       </div>
                     </div>
-                    <button 
-                      onClick={() => handleGrabJob(job, idx)}
-                      disabled={grabbingJobs[idx]}
-                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2"
-                    >
-                      {grabbingJobs[idx] ? <Icons.Loader2 className="w-4 h-4 animate-spin" /> : <Icons.Download className="w-4 h-4" />}
-                      Grab to DB
-                    </button>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => setPreviewJob(job)}
+                        className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2"
+                      >
+                        <Icons.Eye className="w-4 h-4" />
+                        Preview
+                      </button>
+                      <button 
+                        onClick={() => handleGrabJob(job, idx)}
+                        disabled={grabbingJobs[idx]}
+                        className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2"
+                      >
+                        {grabbingJobs[idx] ? <Icons.Loader2 className="w-4 h-4 animate-spin" /> : <Icons.Download className="w-4 h-4" />}
+                        Grab to DB
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
+        </div>
+      )}
+      {previewJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden relative">
+            <button onClick={() => setPreviewJob(null)} className="absolute top-4 right-4 text-slate-400 hover:text-white">
+              <Icons.X className="w-5 h-5" />
+            </button>
+            <div className="p-6 border-b border-slate-800 bg-slate-950/50 flex items-start gap-4">
+              {previewJob.logoUrl ? (
+                <img src={previewJob.logoUrl} alt="Logo" className="w-16 h-16 rounded-xl border border-slate-800" />
+              ) : (
+                <div className="w-16 h-16 rounded-xl bg-slate-800 flex items-center justify-center"><Icons.Building2 className="w-8 h-8 text-slate-500" /></div>
+              )}
+              <div>
+                <h2 className="text-xl font-bold text-white mb-1">{previewJob.title}</h2>
+                <p className="text-sm text-indigo-400 font-medium">{previewJob.company} • {previewJob.location}</p>
+              </div>
+            </div>
+            <div className="p-6 max-h-[60vh] overflow-y-auto">
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="px-3 py-1 bg-slate-800 rounded text-slate-300 text-xs font-bold uppercase">{previewJob.jobType}</span>
+                <span className="px-3 py-1 bg-slate-800 rounded text-slate-300 text-xs font-bold uppercase">{previewJob.workplace}</span>
+                <span className="px-3 py-1 bg-slate-800 rounded text-slate-300 text-xs font-bold uppercase">{previewJob.salary}</span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-3">Job Description</h3>
+              <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{previewJob.description}</p>
+              
+              <div className="mt-6 pt-6 border-t border-slate-800 text-xs text-slate-500 break-all">
+                <strong>Source:</strong> {previewJob.url}
+              </div>
+            </div>
+            <div className="p-4 border-t border-slate-800 bg-slate-950/50 flex justify-end">
+              <button onClick={() => setPreviewJob(null)} className="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">Close Preview</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -23,17 +23,16 @@ export default function DirectoryPage() {
         <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
           {/* Right-aligned Hero Image */}
           <div className="absolute inset-0 z-0 flex justify-end">
-             <div className="relative w-full lg:w-1/2 h-full right-0 top-0">
+             <div className="relative w-full h-full">
                <Image 
                  src="/stock/hero_directory.png" 
                  alt="Local Business Directory" 
                  fill 
-                 className="object-cover object-center lg:object-right mix-blend-lighten"
+                 className="object-cover object-center lg:object-right mix-blend-lighten opacity-90"
                  priority
-                 unoptimized
                />
-               {/* Fade out the left edge of the image so it blends into the background */}
-               <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#020610] to-transparent"></div>
+               {/* Just fade the left edge smoothly into the background */}
+               <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#020610] via-[#020610]/60 to-transparent"></div>
              </div>
           </div>
 

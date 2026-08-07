@@ -23,15 +23,16 @@ export default function KnowledgeHubPage() {
         <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
           {/* Right-aligned Hero Image */}
           <div className="absolute inset-0 z-0 flex justify-end">
-             <div className="relative w-full h-full">
+             <div className="relative w-full lg:w-3/4 h-full">
                <Image 
                  src="/stock/hero_knowledge.png" 
                  alt="Knowledge Hub & Blog" 
                  fill 
-                 className="object-cover object-center lg:object-right mix-blend-lighten opacity-90"
+                 className="object-cover object-right"
                  priority
                />
-               <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#020610] via-[#020610]/60 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/60 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent"></div>
              </div>
           </div>
 

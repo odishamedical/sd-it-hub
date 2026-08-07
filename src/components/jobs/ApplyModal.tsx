@@ -33,6 +33,7 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
   const [state, setState] = useState("Odisha");
   const [district, setDistrict] = useState("");
   const [block, setBlock] = useState("");
+  const [localAddress, setLocalAddress] = useState("");
   const [pincode, setPincode] = useState("");
 
   const [existingCandidateId, setExistingCandidateId] = useState<string | null>(null);
@@ -111,6 +112,7 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
         state,
         district,
         block,
+        localAddress,
         pincode,
         educationLevel: education,
         yearsExperience: experience,
@@ -295,7 +297,7 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
                     )}
 
                     {state === "Odisha" && district && ODISHA_DISTRICT_BLOCKS[district] && (
-                      <div>
+                      <div className="col-span-1 md:col-span-2">
                         <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Block / City</label>
                         <select value={block} onChange={(e) => setBlock(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-purple-500 outline-none">
                           <option value="">Select Block</option>
@@ -304,7 +306,12 @@ export default function ApplyModal({ isOpen, onClose, job }: { isOpen: boolean, 
                       </div>
                     )}
 
-                    <div>
+                    <div className="col-span-1 md:col-span-2">
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Local Address (House No, Street)</label>
+                      <input type="text" value={localAddress} onChange={e => setLocalAddress(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-purple-500 outline-none" placeholder="123 Main Street, Unit 4B" />
+                    </div>
+
+                    <div className="col-span-1 md:col-span-2">
                       <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Pincode</label>
                       <input type="text" value={pincode} onChange={e => setPincode(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white focus:border-purple-500 outline-none" placeholder="751001" />
                     </div>

@@ -163,12 +163,13 @@ export default function JobsPage() {
                     type={job.jobType} 
                     salary={job.salaryRange}
                     posted="Recently"
+                    logoUrl={job.logoUrl}
                     onView={() => handleViewDetails(job)}
                   />
                 ))
               ) : (
                 <div className="col-span-2 text-center py-12 bg-white/5 rounded-xl border border-white/10 text-slate-400">
-                  <Icons.Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-purple-500" />
+                  <Icons.Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-amber-500" />
                   Fetching latest opportunities...
                 </div>
               )}
@@ -187,7 +188,7 @@ export default function JobsPage() {
               <div className="w-full lg:w-72 shrink-0 space-y-8">
                 <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg sticky top-32">
                   <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                    <Icons.Filter className="w-5 h-5 text-purple-400" /> Filters
+                    <Icons.Filter className="w-5 h-5 text-amber-400" /> Filters
                   </h3>
                   
                   <div className="space-y-6">
@@ -202,7 +203,7 @@ export default function JobsPage() {
                               name="jobType" 
                               checked={filterJobType === type}
                               onChange={() => setFilterJobType(type)}
-                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                              className="w-4 h-4 text-amber-500 bg-slate-800 border-slate-700 focus:ring-amber-500/50 focus:ring-offset-slate-900" 
                             />
                             <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
                           </label>
@@ -221,7 +222,7 @@ export default function JobsPage() {
                               name="workplaceType" 
                               checked={filterWorkplace === type}
                               onChange={() => setFilterWorkplace(type)}
-                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                              className="w-4 h-4 text-amber-500 bg-slate-800 border-slate-700 focus:ring-amber-500/50 focus:ring-offset-slate-900" 
                             />
                             <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
                           </label>
@@ -240,7 +241,7 @@ export default function JobsPage() {
                               name="salaryType" 
                               checked={filterSalary === type}
                               onChange={() => setFilterSalary(type)}
-                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                              className="w-4 h-4 text-amber-500 bg-slate-800 border-slate-700 focus:ring-amber-500/50 focus:ring-offset-slate-900" 
                             />
                             <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
                           </label>
@@ -268,6 +269,7 @@ export default function JobsPage() {
                         type={job.jobType} 
                         salary={job.salaryRange}
                         posted="Recently"
+                        logoUrl={job.logoUrl}
                         onView={() => handleViewDetails(job)}
                       />
                     ))
@@ -276,7 +278,7 @@ export default function JobsPage() {
                       <Icons.SearchX className="w-12 h-12 text-slate-500 mx-auto mb-4" />
                       <h3 className="text-xl font-bold text-white mb-2">No jobs found</h3>
                       <p className="text-slate-400">Try adjusting your filters or search criteria.</p>
-                      <button onClick={() => { setSearchKeyword(''); setSearchLocation(''); setFilterJobType('All'); setFilterWorkplace('All'); setFilterSalary('All'); }} className="mt-6 text-purple-400 hover:text-purple-300 font-medium underline">
+                      <button onClick={() => { setSearchKeyword(''); setSearchLocation(''); setFilterJobType('All'); setFilterWorkplace('All'); setFilterSalary('All'); }} className="mt-6 text-amber-400 hover:text-amber-300 font-medium underline">
                         Clear all filters
                       </button>
                     </div>
@@ -288,29 +290,29 @@ export default function JobsPage() {
 
           {/* Call To Actions (Candidate & Employer) */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-purple-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-colors"></div>
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-amber-500/50 transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-colors"></div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-purple-900/50 border border-purple-500/50 flex items-center justify-center mb-6">
-                  <Icons.UserPlus className="w-6 h-6 text-purple-400" />
+                <div className="w-14 h-14 rounded-full bg-amber-900/50 border border-amber-500/50 flex items-center justify-center mb-6">
+                  <Icons.UserPlus className="w-6 h-6 text-amber-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">I'm a Candidate</h3>
                 <p className="text-slate-400 mb-8 max-w-sm">Create a stunning profile, upload your resume, and let top companies find you.</p>
-                <Link href="/candidate/register" className="inline-block px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-400 rounded text-white font-bold transition-all">
+                <Link href="/candidate/register" className="inline-block px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-amber-400 rounded text-white font-bold transition-all">
                   Create Free Profile
                 </Link>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-pink-500/50 transition-colors">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-colors"></div>
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-orange-500/50 transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl group-hover:bg-orange-500/20 transition-colors"></div>
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-full bg-pink-900/50 border border-pink-500/50 flex items-center justify-center mb-6">
-                  <Icons.Briefcase className="w-6 h-6 text-pink-400" />
+                <div className="w-14 h-14 rounded-full bg-orange-900/50 border border-orange-500/50 flex items-center justify-center mb-6">
+                  <Icons.Briefcase className="w-6 h-6 text-orange-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">I'm an Employer</h3>
                 <p className="text-slate-400 mb-8 max-w-sm">Post a job in minutes and get access to thousands of qualified local professionals.</p>
-                <Link href="/employer/post-job" className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded text-white font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)]">
+                <Link href="/employer/post-job" className="inline-block px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 rounded text-white font-bold transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)]">
                   Post a Job Now
                 </Link>
               </div>
@@ -325,42 +327,49 @@ export default function JobsPage() {
   );
 }
 
-function JobCard({ title, company, location, type, salary, posted, onView }: { title: string, company: string, location: string, type: string, salary: string, posted: string, onView: () => void }) {
+function JobCard({ title, company, location, type, salary, posted, logoUrl, onView }: { title: string, company: string, location: string, type: string, salary: string, posted: string, logoUrl?: string, onView: () => void }) {
   return (
     <div 
       onClick={onView}
-      className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-purple-500/50 hover:shadow-[0_15px_40px_rgba(168,85,247,0.25)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      className="relative bg-gradient-to-br from-[#1c1814]/80 to-[#0a0806]/95 backdrop-blur-2xl rounded-xl border border-amber-500/30 p-6 shadow-[0_8px_32px_rgba(217,119,6,0.15)] group hover:border-amber-400/80 hover:shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:-translate-y-1 transition-all duration-500 cursor-pointer overflow-hidden"
     >
-      <div className="flex justify-between items-start mb-4">
+      {/* Metallic/Gold Sparkle effect overlay */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+      
+      <div className="relative flex justify-between items-start mb-4 z-10">
         <div className="flex gap-4">
-          <div className="w-12 h-12 rounded bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
-             <Icons.Building2 className="w-6 h-6 text-slate-300" />
+          <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-[#2a221a] to-[#120f0c] border border-amber-500/40 flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
+            {logoUrl ? (
+              <img src={logoUrl} alt={company} className="w-full h-full object-contain p-1.5" />
+            ) : (
+               <Icons.Building2 className="w-7 h-7 text-amber-500/70" />
+            )}
           </div>
           <div>
-            <h3 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors leading-tight mb-1">{title}</h3>
-            <p className="text-purple-300/80 text-sm font-medium">{company}</p>
+            <h3 className="font-bold text-lg text-white group-hover:text-amber-400 transition-colors leading-tight mb-1 drop-shadow-md">{title}</h3>
+            <p className="text-amber-200/70 text-sm font-medium">{company}</p>
           </div>
         </div>
-        <button className="text-slate-500 hover:text-white transition-colors" onClick={(e) => { e.stopPropagation(); }}>
+        <button className="text-slate-500 hover:text-amber-400 transition-colors" onClick={(e) => { e.stopPropagation(); }}>
           <Icons.BookmarkPlus className="w-5 h-5" />
         </button>
       </div>
       
-      <div className="flex flex-wrap gap-2 mb-6">
-        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
-          <Icons.MapPin className="w-3 h-3 text-slate-400" /> {location}
+      <div className="relative flex flex-wrap gap-2 mb-6 z-10">
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-black/40 border border-amber-500/20 rounded flex items-center gap-1.5 shadow-sm">
+          <Icons.MapPin className="w-3 h-3 text-amber-500/70" /> {location}
         </span>
-        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
-          <Icons.Clock className="w-3 h-3 text-slate-400" /> {type}
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-black/40 border border-amber-500/20 rounded flex items-center gap-1.5 shadow-sm">
+          <Icons.Clock className="w-3 h-3 text-amber-500/70" /> {type}
         </span>
-        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
-          <Icons.Banknote className="w-3 h-3 text-slate-400" /> {salary}
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-black/40 border border-amber-500/20 rounded flex items-center gap-1.5 shadow-sm">
+          <Icons.Banknote className="w-3 h-3 text-amber-500/70" /> {salary}
         </span>
       </div>
       
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
-        <span className="text-xs text-slate-500">{posted}</span>
-        <button onClick={(e) => { e.stopPropagation(); onView(); }} className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+      <div className="relative flex items-center justify-between pt-4 border-t border-amber-500/10 z-10">
+        <span className="text-xs text-slate-500 font-medium">{posted}</span>
+        <button onClick={(e) => { e.stopPropagation(); onView(); }} className="px-6 py-2 rounded-md bg-gradient-to-r from-amber-600/10 to-orange-600/10 hover:from-amber-500 hover:to-orange-500 text-amber-400 hover:text-white border border-amber-500/30 font-bold text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(245,158,11,0.5)]">
           View Details
         </button>
       </div>

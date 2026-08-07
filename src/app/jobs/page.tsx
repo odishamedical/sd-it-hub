@@ -1,26 +1,35 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { db } from "@/utils/firebase";
-import { collection, query, where, limit, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs, limit, orderBy } from "firebase/firestore";
 import ApplyModal from "@/components/jobs/ApplyModal";
+import JobDetailsModal from "@/components/jobs/JobDetailsModal";
 
 export default function JobsPage() {
-  const [featuredJobs, setFeaturedJobs] = useState<any[]>([]);
+  const [allJobs, setAllJobs] = useState<any[]>([]);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<any>(null);
+  
+  // Filtering States
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [filterJobType, setFilterJobType] = useState("All");
+  const [filterWorkplace, setFilterWorkplace] = useState("All");
+  const [filterSalary, setFilterSalary] = useState("All");
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const q = query(collection(db, "shyamdash_jobs"), where("status", "==", "Active"), limit(4));
+        const q = query(collection(db, "shyamdash_jobs"), where("status", "==", "Active"));
         const snap = await getDocs(q);
         const jobs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setFeaturedJobs(jobs);
+        setAllJobs(jobs);
       } catch(e) {
         console.error("Failed to fetch jobs", e);
       }
@@ -28,9 +37,48 @@ export default function JobsPage() {
     fetchJobs();
   }, []);
 
+  const featuredJobs = allJobs.slice(0, 4);
+
+  // Apply filters
+  const filteredJobs = useMemo(() => {
+    return allJobs.filter(job => {
+      const matchKeyword = searchKeyword ? (job.title?.toLowerCase().includes(searchKeyword.toLowerCase()) || job.employerName?.toLowerCase().includes(searchKeyword.toLowerCase())) : true;
+      const matchLocation = searchLocation ? (job.district?.toLowerCase().includes(searchLocation.toLowerCase()) || job.location?.toLowerCase().includes(searchLocation.toLowerCase())) : true;
+      const matchJobType = filterJobType !== "All" ? job.jobType === filterJobType : true;
+      const matchWorkplace = filterWorkplace !== "All" ? job.workplaceType === filterWorkplace : true;
+      
+      let matchSalary = true;
+      if (filterSalary !== "All") {
+        if (filterSalary === "Disclosed") {
+          matchSalary = job.salaryRange && job.salaryRange !== "Not Disclosed";
+        } else if (filterSalary === "Not Disclosed") {
+          matchSalary = !job.salaryRange || job.salaryRange === "Not Disclosed";
+        }
+      }
+
+      return matchKeyword && matchLocation && matchJobType && matchWorkplace && matchSalary;
+    });
+  }, [allJobs, searchKeyword, searchLocation, filterJobType, filterWorkplace, filterSalary]);
+
+  const handleApplyClick = (job: any) => {
+    setSelectedJob(job);
+    setIsDetailsModalOpen(false);
+    setIsApplyModalOpen(true);
+  };
+
+  const handleViewDetails = (job: any) => {
+    setSelectedJob(job);
+    setIsDetailsModalOpen(true);
+  };
+
+  const scrollToAllJobs = () => {
+    document.getElementById('all-jobs-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <main className="min-h-screen bg-[#020610] text-slate-200 font-sans selection:bg-purple-500/30">
       <ApplyModal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} job={selectedJob} />
+      <JobDetailsModal isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen(false)} job={selectedJob} onApplyClick={() => handleApplyClick(selectedJob)} />
       
       {/* Background Ambience */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -62,28 +110,20 @@ export default function JobsPage() {
             <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 w-full">
               <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
                 <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
-                <input type="text" placeholder="Job title, keyword, or company" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                <input type="text" value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder="Job title, keyword, or company" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
               </div>
               <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
                 <Icons.MapPin className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
-                <input type="text" placeholder="City, state, or Remote" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                <input type="text" value={searchLocation} onChange={(e) => setSearchLocation(e.target.value)} placeholder="City, state, or Remote" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
               </div>
-              <button className="px-8 py-3 bg-gradient-to-b from-purple-500 to-purple-700 hover:to-purple-600 text-white font-bold rounded shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] transition-all">
+              <button onClick={scrollToAllJobs} className="px-8 py-3 bg-gradient-to-b from-purple-500 to-purple-700 hover:to-purple-600 text-white font-bold rounded shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] transition-all">
                 Find Jobs
               </button>
-            </div>
-
-            <div className="flex flex-wrap gap-4 text-sm text-slate-400 font-medium items-center">
-              <span>Popular:</span>
-              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Software Engineer</span>
-              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Marketing</span>
-              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Remote</span>
             </div>
           </div>
           
           {/* Right Content - Hero Image (Masked) */}
           <div className="w-full lg:w-1/2 relative h-[300px] sm:h-[400px] lg:h-[450px]">
-            {/* Fading Masks matching Home Page */}
             <div className="absolute inset-0 left-0 bg-gradient-to-r from-[#020610] via-transparent to-transparent z-10 w-1/3" />
             <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent z-10 h-1/4" />
             <Image 
@@ -98,30 +138,6 @@ export default function JobsPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24 relative z-10">
           
-          {/* Categories Grid */}
-          <section>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-              <div>
-                <h2 className="text-3xl font-bold text-white mb-2">Browse by Category</h2>
-                <p className="text-slate-400">Find the role that perfectly matches your skills.</p>
-              </div>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 rounded bg-purple-600/20 text-purple-400 border border-purple-500/30 font-medium text-sm hover:bg-purple-600/40 transition-colors">All Categories</button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              <JobCategoryCard title="Technology & IT" count="2,415 Jobs" icon={<Icons.Monitor className="w-6 h-6 text-purple-400" />} />
-              <JobCategoryCard title="Marketing & Sales" count="1,842 Jobs" icon={<Icons.Megaphone className="w-6 h-6 text-pink-400" />} />
-              <JobCategoryCard title="Design & Creative" count="950 Jobs" icon={<Icons.PenTool className="w-6 h-6 text-blue-400" />} />
-              <JobCategoryCard title="Finance & Admin" count="1,105 Jobs" icon={<Icons.PieChart className="w-6 h-6 text-emerald-400" />} />
-              <JobCategoryCard title="Healthcare" count="3,210 Jobs" icon={<Icons.HeartPulse className="w-6 h-6 text-red-400" />} />
-              <JobCategoryCard title="Education" count="875 Jobs" icon={<Icons.BookOpen className="w-6 h-6 text-amber-400" />} />
-              <JobCategoryCard title="Customer Support" count="1,540 Jobs" icon={<Icons.Headphones className="w-6 h-6 text-indigo-400" />} />
-              <JobCategoryCard title="Human Resources" count="620 Jobs" icon={<Icons.Users className="w-6 h-6 text-orange-400" />} />
-            </div>
-          </section>
-
           {/* Featured Jobs */}
           <section>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -130,9 +146,9 @@ export default function JobsPage() {
                 <p className="text-slate-400">Hand-picked premium roles available right now.</p>
               </div>
               <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:px-0 md:pb-0 md:mx-0 hide-scrollbar">
-                <button className="whitespace-nowrap px-4 py-2 rounded bg-white/10 text-white font-medium text-sm border border-white/20 backdrop-blur-md">Latest</button>
-                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">Remote Only</button>
-                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">Full-Time</button>
+                <button onClick={scrollToAllJobs} className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded text-white font-medium transition-all hover:border-white/40 shadow-lg">
+                  View All Jobs
+                </button>
               </div>
             </div>
 
@@ -143,14 +159,11 @@ export default function JobsPage() {
                     key={job.id}
                     title={job.title} 
                     company={job.employerName} 
-                    location={`${job.district}, ${job.state}`} 
+                    location={`${job.district || job.location}`} 
                     type={job.jobType} 
                     salary={job.salaryRange}
                     posted="Recently"
-                    onApply={() => {
-                      setSelectedJob(job);
-                      setIsApplyModalOpen(true);
-                    }}
+                    onView={() => handleViewDetails(job)}
                   />
                 ))
               ) : (
@@ -160,11 +173,116 @@ export default function JobsPage() {
                 </div>
               )}
             </div>
-            
-            <div className="mt-10 text-center">
-              <button className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded text-white font-medium transition-all hover:border-white/40 shadow-lg">
-                View All 10,000+ Jobs
-              </button>
+          </section>
+
+          {/* ALL JOBS & ADVANCED FILTERING */}
+          <section id="all-jobs-section" className="scroll-mt-32">
+            <div className="mb-10 border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white mb-2">Explore All Jobs</h2>
+              <p className="text-slate-400">Use the filters to find the perfect role for you.</p>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Sidebar Filters */}
+              <div className="w-full lg:w-72 shrink-0 space-y-8">
+                <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg sticky top-32">
+                  <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
+                    <Icons.Filter className="w-5 h-5 text-purple-400" /> Filters
+                  </h3>
+                  
+                  <div className="space-y-6">
+                    {/* Job Type Filter */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Job Type</label>
+                      <div className="space-y-2">
+                        {["All", "Full-time", "Part-time", "Contract", "Internship"].map(type => (
+                          <label key={type} className="flex items-center gap-3 cursor-pointer group">
+                            <input 
+                              type="radio" 
+                              name="jobType" 
+                              checked={filterJobType === type}
+                              onChange={() => setFilterJobType(type)}
+                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                            />
+                            <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Workplace Filter */}
+                    <div className="pt-6 border-t border-slate-800">
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Workplace Type</label>
+                      <div className="space-y-2">
+                        {["All", "Remote", "On-site", "Hybrid"].map(type => (
+                          <label key={type} className="flex items-center gap-3 cursor-pointer group">
+                            <input 
+                              type="radio" 
+                              name="workplaceType" 
+                              checked={filterWorkplace === type}
+                              onChange={() => setFilterWorkplace(type)}
+                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                            />
+                            <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Salary Filter */}
+                    <div className="pt-6 border-t border-slate-800">
+                      <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Salary Info</label>
+                      <div className="space-y-2">
+                        {["All", "Disclosed", "Not Disclosed"].map(type => (
+                          <label key={type} className="flex items-center gap-3 cursor-pointer group">
+                            <input 
+                              type="radio" 
+                              name="salaryType" 
+                              checked={filterSalary === type}
+                              onChange={() => setFilterSalary(type)}
+                              className="w-4 h-4 text-purple-500 bg-slate-800 border-slate-700 focus:ring-purple-500/50 focus:ring-offset-slate-900" 
+                            />
+                            <span className="text-sm text-slate-300 group-hover:text-white transition-colors">{type}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Jobs Grid */}
+              <div className="flex-1">
+                <div className="mb-6 flex justify-between items-center bg-slate-900/50 border border-white/5 rounded-xl p-4">
+                  <p className="text-slate-300 font-medium">Showing <span className="text-white font-bold">{filteredJobs.length}</span> opportunities</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredJobs.length > 0 ? (
+                    filteredJobs.map((job) => (
+                      <JobCard 
+                        key={job.id}
+                        title={job.title} 
+                        company={job.employerName} 
+                        location={`${job.district || job.location}`} 
+                        type={job.jobType} 
+                        salary={job.salaryRange}
+                        posted="Recently"
+                        onView={() => handleViewDetails(job)}
+                      />
+                    ))
+                  ) : (
+                    <div className="col-span-2 text-center py-16 bg-slate-900/40 rounded-xl border border-white/10 text-slate-400">
+                      <Icons.SearchX className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">No jobs found</h3>
+                      <p className="text-slate-400">Try adjusting your filters or search criteria.</p>
+                      <button onClick={() => { setSearchKeyword(''); setSearchLocation(''); setFilterJobType('All'); setFilterWorkplace('All'); setFilterSalary('All'); }} className="mt-6 text-purple-400 hover:text-purple-300 font-medium underline">
+                        Clear all filters
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
 
@@ -207,24 +325,12 @@ export default function JobsPage() {
   );
 }
 
-function JobCategoryCard({ title, count, icon }: { title: string, count: string, icon: React.ReactNode }) {
+function JobCard({ title, company, location, type, salary, posted, onView }: { title: string, company: string, location: string, type: string, salary: string, posted: string, onView: () => void }) {
   return (
-    <div className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:border-white/30 hover:shadow-[0_15px_40px_rgba(168,85,247,0.2)] hover:-translate-y-1 transition-all duration-300 flex flex-col gap-3 cursor-pointer relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-      <div className="w-10 h-10 rounded-lg bg-slate-900/80 border border-white/10 flex items-center justify-center relative z-10 group-hover:border-purple-500/50 transition-colors shadow-inner">
-        {icon}
-      </div>
-      <div className="relative z-10 mt-2">
-        <h3 className="font-bold text-white group-hover:text-purple-400 transition-colors">{title}</h3>
-        <p className="text-slate-400 text-xs mt-1">{count}</p>
-      </div>
-    </div>
-  );
-}
-
-function JobCard({ title, company, location, type, salary, posted, onApply }: { title: string, company: string, location: string, type: string, salary: string, posted: string, onApply?: () => void }) {
-  return (
-    <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-purple-500/50 hover:shadow-[0_15px_40px_rgba(168,85,247,0.25)] hover:-translate-y-1 transition-all duration-300">
+    <div 
+      onClick={onView}
+      className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-purple-500/50 hover:shadow-[0_15px_40px_rgba(168,85,247,0.25)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+    >
       <div className="flex justify-between items-start mb-4">
         <div className="flex gap-4">
           <div className="w-12 h-12 rounded bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
@@ -235,7 +341,7 @@ function JobCard({ title, company, location, type, salary, posted, onApply }: { 
             <p className="text-purple-300/80 text-sm font-medium">{company}</p>
           </div>
         </div>
-        <button className="text-slate-500 hover:text-white transition-colors">
+        <button className="text-slate-500 hover:text-white transition-colors" onClick={(e) => { e.stopPropagation(); }}>
           <Icons.BookmarkPlus className="w-5 h-5" />
         </button>
       </div>
@@ -254,8 +360,8 @@ function JobCard({ title, company, location, type, salary, posted, onApply }: { 
       
       <div className="flex items-center justify-between pt-4 border-t border-white/10">
         <span className="text-xs text-slate-500">{posted}</span>
-        <button onClick={onApply} className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-          Apply Now
+        <button onClick={(e) => { e.stopPropagation(); onView(); }} className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+          View Details
         </button>
       </div>
     </div>

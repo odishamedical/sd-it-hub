@@ -54,7 +54,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[200] bg-[#050B1B]/80 backdrop-blur-md border-b border-slate-900">
+      <header className="fixed top-0 left-0 w-full z-[200] bg-[#050B1B]/80 backdrop-blur-md relative">
         <div className="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Logo */}
@@ -121,6 +121,9 @@ export default function Header() {
             {isMobileMenuOpen ? <Icons.X className="w-6 h-6" /> : <Icons.Menu className="w-6 h-6" />}
           </button>
         </div>
+
+        {/* Golden Glowing Border Line */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500 to-transparent shadow-[0_0_15px_rgba(245,158,11,0.8)] opacity-70"></div>
 
         {/* Mobile Dropdown */}
         {isMobileMenuOpen && (

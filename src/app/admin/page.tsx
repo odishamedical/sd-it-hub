@@ -7,6 +7,8 @@ import { db, collection, getDocs, query, orderBy, limit, addDoc, serverTimestamp
 export default function AdminDashboard() {
   const [tenants, setTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [leads, setLeads] = useState<any[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
 
   // Domain Search States
   const [domainQuery, setDomainQuery] = useState("");
@@ -38,7 +40,22 @@ export default function AdminDashboard() {
       }
     };
 
+    const fetchLeads = async () => {
+      try {
+        setLeadsLoading(true);
+        const qLeads = query(collection(db, "leads"), orderBy("createdAt", "desc"), limit(20));
+        const snapshotL = await getDocs(qLeads);
+        const dataL = snapshotL.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setLeads(dataL);
+      } catch (e) {
+        console.error("Error fetching leads:", e);
+      } finally {
+        setLeadsLoading(false);
+      }
+    };
+
     fetchAdminData();
+    fetchLeads();
   }, []);
 
   const handleCheckDomain = async (e: React.FormEvent) => {
@@ -365,6 +382,61 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Leads / Messages Table */}
+      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden mt-8">
+        <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+          <h3 className="font-bold text-white text-sm">Recent Contact Form Submissions</h3>
+        </div>
+        
+        {leadsLoading ? (
+          <div className="p-12 flex justify-center">
+            <Icons.Loader2 className="w-6 h-6 animate-spin text-amber-400" />
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-800 text-slate-400 text-[10px] uppercase tracking-wider font-bold bg-slate-900">
+                  <th className="p-4">Name & Email</th>
+                  <th className="p-4">Message</th>
+                  <th className="p-4">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/50">
+                {leads.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="p-8 text-center text-slate-500 text-sm">
+                      No messages received yet.
+                    </td>
+                  </tr>
+                ) : (
+                  leads.map((lead, idx) => (
+                    <tr key={idx} className="hover:bg-slate-800/30 transition-colors group">
+                      <td className="p-4 align-top">
+                        <div className="text-sm font-bold text-white">{lead.name}</div>
+                        <div className="text-[10px] text-slate-500 mt-0.5">{lead.email}</div>
+                      </td>
+                      <td className="p-4 align-top text-sm text-slate-300 max-w-md whitespace-pre-wrap">
+                        {lead.message}
+                      </td>
+                      <td className="p-4 align-top">
+                        <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-wider rounded-full border ${
+                          lead.status === "New" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                          "bg-slate-800 text-slate-300 border-slate-700"
+                        }`}>
+                          {lead.status || 'Received'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

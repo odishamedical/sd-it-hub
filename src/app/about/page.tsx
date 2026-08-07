@@ -175,9 +175,9 @@ export default function AboutPage() {
                 </div>
                 <h4 className="text-amber-400 font-semibold mb-6">{item.subtitle}</h4>
                 <p className="text-slate-400 text-sm">{item.desc}</p>
-                <div className="mt-8 px-6 py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer">
+                <Link href="/blog" className="mt-8 px-6 py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-bold text-sm shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer inline-block">
                   Read Us
-                </div>
+                </Link>
               </div>
             </div>
           ))}

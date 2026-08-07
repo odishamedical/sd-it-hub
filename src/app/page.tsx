@@ -2,13 +2,25 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function Home() {
-  const [searchCategory, setSearchCategory] = useState("all");
+  const [searchCategory, setSearchCategory] = useState("directory");
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const q = formData.get("q")?.toString() || "";
+    
+    if (searchCategory === "directory") router.push(`/directory?q=${encodeURIComponent(q)}`);
+    else if (searchCategory === "jobs") router.push(`/jobs?q=${encodeURIComponent(q)}`);
+    else if (searchCategory === "services") router.push(`/it-services`);
+  };
 
   return (
     <main className="relative min-h-screen bg-[#02050f] text-[#e2e8f0] font-sans overflow-x-hidden">
@@ -38,19 +50,29 @@ export default function Home() {
           </p>
 
           {/* Search Bar */}
-          <div className="flex w-full max-w-xl bg-white rounded-lg overflow-hidden shadow-[0_0_30px_rgba(37,99,235,0.2)] mb-8">
+          <form onSubmit={handleSearch} className="flex w-full max-w-2xl bg-white rounded-lg overflow-hidden shadow-[0_0_30px_rgba(37,99,235,0.2)] mb-8">
             <div className="flex items-center pl-4 bg-gray-100 text-gray-500">
               <Icons.Search className="w-5 h-5" />
             </div>
             <input 
               type="text" 
+              name="q"
               placeholder="Search for services, jobs, or businesses..." 
               className="flex-1 px-4 py-4 outline-none text-slate-800 placeholder-slate-400 bg-white"
             />
-            <div className="bg-amber-500 flex items-center justify-center px-4 cursor-pointer hover:bg-amber-600 transition-colors">
-              <Icons.ChevronDown className="w-5 h-5 text-white" />
-            </div>
-          </div>
+            <select
+              className="bg-slate-100 text-slate-800 outline-none px-2 sm:px-4 border-l border-slate-300 font-medium cursor-pointer text-sm sm:text-base"
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+            >
+              <option value="directory">Directory</option>
+              <option value="jobs">Jobs</option>
+              <option value="services">IT Services</option>
+            </select>
+            <button type="submit" className="bg-amber-500 flex items-center justify-center px-4 sm:px-6 cursor-pointer hover:bg-amber-600 transition-colors text-white font-bold">
+              Search
+            </button>
+          </form>
 
           {/* Triple CTAs */}
           <div className="flex flex-wrap gap-4">
@@ -164,7 +186,7 @@ export default function Home() {
               </div>
               <p className="text-amber-400 font-semibold mb-6 text-lg">$100k - $130k / Year</p>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Learn More</button>
+            <Link href="/jobs" className="w-full py-2 block text-center bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Learn More</Link>
           </div>
 
           {/* Business Listing */}
@@ -186,7 +208,7 @@ export default function Home() {
                 <span className="text-sm text-slate-400 font-normal border-l border-slate-600 pl-2 ml-2">Top Rated</span>
               </div>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-orange-600 to-orange-800 hover:to-orange-700 rounded text-white font-medium border border-orange-500/30 group-hover:scale-[1.02] transition-transform">View Details</button>
+            <Link href="/directory" className="w-full py-2 block text-center bg-gradient-to-b from-orange-600 to-orange-800 hover:to-orange-700 rounded text-white font-medium border border-orange-500/30 group-hover:scale-[1.02] transition-transform">View Details</Link>
           </div>
 
           {/* Project Listing */}
@@ -204,15 +226,15 @@ export default function Home() {
               </div>
               <p className="text-slate-300 text-sm mb-6 line-clamp-2">Complete end-to-end e-commerce solution with inventory management.</p>
             </div>
-            <button className="w-full py-2 bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Read More</button>
+            <Link href="/it-services" className="w-full py-2 block text-center bg-gradient-to-b from-amber-500 to-amber-700 hover:to-amber-600 rounded text-white font-medium border border-amber-500/30 group-hover:scale-[1.02] transition-transform">Read More</Link>
           </div>
         </section>
 
         {/* View All Button */}
         <div className="flex justify-center mt-6">
-          <button className="px-8 py-3 bg-[#0f1629] hover:bg-[#1a2235] border border-slate-700 rounded text-white transition-colors font-medium text-lg">
+          <Link href="/directory" className="px-8 py-3 bg-[#0f1629] hover:bg-[#1a2235] border border-slate-700 rounded text-white transition-colors font-medium text-lg inline-block">
             View All Listings
-          </button>
+          </Link>
         </div>
 
         {/* Trust Banner */}
@@ -289,9 +311,9 @@ export default function Home() {
                 <p className="text-amber-200/80 text-sm font-medium">Career Tips</p>
               </div>
               <div className="mt-4 flex justify-end">
-                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
+                <Link href="/blog" className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all inline-block">
                   READ MORE
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -307,9 +329,9 @@ export default function Home() {
                 <p className="text-slate-300 text-sm font-medium">How We Helped Cafe Delight Grow</p>
               </div>
               <div className="mt-4 flex justify-end">
-                <button className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all">
+                <Link href="/blog" className="px-4 py-1.5 bg-gradient-to-b from-amber-400 to-amber-600 text-white rounded text-sm font-bold shadow-md hover:to-amber-500 group-hover:scale-105 transition-all inline-block">
                   CASE STUDY
-                </button>
+                </Link>
               </div>
             </div>
           </div>

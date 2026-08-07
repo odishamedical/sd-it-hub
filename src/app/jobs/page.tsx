@@ -1,327 +1,252 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
-import { Search, MapPin, Briefcase, Filter, ChevronDown, ChevronLeft, ChevronRight, UserCircle, FileText, LayoutList, MessageSquare, Settings, Bell, CircleUser, MoreVertical, Building2 } from "lucide-react";
-import Image from "next/image";
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import * as Icons from "lucide-react";
 import Header from "@/components/Header";
-import { db, collection, getDocs } from "@/utils/firebase";
+import Footer from "@/components/Footer";
 
-export default function JobPortalATS() {
-  const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Search States
-  const [searchQuery, setSearchQuery] = useState("");
-  const [locationQuery, setLocationQuery] = useState("");
-  const [industryQuery, setIndustryQuery] = useState("Technology");
-  
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "shyamdash_jobs"));
-        const jobsList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setJobs(jobsList);
-      } catch (err) {
-        console.error("Error fetching jobs:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchJobs();
-  }, []);
-
-  const filteredJobs = jobs.filter(job => {
-    const title = (job.title || "").toLowerCase();
-    const company = (job.company_name || "").toLowerCase();
-    const loc = (job.location || "").toLowerCase();
-    const q = searchQuery.toLowerCase();
-    const l = locationQuery.toLowerCase();
-    
-    if (q && !title.includes(q) && !company.includes(q)) return false;
-    if (l && !loc.includes(l)) return false;
-    return true;
-  });
-
+export default function JobsPage() {
   return (
-    <>
-      <Header />
-      <div className="flex pt-20 h-screen bg-[#0a0e17] text-slate-300 font-sans overflow-hidden">
+    <main className="min-h-screen bg-[#020610] text-slate-200 font-sans selection:bg-purple-500/30">
       
-      {/* Sidebar */}
-      <aside className="w-[280px] bg-[#0d131f] border-r border-slate-800/50 flex flex-col shrink-0 hidden lg:flex">
+      {/* Background Ambience */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Image src="/stock/bg.png" alt="Cosmic Tech Background" fill className="object-cover opacity-60" priority />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020610]/40 via-[#020610]/80 to-[#020610] mix-blend-multiply"></div>
+      </div>
+
+      <Header />
+
+      <div className="relative z-10">
         
-        {/* Header */}
-        <div className="h-20 flex items-center px-6 border-b border-slate-800/50 shrink-0">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Briefcase className="w-6 h-6 text-emerald-400" />
-            <span className="text-xl font-bold text-white tracking-wide">Job Board</span>
-          </Link>
-          <button className="ml-auto text-slate-500 hover:text-white transition-colors">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-        </div>
+        {/* HERO SECTION (21:9 Aspect Ratio Focus) */}
+        <section className="w-full relative min-h-[60vh] flex items-center pt-24 pb-16 overflow-hidden">
+          {/* Right-aligned Hero Image with Left Fade */}
+          <div className="absolute inset-0 z-0 flex justify-end">
+             <div className="relative w-full lg:w-3/4 h-full">
+               <Image 
+                 src="/stock/hero_job.png" 
+                 alt="Find Your Dream Job" 
+                 fill 
+                 className="object-cover object-right"
+                 priority
+               />
+               <div className="absolute inset-0 bg-gradient-to-r from-[#020610] via-[#020610]/80 to-transparent"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-transparent to-transparent"></div>
+             </div>
+          </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto custom-scrollbar">
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
-            <UserCircle className="w-5 h-5" />
-            <span className="font-medium text-sm">My Profile</span>
-          </a>
-          
-          <a href="#" className="flex flex-col gap-3 px-4 py-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all">
-            <div className="flex items-center gap-3">
-              <FileText className="w-5 h-5" />
-              <span className="font-bold text-sm">Resumes & Uploads</span>
-            </div>
-            <button className="w-full bg-emerald-500 hover:bg-emerald-400 text-[#0a0e17] font-bold text-xs py-2 rounded-lg flex items-center justify-center gap-2 uppercase tracking-wider transition-colors shadow-lg shadow-emerald-500/20">
-              <Icons.Upload className="w-3.5 h-3.5" /> Upload CV/Resume
-            </button>
-          </a>
-
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
-            <LayoutList className="w-5 h-5" />
-            <span className="font-medium text-sm">My Applications</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
-            <Icons.Calendar className="w-5 h-5" />
-            <span className="font-medium text-sm">Interviews</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
-            <MessageSquare className="w-5 h-5" />
-            <span className="font-medium text-sm">Messages</span>
-          </a>
-          <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all">
-            <Settings className="w-5 h-5" />
-            <span className="font-medium text-sm">Settings</span>
-          </a>
-
-          {/* Candidate Profile Preview */}
-          <div className="pt-6 mt-6 border-t border-slate-800/50">
-            <div className="flex items-center justify-between px-4 mb-4">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Candidate Profile</span>
-              <Icons.PlusCircle className="w-4 h-4 text-slate-500 hover:text-emerald-400 cursor-pointer" />
-            </div>
-            
-            <div className="space-y-3 px-2">
-              <div className="flex items-center gap-3 p-2 bg-slate-800/30 border border-slate-700/30 rounded-xl">
-                <Image src="https://ui-avatars.com/api/?name=Alex+Thompson&background=10b981&color=fff" alt="User" width={32} height={32} className="rounded-full" />
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-white leading-tight">Alex Thompson</span>
-                  <span className="text-xs text-emerald-400">(Available)</span>
-                </div>
-                <div className="ml-auto w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(16,185,129,0.5)]">
-                  <Icons.Check className="w-3 h-3 text-[#0a0e17]" />
-                </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex">
+            <div className="w-full lg:w-3/5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 shadow-xl">
+                <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse"></span>
+                <span className="text-xs font-semibold tracking-wide text-purple-200 uppercase">ShyamDash Job Board</span>
               </div>
               
-              <div className="flex items-center gap-3 p-2 hover:bg-slate-800/30 rounded-xl transition-colors opacity-60">
-                <Image src="https://ui-avatars.com/api/?name=Sarah+Chen&background=6366f1&color=fff" alt="User" width={32} height={32} className="rounded-full" />
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-white leading-tight">Sarah Chen</span>
-                  <span className="text-xs text-slate-400">(In Review)</span>
+              <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-xl">
+                Find Your Next <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Dream Career</span>
+              </h1>
+              <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
+                Connect with top employers, browse thousands of local opportunities, and take the next big step in your professional journey.
+              </p>
+              
+              {/* Dual Input Search Bar */}
+              <div className="flex flex-col sm:flex-row gap-2 bg-white/10 backdrop-blur-xl p-2 rounded-lg border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] mb-6 max-w-3xl">
+                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
+                  <Icons.Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                  <input type="text" placeholder="Job title, keyword, or company" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
                 </div>
+                <div className="flex-1 relative flex items-center bg-[#0a0f1c]/80 rounded p-1 border border-slate-700 focus-within:border-purple-500 transition-colors">
+                  <Icons.MapPin className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+                  <input type="text" placeholder="City, state, or Remote" className="w-full bg-transparent border-none text-white p-3 focus:outline-none placeholder-slate-500" />
+                </div>
+                <button className="px-8 py-3 bg-gradient-to-b from-purple-500 to-purple-700 hover:to-purple-600 text-white font-bold rounded shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_25px_rgba(168,85,247,0.8)] transition-all">
+                  Find Jobs
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-4 text-sm text-slate-400 font-medium items-center">
+                <span>Popular:</span>
+                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Software Engineer</span>
+                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Marketing</span>
+                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:text-white cursor-pointer transition-colors">Remote</span>
               </div>
             </div>
           </div>
-        </nav>
-      </aside>
+        </section>
 
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 bg-[#0a0e17] relative">
-        {/* Decorative Background */}
-        <div className="absolute top-0 right-0 w-[800px] h-[600px] bg-emerald-500/5 blur-[150px] rounded-full pointer-events-none z-0"></div>
-
-        {/* Top Navbar */}
-        <header className="h-20 flex items-center justify-between px-8 border-b border-slate-800/50 z-10 relative">
-          <h1 className="text-xl font-bold text-white">Advanced Search</h1>
-          <div className="flex items-center gap-6">
-            <Icons.LineChart className="w-5 h-5 text-slate-400 hover:text-white cursor-pointer transition-colors" />
-            <div className="relative">
-              <Bell className="w-5 h-5 text-slate-400 hover:text-white cursor-pointer transition-colors" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border border-[#0a0e17]"></span>
-            </div>
-            <div className="w-8 h-8 rounded-full border border-slate-700 bg-slate-800 flex items-center justify-center cursor-pointer">
-              <CircleUser className="w-5 h-5 text-slate-300" />
-            </div>
-          </div>
-        </header>
-
-        {/* Search & Filters */}
-        <div className="p-8 pb-4 z-10 relative">
-          <div className="flex flex-wrap lg:flex-nowrap gap-4">
-            
-            <div className="flex-1 min-w-[250px]">
-              <label className="text-xs font-bold text-slate-500 mb-2 block">Main keyword</label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input 
-                  type="text" 
-                  placeholder="e.g. Senior Software Engineer"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900 transition-all shadow-inner"
-                />
-              </div>
-            </div>
-
-            <div className="w-full sm:w-[200px]">
-              <label className="text-xs font-bold text-slate-500 mb-2 block">Location</label>
-              <div className="relative">
-                <select 
-                  value={locationQuery}
-                  onChange={(e) => setLocationQuery(e.target.value)}
-                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">All Locations</option>
-                  <option value="San Francisco">San Francisco, CA</option>
-                  <option value="New York">New York, NY</option>
-                  <option value="Remote">Remote</option>
-                  <option value="Odisha">Odisha, India</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-              </div>
-            </div>
-
-            <div className="w-full sm:w-[180px]">
-              <label className="text-xs font-bold text-slate-500 mb-2 block">Industry</label>
-              <div className="relative">
-                <select 
-                  value={industryQuery}
-                  onChange={(e) => setIndustryQuery(e.target.value)}
-                  className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer"
-                >
-                  <option value="Technology">Technology</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Finance">Finance</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-              </div>
-            </div>
-            
-            <div className="w-full sm:w-[160px]">
-              <label className="text-xs font-bold text-slate-500 mb-2 block">Experience Level</label>
-              <div className="relative">
-                <select className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer">
-                  <option>Experience</option>
-                  <option>Entry Level</option>
-                  <option>Mid Level</option>
-                  <option>Senior Level</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-              </div>
-            </div>
-
-            <div className="w-full sm:w-[160px]">
-              <label className="text-xs font-bold text-slate-500 mb-2 block">Salary Range</label>
-              <div className="relative">
-                <select className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-emerald-500/50 transition-all appearance-none cursor-pointer">
-                  <option>Salary Range</option>
-                  <option>$50k - $100k</option>
-                  <option>$100k - $150k</option>
-                  <option>$150k+</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* Job Grid */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-8 pt-4 z-10 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24 relative z-10">
           
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[1,2,3,4,5,6,7,8].map(n => (
-                <div key={n} className="h-[250px] bg-slate-900/40 rounded-2xl border border-slate-800/50 animate-pulse"></div>
-              ))}
+          {/* Categories Grid */}
+          <section>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Browse by Category</h2>
+                <p className="text-slate-400">Find the role that perfectly matches your skills.</p>
+              </div>
+              <div className="flex gap-2">
+                <button className="px-4 py-2 rounded bg-purple-600/20 text-purple-400 border border-purple-500/30 font-medium text-sm hover:bg-purple-600/40 transition-colors">All Categories</button>
+              </div>
             </div>
-          ) : filteredJobs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-center">
-              <Search className="w-12 h-12 text-slate-700 mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">No Jobs Found</h3>
-              <p className="text-slate-500">We couldn't find any jobs matching your current filters.</p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              <JobCategoryCard title="Technology & IT" count="2,415 Jobs" icon={<Icons.Monitor className="w-6 h-6 text-purple-400" />} />
+              <JobCategoryCard title="Marketing & Sales" count="1,842 Jobs" icon={<Icons.Megaphone className="w-6 h-6 text-pink-400" />} />
+              <JobCategoryCard title="Design & Creative" count="950 Jobs" icon={<Icons.PenTool className="w-6 h-6 text-blue-400" />} />
+              <JobCategoryCard title="Finance & Admin" count="1,105 Jobs" icon={<Icons.PieChart className="w-6 h-6 text-emerald-400" />} />
+              <JobCategoryCard title="Healthcare" count="3,210 Jobs" icon={<Icons.HeartPulse className="w-6 h-6 text-red-400" />} />
+              <JobCategoryCard title="Education" count="875 Jobs" icon={<Icons.BookOpen className="w-6 h-6 text-amber-400" />} />
+              <JobCategoryCard title="Customer Support" count="1,540 Jobs" icon={<Icons.Headphones className="w-6 h-6 text-indigo-400" />} />
+              <JobCategoryCard title="Human Resources" count="620 Jobs" icon={<Icons.Users className="w-6 h-6 text-orange-400" />} />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredJobs.map((job) => (
-                <div key={job.id} className="group flex flex-col bg-[#131b2c]/80 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-5 hover:border-emerald-500/50 hover:bg-[#151f33] transition-all hover:shadow-[0_10px_40px_rgba(16,185,129,0.1)] relative cursor-pointer">
-                  
-                  {/* Top Bar */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
-                        {job.thumbnail ? (
-                          <img src={job.thumbnail} alt={job.company_name} className="w-full h-full object-contain p-1 bg-white" />
-                        ) : (
-                          <Building2 className="w-5 h-5 text-slate-400" />
-                        )}
-                      </div>
-                      <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider truncate max-w-[120px]">{job.company_name || 'Company Name'}</h4>
-                    </div>
-                    <button className="text-slate-500 hover:text-white transition-colors">
-                      <MoreVertical className="w-5 h-5" />
-                    </button>
-                  </div>
+          </section>
 
-                  {/* Title & Meta */}
-                  <h3 className="text-lg font-bold text-white mb-2 leading-tight group-hover:text-emerald-400 transition-colors line-clamp-2">
-                    {job.title}
-                  </h3>
-                  
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-4">
-                    <MapPin className="w-3.5 h-3.5" />
-                    <span className="truncate">{job.location || 'Remote'}</span>
-                  </div>
+          {/* Featured Jobs */}
+          <section>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-2">Featured Opportunities</h2>
+                <p className="text-slate-400">Hand-picked premium roles available right now.</p>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:px-0 md:pb-0 md:mx-0 hide-scrollbar">
+                <button className="whitespace-nowrap px-4 py-2 rounded bg-white/10 text-white font-medium text-sm border border-white/20 backdrop-blur-md">Latest</button>
+                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">Remote Only</button>
+                <button className="whitespace-nowrap px-4 py-2 rounded text-slate-400 hover:bg-white/5 hover:text-white font-medium text-sm transition-colors">Full-Time</button>
+              </div>
+            </div>
 
-                  {/* Salary Badge */}
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-4 w-fit shadow-inner">
-                    <span>$</span>
-                    <span>{job.extensions?.[1] || '$150k - $190k/year'}</span>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <JobCard 
+                title="Senior React Developer" 
+                company="TechVision Corp" 
+                location="Remote / Sambalpur" 
+                type="Full-Time" 
+                salary="₹12L - ₹18L / year"
+                posted="2 days ago"
+              />
+              <JobCard 
+                title="Digital Marketing Lead" 
+                company="Creative Nexus" 
+                location="Bhubaneswar, Odisha" 
+                type="Full-Time" 
+                salary="₹8L - ₹12L / year"
+                posted="5 hours ago"
+              />
+              <JobCard 
+                title="UI/UX Product Designer" 
+                company="Innovate Apps" 
+                location="Remote" 
+                type="Contract" 
+                salary="₹60,000 / month"
+                posted="1 day ago"
+              />
+              <JobCard 
+                title="Customer Success Manager" 
+                company="Global Services Inc" 
+                location="Sambalpur, Odisha" 
+                type="Full-Time" 
+                salary="₹4L - ₹6L / year"
+                posted="Just now"
+              />
+            </div>
+            
+            <div className="mt-10 text-center">
+              <button className="px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded text-white font-medium transition-all hover:border-white/40 shadow-lg">
+                View All 10,000+ Jobs
+              </button>
+            </div>
+          </section>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {(job.extensions?.[0] || 'Remote').split(',').map((tag: string, i: number) => (
-                      <span key={i} className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">
-                        {tag.trim()}
-                      </span>
-                    ))}
-                    <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">React</span>
-                    <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-medium border border-slate-700">Node.js</span>
-                  </div>
-
-                  {/* Apply Button */}
-                  <div className="mt-auto">
-                    <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-emerald-400 text-white font-bold text-sm uppercase tracking-wide hover:brightness-110 transition-all opacity-90 hover:opacity-100 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                      Quick Apply
-                    </button>
-                  </div>
-
+          {/* Call To Actions (Candidate & Employer) */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-purple-500/50 transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-colors"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-full bg-purple-900/50 border border-purple-500/50 flex items-center justify-center mb-6">
+                  <Icons.UserPlus className="w-6 h-6 text-purple-400" />
                 </div>
-              ))}
+                <h3 className="text-2xl font-bold text-white mb-3">I'm a Candidate</h3>
+                <p className="text-slate-400 mb-8 max-w-sm">Create a stunning profile, upload your resume, and let top companies find you.</p>
+                <Link href="/candidate/register" className="inline-block px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-400 rounded text-white font-bold transition-all">
+                  Create Free Profile
+                </Link>
+              </div>
             </div>
-          )}
 
-          {/* Pagination */}
-          {!loading && filteredJobs.length > 0 && (
-            <div className="flex items-center justify-center gap-4 mt-8 pb-8">
-              <button className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-slate-700 hover:text-white transition-colors">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <span className="text-sm font-medium text-slate-400">1 of 25 Pages</span>
-              <button className="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-slate-700 hover:text-white transition-colors">
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/20 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden group hover:border-pink-500/50 transition-colors">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl group-hover:bg-pink-500/20 transition-colors"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-full bg-pink-900/50 border border-pink-500/50 flex items-center justify-center mb-6">
+                  <Icons.Briefcase className="w-6 h-6 text-pink-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">I'm an Employer</h3>
+                <p className="text-slate-400 mb-8 max-w-sm">Post a job in minutes and get access to thousands of qualified local professionals.</p>
+                <Link href="/employer/post-job" className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded text-white font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)]">
+                  Post a Job Now
+                </Link>
+              </div>
             </div>
-          )}
+          </section>
 
         </div>
-      </main>
-
       </div>
-    </>
+      
+      <Footer />
+    </main>
+  );
+}
+
+function JobCategoryCard({ title, count, icon }: { title: string, count: string, icon: React.ReactNode }) {
+  return (
+    <div className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:border-white/30 hover:shadow-[0_15px_40px_rgba(168,85,247,0.2)] hover:-translate-y-1 transition-all duration-300 flex flex-col gap-3 cursor-pointer relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+      <div className="w-10 h-10 rounded-lg bg-slate-900/80 border border-white/10 flex items-center justify-center relative z-10 group-hover:border-purple-500/50 transition-colors shadow-inner">
+        {icon}
+      </div>
+      <div className="relative z-10 mt-2">
+        <h3 className="font-bold text-white group-hover:text-purple-400 transition-colors">{title}</h3>
+        <p className="text-slate-400 text-xs mt-1">{count}</p>
+      </div>
+    </div>
+  );
+}
+
+function JobCard({ title, company, location, type, salary, posted }: { title: string, company: string, location: string, type: string, salary: string, posted: string }) {
+  return (
+    <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-purple-500/50 hover:shadow-[0_15px_40px_rgba(168,85,247,0.25)] hover:-translate-y-1 transition-all duration-300">
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex gap-4">
+          <div className="w-12 h-12 rounded bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+             <Icons.Building2 className="w-6 h-6 text-slate-300" />
+          </div>
+          <div>
+            <h3 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors leading-tight mb-1">{title}</h3>
+            <p className="text-purple-300/80 text-sm font-medium">{company}</p>
+          </div>
+        </div>
+        <button className="text-slate-500 hover:text-white transition-colors">
+          <Icons.BookmarkPlus className="w-5 h-5" />
+        </button>
+      </div>
+      
+      <div className="flex flex-wrap gap-2 mb-6">
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
+          <Icons.MapPin className="w-3 h-3 text-slate-400" /> {location}
+        </span>
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
+          <Icons.Clock className="w-3 h-3 text-slate-400" /> {type}
+        </span>
+        <span className="px-2.5 py-1 text-xs font-medium text-slate-300 bg-slate-800/80 border border-slate-700 rounded flex items-center gap-1.5">
+          <Icons.Banknote className="w-3 h-3 text-slate-400" /> {salary}
+        </span>
+      </div>
+      
+      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+        <span className="text-xs text-slate-500">{posted}</span>
+        <button className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+          Apply Now
+        </button>
+      </div>
+    </div>
   );
 }

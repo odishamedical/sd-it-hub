@@ -1,13 +1,36 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import * as Icons from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { db } from "@/utils/firebase";
+import { collection, query, where, limit, getDocs, orderBy } from "firebase/firestore";
+import ApplyModal from "@/components/jobs/ApplyModal";
 
 export default function JobsPage() {
+  const [featuredJobs, setFeaturedJobs] = useState<any[]>([]);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const q = query(collection(db, "shyamdash_jobs"), where("status", "==", "Active"), limit(4));
+        const snap = await getDocs(q);
+        const jobs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setFeaturedJobs(jobs);
+      } catch(e) {
+        console.error("Failed to fetch jobs", e);
+      }
+    };
+    fetchJobs();
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#020610] text-slate-200 font-sans selection:bg-purple-500/30">
+      <ApplyModal isOpen={isApplyModalOpen} onClose={() => setIsApplyModalOpen(false)} job={selectedJob} />
       
       {/* Background Ambience */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -114,38 +137,28 @@ export default function JobsPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <JobCard 
-                title="Senior React Developer" 
-                company="TechVision Corp" 
-                location="Remote / Sambalpur" 
-                type="Full-Time" 
-                salary="₹12L - ₹18L / year"
-                posted="2 days ago"
-              />
-              <JobCard 
-                title="Digital Marketing Lead" 
-                company="Creative Nexus" 
-                location="Bhubaneswar, Odisha" 
-                type="Full-Time" 
-                salary="₹8L - ₹12L / year"
-                posted="5 hours ago"
-              />
-              <JobCard 
-                title="UI/UX Product Designer" 
-                company="Innovate Apps" 
-                location="Remote" 
-                type="Contract" 
-                salary="₹60,000 / month"
-                posted="1 day ago"
-              />
-              <JobCard 
-                title="Customer Success Manager" 
-                company="Global Services Inc" 
-                location="Sambalpur, Odisha" 
-                type="Full-Time" 
-                salary="₹4L - ₹6L / year"
-                posted="Just now"
-              />
+              {featuredJobs.length > 0 ? (
+                featuredJobs.map((job) => (
+                  <JobCard 
+                    key={job.id}
+                    title={job.title} 
+                    company={job.employerName} 
+                    location={`${job.district}, ${job.state}`} 
+                    type={job.jobType} 
+                    salary={job.salaryRange}
+                    posted="Recently"
+                    onApply={() => {
+                      setSelectedJob(job);
+                      setIsApplyModalOpen(true);
+                    }}
+                  />
+                ))
+              ) : (
+                <div className="col-span-2 text-center py-12 bg-white/5 rounded-xl border border-white/10 text-slate-400">
+                  <Icons.Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-purple-500" />
+                  Fetching latest opportunities...
+                </div>
+              )}
             </div>
             
             <div className="mt-10 text-center">
@@ -209,7 +222,7 @@ function JobCategoryCard({ title, count, icon }: { title: string, count: string,
   );
 }
 
-function JobCard({ title, company, location, type, salary, posted }: { title: string, company: string, location: string, type: string, salary: string, posted: string }) {
+function JobCard({ title, company, location, type, salary, posted, onApply }: { title: string, company: string, location: string, type: string, salary: string, posted: string, onApply?: () => void }) {
   return (
     <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-xl border border-white/20 p-6 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group hover:border-purple-500/50 hover:shadow-[0_15px_40px_rgba(168,85,247,0.25)] hover:-translate-y-1 transition-all duration-300">
       <div className="flex justify-between items-start mb-4">
@@ -241,7 +254,7 @@ function JobCard({ title, company, location, type, salary, posted }: { title: st
       
       <div className="flex items-center justify-between pt-4 border-t border-white/10">
         <span className="text-xs text-slate-500">{posted}</span>
-        <button className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+        <button onClick={onApply} className="px-5 py-2 rounded bg-white/5 hover:bg-purple-600 text-slate-300 hover:text-white border border-white/10 hover:border-purple-500 font-medium text-sm transition-all shadow-md group-hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]">
           Apply Now
         </button>
       </div>

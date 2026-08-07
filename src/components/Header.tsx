@@ -54,7 +54,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[200] bg-[#050B1B]/80 backdrop-blur-md relative">
+      <header className="fixed top-0 left-0 w-full z-[200] bg-[#050B1B]/80 backdrop-blur-md">
         <div className="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Logo */}

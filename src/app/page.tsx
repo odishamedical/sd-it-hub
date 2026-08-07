@@ -335,10 +335,10 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
-            <Icons.Facebook className="w-4 h-4 hover:text-white cursor-pointer" />
-            <Icons.Twitter className="w-4 h-4 hover:text-white cursor-pointer" />
-            <Icons.Linkedin className="w-4 h-4 hover:text-white cursor-pointer" />
-            <Icons.Instagram className="w-4 h-4 hover:text-white cursor-pointer" />
+            <Icons.Globe className="w-4 h-4 hover:text-white cursor-pointer" />
+            <Icons.Mail className="w-4 h-4 hover:text-white cursor-pointer" />
+            <Icons.Phone className="w-4 h-4 hover:text-white cursor-pointer" />
+            <Icons.MessageCircle className="w-4 h-4 hover:text-white cursor-pointer" />
           </div>
         </div>
       </div>

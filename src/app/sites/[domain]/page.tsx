@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { db, doc, getDoc } from '@/utils/firebase';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
-
+import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
 export default async function SiteRenderer({ params }: { params: { domain: string } }) {
   const { domain } = params;
 
@@ -48,6 +48,14 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
   if (deployment.templateId === 'jewel-modern') {
     return (
       <JewelModernTemplate 
+        config={deployment} 
+        shop={shopData} 
+        products={products} 
+      />
+    );
+  } else if (deployment.templateId === 'jewel-classic') {
+    return (
+      <JewelClassicTemplate 
         config={deployment} 
         shop={shopData} 
         products={products} 

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
+import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
 import Link from 'next/link';
 import * as Icons from 'lucide-react';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -96,8 +97,20 @@ function TemplatePreviewInner() {
 
       {/* RENDER TEMPLATE (Push down by 14 = 56px so banner doesn't cover top) */}
       <div className="pt-[56px] min-h-screen">
-        {templateId === 'jewel-modern' || templateId === 'jewel-classic' || templateId === 'jewel-prestige' ? (
+        {templateId === 'jewel-modern' ? (
           <JewelModernTemplate 
+            config={config} 
+            shop={MOCK_SHOP} 
+            products={MOCK_PRODUCTS} 
+          />
+        ) : templateId === 'jewel-classic' ? (
+          <JewelClassicTemplate 
+            config={config} 
+            shop={MOCK_SHOP} 
+            products={MOCK_PRODUCTS} 
+          />
+        ) : templateId === 'jewel-prestige' ? (
+          <JewelModernTemplate // Fallback until built
             config={config} 
             shop={MOCK_SHOP} 
             products={MOCK_PRODUCTS} 

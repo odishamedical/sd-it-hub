@@ -108,8 +108,8 @@ export default function Home() {
       {/* Main Content Area */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-4 pb-24 space-y-16">
         
-        {/* Hub Categories (3 Cards) */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Hub Categories (4 Cards) */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <HubCard 
             title="Find Your Dream Job" 
             subtitle="Browse top job opportunities" 
@@ -130,6 +130,13 @@ export default function Home() {
             btnText="Our Services" 
             btnColor="amber"
             href="/services"
+          />
+          <HubCard 
+            title="Premium Templates" 
+            subtitle="Launch your SaaS site in minutes" 
+            btnText="Browse Templates" 
+            btnColor="blue"
+            href="/templates"
           />
         </section>
 

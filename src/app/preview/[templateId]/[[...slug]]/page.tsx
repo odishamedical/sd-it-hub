@@ -3,7 +3,7 @@
 import React from 'react';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
-import Link from 'next/link';
+import JewelPrestigeTemplate from '@/components/templates/JewelPrestigeTemplate';import Link from 'next/link';
 import * as Icons from 'lucide-react';
 import { useParams, useSearchParams } from 'next/navigation';
 
@@ -62,6 +62,8 @@ function TemplatePreviewInner() {
   const params = useParams();
   const searchParams = useSearchParams();
   const templateId = params?.templateId as string;
+  const slug = params?.slug as string[] | undefined;
+  const currentRoute = slug ? slug.join('/') : 'home';
   
   // State for customization engine
   const [themeColor, setThemeColor] = useState(searchParams?.get('color') || "#0f172a");
@@ -162,18 +164,21 @@ function TemplatePreviewInner() {
             config={config} 
             shop={MOCK_SHOP} 
             products={MOCK_PRODUCTS} 
+            currentRoute={currentRoute}
           />
         ) : templateId === 'jewel-classic' ? (
           <JewelClassicTemplate 
             config={config} 
             shop={MOCK_SHOP} 
             products={MOCK_PRODUCTS} 
+            currentRoute={currentRoute}
           />
         ) : templateId === 'jewel-prestige' ? (
-          <JewelModernTemplate // Fallback until built
+          <JewelPrestigeTemplate 
             config={config} 
             shop={MOCK_SHOP} 
             products={MOCK_PRODUCTS} 
+            currentRoute={currentRoute}
           />
         ) : (
           <div className="flex items-center justify-center min-h-screen bg-slate-900 text-white">

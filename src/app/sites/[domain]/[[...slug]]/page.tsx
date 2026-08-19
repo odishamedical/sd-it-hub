@@ -2,8 +2,10 @@ import { notFound } from 'next/navigation';
 import { db, doc, getDoc } from '@/utils/firebase';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
-export default async function SiteRenderer({ params }: { params: { domain: string } }) {
-  const { domain } = params;
+import JewelPrestigeTemplate from '@/components/templates/JewelPrestigeTemplate';
+export default async function SiteRenderer({ params }: { params: { domain: string, slug?: string[] } }) {
+  const { domain, slug } = params;
+  const currentRoute = slug ? slug.join('/') : 'home';
 
   // 1. Fetch deployment configuration from IT Hub Database
   const deploymentRef = doc(db, 'deployments', domain);
@@ -50,7 +52,8 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
       <JewelModernTemplate 
         config={deployment} 
         shop={shopData} 
-        products={products} 
+        products={products}
+        currentRoute={currentRoute}
       />
     );
   } else if (deployment.templateId === 'jewel-classic') {
@@ -58,7 +61,17 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
       <JewelClassicTemplate 
         config={deployment} 
         shop={shopData} 
-        products={products} 
+        products={products}
+        currentRoute={currentRoute}
+      />
+    );
+  } else if (deployment.templateId === 'jewel-prestige') {
+    return (
+      <JewelPrestigeTemplate 
+        config={deployment} 
+        shop={shopData} 
+        products={products}
+        currentRoute={currentRoute}
       />
     );
   }

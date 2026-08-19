@@ -3,6 +3,9 @@ import { db, doc, getDoc } from '@/utils/firebase';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
 import JewelPrestigeTemplate from '@/components/templates/JewelPrestigeTemplate';
+import JewelCommerceTemplate from '@/components/templates/JewelCommerceTemplate';
+import JewelArtisanTemplate from '@/components/templates/JewelArtisanTemplate';
+
 export default async function SiteRenderer({ params }: { params: { domain: string, slug?: string[] } }) {
   const { domain, slug } = params;
   const currentRoute = slug ? slug.join('/') : 'home';
@@ -68,6 +71,24 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
   } else if (deployment.templateId === 'jewel-prestige') {
     return (
       <JewelPrestigeTemplate 
+        config={deployment} 
+        shop={shopData} 
+        products={products}
+        currentRoute={currentRoute}
+      />
+    );
+  } else if (deployment.templateId === 'jewel-commerce') {
+    return (
+      <JewelCommerceTemplate 
+        config={deployment} 
+        shop={shopData} 
+        products={products}
+        currentRoute={currentRoute}
+      />
+    );
+  } else if (deployment.templateId === 'jewel-artisan') {
+    return (
+      <JewelArtisanTemplate 
         config={deployment} 
         shop={shopData} 
         products={products}

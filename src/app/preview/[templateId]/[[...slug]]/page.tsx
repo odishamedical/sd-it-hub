@@ -3,7 +3,10 @@
 import React from 'react';
 import JewelModernTemplate from '@/components/templates/JewelModernTemplate';
 import JewelClassicTemplate from '@/components/templates/JewelClassicTemplate';
-import JewelPrestigeTemplate from '@/components/templates/JewelPrestigeTemplate';import Link from 'next/link';
+import JewelPrestigeTemplate from '@/components/templates/JewelPrestigeTemplate';
+import JewelCommerceTemplate from '@/components/templates/JewelCommerceTemplate';
+import JewelArtisanTemplate from '@/components/templates/JewelArtisanTemplate';
+import Link from 'next/link';
 import * as Icons from 'lucide-react';
 import { useParams, useSearchParams } from 'next/navigation';
 
@@ -175,6 +178,20 @@ function TemplatePreviewInner() {
           />
         ) : templateId === 'jewel-prestige' ? (
           <JewelPrestigeTemplate 
+            config={config} 
+            shop={MOCK_SHOP} 
+            products={MOCK_PRODUCTS} 
+            currentRoute={currentRoute}
+          />
+        ) : templateId === 'jewel-commerce' ? (
+          <JewelCommerceTemplate 
+            config={config} 
+            shop={MOCK_SHOP} 
+            products={MOCK_PRODUCTS} 
+            currentRoute={currentRoute}
+          />
+        ) : templateId === 'jewel-artisan' ? (
+          <JewelArtisanTemplate 
             config={config} 
             shop={MOCK_SHOP} 
             products={MOCK_PRODUCTS} 

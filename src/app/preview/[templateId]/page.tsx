@@ -56,47 +56,107 @@ const MOCK_PRODUCTS = [
   },
 ];
 
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 
 function TemplatePreviewInner() {
   const params = useParams();
   const searchParams = useSearchParams();
   const templateId = params?.templateId as string;
-  const themeColor = searchParams?.get('color') || "#0f172a";
+  
+  // State for customization engine
+  const [themeColor, setThemeColor] = useState(searchParams?.get('color') || "#0f172a");
+  const [fontFamily, setFontFamily] = useState("sans");
+  const [heroLayout, setHeroLayout] = useState("center");
+
+  // Sync state with URL params if they exist on initial load
+  useEffect(() => {
+    const urlColor = searchParams?.get('color');
+    if (urlColor) setThemeColor(urlColor);
+  }, [searchParams]);
 
   const config = {
     shopName: "Jewel Craft Mockup",
     tagline: "Experience the elegance of our masterfully crafted collections.",
     themeColor: themeColor,
-    templateId: templateId
+    templateId: templateId,
+    fontFamily: fontFamily,
+    heroLayout: heroLayout
   };
 
   return (
     <>
       {/* PREVIEW BANNER */}
-      <div className="fixed top-0 inset-x-0 h-14 bg-slate-900 border-b border-sky-500/30 z-[100] flex items-center justify-between px-6 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-        <div className="flex items-center gap-3">
+      <div className="fixed top-0 inset-x-0 h-16 bg-slate-900 border-b border-sky-500/30 z-[100] flex items-center justify-between px-6 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        
+        {/* Left: Branding & Status */}
+        <div className="flex items-center gap-3 w-1/4">
           <div className="bg-sky-500/20 text-sky-400 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
             Preview Mode
           </div>
-          <span className="text-white text-sm font-bold border-l border-slate-700 pl-3">
+          <span className="text-white text-sm font-bold border-l border-slate-700 pl-3 hidden md:block">
             {templateId === 'jewel-classic' ? 'Classic Elegance' : templateId === 'jewel-modern' ? 'Modern Minimalist' : 'Prestige Gallery'}
           </span>
         </div>
         
-        <div className="flex items-center gap-4">
-          <span className="text-slate-400 text-xs hidden md:inline-block">
-            Theme Color: <span className="font-mono bg-slate-800 px-1 rounded">{themeColor}</span>
-          </span>
-          <button onClick={() => window.close()} className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-emerald-500/20">
-            <Icons.Check className="w-4 h-4" /> Use This Template
+        {/* Center: Customization Engine Toolbar */}
+        <div className="flex-1 flex items-center justify-center gap-6">
+          
+          {/* Color Picker */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest hidden lg:block">Color:</span>
+            <div className="flex items-center gap-1.5 bg-slate-800 p-1 rounded-lg border border-slate-700">
+              {['#0f172a', '#991b1b', '#065f46', '#7e22ce', '#b45309'].map(c => (
+                <button 
+                  key={c}
+                  onClick={() => setThemeColor(c)}
+                  className={`w-6 h-6 rounded-full border-2 transition-all ${themeColor === c ? 'border-white scale-110' : 'border-transparent hover:scale-110'}`}
+                  style={{ backgroundColor: c }}
+                  title={`Color: ${c}`}
+                />
+              ))}
+              {/* Custom Color Input */}
+              <input 
+                type="color" 
+                value={themeColor}
+                onChange={(e) => setThemeColor(e.target.value)}
+                className="w-6 h-6 rounded-full border-none cursor-pointer bg-transparent ml-1"
+                title="Pick Custom Color"
+              />
+            </div>
+          </div>
+
+          {/* Font Toggle */}
+          <div className="flex items-center gap-2 hidden sm:flex">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest hidden lg:block">Font:</span>
+            <div className="flex bg-slate-800 rounded-lg p-1 border border-slate-700">
+              <button 
+                onClick={() => setFontFamily('sans')}
+                className={`px-3 py-1 text-xs font-bold rounded ${fontFamily === 'sans' ? 'bg-sky-500 text-white' : 'text-slate-400 hover:text-white'} font-sans`}
+              >
+                Sans
+              </button>
+              <button 
+                onClick={() => setFontFamily('serif')}
+                className={`px-3 py-1 text-xs font-bold rounded ${fontFamily === 'serif' ? 'bg-sky-500 text-white' : 'text-slate-400 hover:text-white'} font-serif`}
+              >
+                Serif
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Right: Actions */}
+        <div className="flex items-center justify-end gap-4 w-1/4">
+          <button onClick={() => window.close()} className="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+            <Icons.Check className="w-4 h-4" /> <span className="hidden sm:inline">Use Template</span>
           </button>
         </div>
       </div>
 
-      {/* RENDER TEMPLATE (Push down by 14 = 56px so banner doesn't cover top) */}
-      <div className="pt-[56px] min-h-screen">
+      {/* RENDER TEMPLATE (Push down by 16 = 64px) */}
+      <div className="pt-[64px] min-h-screen transition-all duration-500" style={{ fontFamily: fontFamily === 'serif' ? 'Georgia, serif' : 'Inter, sans-serif' }}>
         {templateId === 'jewel-modern' ? (
           <JewelModernTemplate 
             config={config} 

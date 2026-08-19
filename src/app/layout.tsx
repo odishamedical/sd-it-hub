@@ -26,6 +26,13 @@ export default function RootLayout({
       lang="en"
       className={`${inter.className} h-full antialiased`}
     >
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1792783864518197"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body className="min-h-full flex flex-col bg-[#040815] text-[#f8fafc] overflow-x-hidden">
         <AuthProvider>
           {children}

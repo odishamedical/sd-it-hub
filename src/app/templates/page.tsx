@@ -129,9 +129,9 @@ export default function TemplatesPage() {
                       className="absolute inset-0 mix-blend-color transition-colors duration-500 z-0 opacity-50"
                       style={{ backgroundColor: selectedTemplateColor[template.id] || "transparent" }}
                     />
-                    {template.image && (
+                    {template.thumbnailUrl && (
                       <Image 
-                        src={template.image} 
+                        src={template.thumbnailUrl} 
                         alt={template.name || "Template"} 
                         fill sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover object-top group-hover:scale-105 transition-transform duration-500" 

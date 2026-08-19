@@ -1,145 +1,161 @@
 import React from 'react';
 import Image from 'next/image';
 
-export default function JewelClassicTemplate({ config, shop, products }: { config: any, shop: any, products: any[] }) {
-  const primaryColor = config.themeColor || '#7f1d1d'; // Default deep burgundy
-  const secondaryColor = '#fdfbf7'; // Ivory / light beige background
+export default function JewelClassicTemplate({ config, shop, products, currentRoute = 'home' }: { config: any, shop: any, products: any[], currentRoute?: string }) {
+  const primaryColor = config.themeColor || '#7f1d1d'; // Rich heritage red
 
   return (
-    <div className="min-h-screen font-serif" style={{ backgroundColor: secondaryColor, color: '#292524' }}>
-      {/* TOP NOTIFICATION BAR */}
-      <div className="text-center py-2 text-xs uppercase tracking-widest text-white/90 font-sans" style={{ backgroundColor: primaryColor }}>
-        A Heritage of Excellence Since 1995
-      </div>
-
-      {/* HEADER */}
-      <header className="border-b border-stone-200 sticky top-0 z-50 bg-[#fdfbf7]/90 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-[#fcf9f2] text-[#2d1b11] font-serif selection:bg-[#7f1d1d] selection:text-[#fcf9f2]">
+      
+      {/* CLASSIC ELEGANCE HEADER */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-[#fcf9f2]/90 backdrop-blur-md border-b-4 shadow-sm" style={{ borderColor: primaryColor }}>
+        {/* Top bar */}
+        <div className="bg-[#2d1b11] text-[#fcf9f2] text-xs py-2 text-center tracking-widest font-sans uppercase">
+          Celebrating 25 Years of Purity & Trust
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+          <nav className="hidden md:flex items-center gap-8 text-sm uppercase tracking-widest font-semibold text-[#4a2c1d]">
+            <a href="#" className="hover:text-[#7f1d1d] transition-colors">Heritage</a>
+            <a href="#" className="hover:text-[#7f1d1d] transition-colors">Bridal</a>
+          </nav>
+          
+          <a href="./" className="text-3xl font-bold tracking-wider text-center flex-1" style={{ color: primaryColor }}>
             {shop.logoUrl ? (
-              <div className="relative h-14 w-40">
-                <Image src={shop.logoUrl} alt={config.shopName} fill sizes="160px" className="object-contain object-left" />
+              <div className="relative w-48 h-16 mx-auto">
+                <Image src={shop.logoUrl} alt={config.shopName} fill className="object-contain" />
               </div>
             ) : (
-              <div className="flex flex-col items-center md:items-start">
-                <h1 className="text-3xl font-bold tracking-wide" style={{ color: primaryColor }}>{config.shopName}</h1>
-                <span className="text-xs uppercase tracking-[0.3em] text-stone-500 mt-1">Fine Jewellery</span>
-              </div>
+              config.shopName
             )}
+          </a>
+
+          <div className="hidden md:flex items-center justify-end gap-8 text-sm uppercase tracking-widest font-semibold text-[#4a2c1d]">
+            <a href="#" className="hover:text-[#7f1d1d] transition-colors">Stores</a>
+            <a href="#" className="hover:text-[#7f1d1d] transition-colors">Contact</a>
           </div>
-          <nav className="flex items-center gap-8 text-sm uppercase tracking-widest text-stone-700 font-medium">
-            <a href="#" className="hover:text-black transition-colors border-b border-transparent hover:border-current pb-1">Home</a>
-            <a href="#collections" className="hover:text-black transition-colors border-b border-transparent hover:border-current pb-1">Collections</a>
-            <a href="#heritage" className="hover:text-black transition-colors border-b border-transparent hover:border-current pb-1">Our Heritage</a>
-            <a href="#visit" className="hover:text-black transition-colors border-b border-transparent hover:border-current pb-1">Visit Us</a>
-          </nav>
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden border-b-8 border-double" style={{ borderColor: primaryColor }}>
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1599643478524-fb66f723666a?auto=format&fit=crop&q=80&w=1600"} 
-            alt="Hero"
-            fill sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-stone-900/40" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-2xl mx-auto bg-[#fdfbf7]/95 p-12 shadow-2xl border border-stone-200">
-          <h2 className="text-4xl md:text-5xl font-normal text-stone-900 mb-6 leading-tight italic" style={{ color: primaryColor }}>
-            Timeless Elegance. <br/> Masterfully Crafted.
-          </h2>
-          <div className="w-24 h-px bg-stone-400 mx-auto mb-6"></div>
-          <p className="text-lg text-stone-700 mb-8 font-light italic">
-            {config.tagline || "Discover our exclusive collection of traditional and modern ornaments."}
-          </p>
-          <a href="#collections" className="inline-block px-10 py-3 uppercase tracking-widest text-sm text-white transition-all hover:bg-stone-900" style={{ backgroundColor: primaryColor }}>
-            View Collection
-          </a>
-        </div>
-      </section>
-
-      {/* HERITAGE SECTION */}
-      <section id="heritage" className="py-20 px-6 max-w-5xl mx-auto text-center">
-        <h3 className="text-3xl text-stone-800 mb-4" style={{ color: primaryColor }}>Our Heritage</h3>
-        <div className="w-16 h-0.5 mx-auto mb-8" style={{ backgroundColor: primaryColor }}></div>
-        <p className="text-lg text-stone-600 leading-relaxed max-w-3xl mx-auto">
-          For generations, {config.shopName} has been synonymous with trust, purity, and exquisite craftsmanship. 
-          Every piece in our collection tells a story of tradition blended with contemporary artistry. We invite you 
-          to experience the legacy of authentic jewelry making.
-        </p>
-      </section>
-
-      {/* LIVE PRODUCTS GRID */}
-      <section id="collections" className="py-20 bg-stone-100 border-y border-stone-200">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h3 className="text-3xl text-stone-800 mb-4" style={{ color: primaryColor }}>Curated Collections</h3>
-            <div className="w-16 h-0.5 mx-auto" style={{ backgroundColor: primaryColor }}></div>
+      <main className="pt-32 min-h-screen">
+        
+        {/* HERO SECTION (Warm, ornate, traditional) */}
+        <section className="relative px-4 lg:px-12 py-12">
+          <div className="max-w-[1400px] mx-auto bg-[#4a2c1d] rounded-[2rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row items-center">
+            <div className="w-full md:w-1/2 p-12 lg:p-24 text-center md:text-left z-10">
+              <span className="text-[#d4af37] text-sm uppercase tracking-[0.3em] font-bold mb-6 block">The Maharanis Collection</span>
+              <h1 className="text-4xl lg:text-6xl text-[#fcf9f2] leading-tight mb-8">
+                {config.tagline || "Where Heritage Meets Elegance."}
+              </h1>
+              <p className="text-[#e8dccb] text-lg mb-10 max-w-md mx-auto md:mx-0">
+                Adorn yourself in 22-karat traditions crafted by generations of master artisans.
+              </p>
+              <button className="px-10 py-4 text-[#fcf9f2] font-bold uppercase tracking-widest text-sm rounded hover:bg-opacity-90 transition-all border border-transparent hover:border-[#d4af37]" style={{ backgroundColor: primaryColor }}>
+                Explore Collection
+              </button>
+            </div>
+            
+            <div className="w-full md:w-1/2 h-[60vh] md:h-[80vh] relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#4a2c1d] to-transparent z-10 hidden md:block"></div>
+              <Image 
+                src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1599643477874-5c91fce90a19?auto=format&fit=crop&q=80&w=1600"} 
+                alt="Bridal Gold" fill className="object-cover object-right"
+              />
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {products.length > 0 ? products.map(product => (
-              <div key={product.id} className="bg-[#fdfbf7] p-4 shadow-sm border border-stone-200 group hover:shadow-xl transition-shadow">
-                <div className="relative h-80 overflow-hidden bg-stone-50 border border-stone-100">
+        </section>
+
+        {/* ORNATE PRODUCT GRID */}
+        <section className="max-w-7xl mx-auto px-6 py-24">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl text-[#2d1b11] mb-6">Our Legacy Pieces</h2>
+            <div className="w-24 h-1 mx-auto" style={{ backgroundColor: primaryColor }}></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {products.map((product) => (
+              <div key={product.id} className="group bg-white p-6 rounded shadow-sm border border-[#e8dccb] hover:shadow-xl transition-all duration-500 flex flex-col items-center text-center">
+                <div className="relative w-full aspect-square mb-8 overflow-hidden rounded border border-[#f0e8d9]">
                   <Image 
                     src={product.images[0]} 
-                    alt={product.title}
-                    fill sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                    alt={product.title} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-[1.5s]" 
                   />
                   {product.stoneDetails?.hasStones && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-white/95 text-[10px] uppercase tracking-widest text-stone-800 border border-stone-200">
+                    <div className="absolute top-4 right-4 bg-[#fcf9f2] text-[#4a2c1d] px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-md">
                       {product.stoneDetails.type}
                     </div>
                   )}
                 </div>
-                <div className="pt-6 text-center">
-                  <span className="text-[10px] uppercase tracking-[0.2em] block mb-2 text-stone-500">
-                    {product.categoryId}
-                  </span>
-                  <h4 className="text-xl text-stone-900 mb-3">{product.title}</h4>
-                  <div className="w-8 h-px bg-stone-300 mx-auto mb-4"></div>
-                  <span className="font-medium text-lg" style={{ color: primaryColor }}>
-                    ₹{product.price.toLocaleString('en-IN')}
-                  </span>
-                </div>
+                
+                <span className="text-xs uppercase tracking-widest text-[#8c6b5d] mb-2">{product.categoryId}</span>
+                <h3 className="text-xl text-[#2d1b11] mb-4 group-hover:text-[#7f1d1d] transition-colors">{product.title}</h3>
+                <div className="w-12 h-px bg-[#e8dccb] mb-4"></div>
+                <p className="text-2xl font-bold" style={{ color: primaryColor }}>₹{product.price.toLocaleString('en-IN')}</p>
+                
+                <button className="mt-8 w-full py-3 border text-sm uppercase tracking-widest font-bold text-[#4a2c1d] hover:text-[#fcf9f2] transition-colors" style={{ borderColor: primaryColor }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = primaryColor} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  View Details
+                </button>
               </div>
-            )) : (
-              <div className="col-span-3 text-center py-20 text-stone-400 italic">
-                No active products found in inventory.
-              </div>
-            )}
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FOOTER */}
-      <footer id="visit" className="text-white py-16" style={{ backgroundColor: primaryColor }}>
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-2xl mb-4 font-bold">{config.shopName}</h4>
-            <p className="text-white/80 text-sm leading-relaxed italic max-w-xs">{config.tagline}</p>
+        {/* HERITAGE BANNER */}
+        <section className="py-24 px-6 bg-[#2d1b11] text-[#fcf9f2] mt-12 border-y-8" style={{ borderColor: primaryColor }}>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl lg:text-5xl mb-8 leading-tight">Trust Built Over Decades.</h2>
+            <p className="text-lg lg:text-xl text-[#dcbba6] font-light leading-relaxed mb-12">
+              Our gold is 100% BIS Hallmarked. When you buy from {config.shopName}, you are bringing home purity, prosperity, and a promise that lasts generations.
+            </p>
+            <button className="px-12 py-4 bg-[#d4af37] text-[#2d1b11] font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors">
+              Read Our Story
+            </button>
           </div>
+        </section>
+
+      </main>
+
+      {/* CLASSIC FOOTER */}
+      <footer className="bg-[#1a0f0a] text-[#dcbba6] py-24">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
+          
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-lg mb-6 uppercase tracking-widest border-b border-white/20 pb-2 inline-block">Visit Our Showroom</h4>
-            <p className="text-white/90 text-sm mb-2">{shop.address}</p>
-            <p className="text-white/90 text-sm">{shop.location?.city || shop.location?.block}, {shop.location?.state}</p>
+            <h2 className="text-3xl text-white mb-6" style={{ color: primaryColor }}>{config.shopName}</h2>
+            <p className="leading-relaxed mb-8 max-w-sm">
+              Crafting exquisite traditional jewelry since the beginning. Your trusted family jeweler.
+            </p>
+            <div className="flex gap-4">
+              <a href="#" className="w-12 h-12 rounded-full border border-[#dcbba6] flex items-center justify-center hover:bg-[#dcbba6] hover:text-[#1a0f0a] transition-colors">FB</a>
+              <a href="#" className="w-12 h-12 rounded-full border border-[#dcbba6] flex items-center justify-center hover:bg-[#dcbba6] hover:text-[#1a0f0a] transition-colors">IG</a>
+            </div>
           </div>
+          
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-lg mb-6 uppercase tracking-widest border-b border-white/20 pb-2 inline-block">Contact Us</h4>
-            <p className="text-white/90 text-sm mb-3">📞 {shop.phone}</p>
-            <p className="text-white/90 text-sm">✉️ {shop.email}</p>
+            <h4 className="text-white text-lg mb-6 uppercase tracking-widest font-bold">Quick Links</h4>
+            <ul className="space-y-4">
+              <li><a href="#" className="hover:text-white transition-colors">Temple Jewelry</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Bridal Sets</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Gold Coins</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Book a Video Call</a></li>
+            </ul>
           </div>
+          
+          <div className="flex flex-col items-center md:items-start">
+            <h4 className="text-white text-lg mb-6 uppercase tracking-widest font-bold">Visit Us</h4>
+            <ul className="space-y-4">
+              <li>{shop.address}</li>
+              <li>{shop.location?.city}, {shop.location?.state}</li>
+              <li className="text-white font-bold text-xl mt-4">{shop.phone}</li>
+              <li>{shop.email}</li>
+            </ul>
+          </div>
+
         </div>
-        <div className="max-w-6xl mx-auto px-6 mt-16 pt-8 border-t border-white/20 text-center text-xs tracking-widest text-white/60">
-          <span>&copy; {new Date().getFullYear()} {config.shopName}. All Rights Reserved.</span>
-          <span className="mx-3">|</span>
-          <a href="https://shyamdash.com" className="hover:text-white transition-colors">
-            Crafted by ShyamDash IT Services
-          </a>
+        
+        <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-[#2d1b11] text-center text-sm font-sans tracking-widest uppercase">
+          &copy; {new Date().getFullYear()} {config.shopName}. Powered by ShyamDash IT Services.
         </div>
       </footer>
     </div>

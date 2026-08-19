@@ -1,126 +1,159 @@
 import React from 'react';
 import Image from 'next/image';
 
-export default function JewelModernTemplate({ config, shop, products }: { config: any, shop: any, products: any[] }) {
-  const primaryColor = config.themeColor || '#0f172a';
+export default function JewelModernTemplate({ config, shop, products, currentRoute = 'home' }: { config: any, shop: any, products: any[], currentRoute?: string }) {
+  const primaryColor = config.themeColor || '#0f172a'; // Default modern slate
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans" style={{ '--primary': primaryColor } as any}>
-      {/* HEADER */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-slate-900 selection:text-white">
+      
+      {/* MODERN MINIMAL HEADER */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 transition-all duration-500">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <a href="./" className="text-xl font-black tracking-tight" style={{ color: primaryColor }}>
             {shop.logoUrl ? (
-              <div className="relative h-10 w-32">
-                <Image src={shop.logoUrl} alt={config.shopName} fill sizes="128px" className="object-contain object-left" />
-              </div>
+              <Image src={shop.logoUrl} alt={config.shopName} width={120} height={40} className="object-contain" />
             ) : (
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold" style={{ backgroundColor: primaryColor }}>
-                {config.shopName.charAt(0)}
-              </div>
+              config.shopName
             )}
-            <h1 className="text-xl font-bold" style={{ color: primaryColor }}>{config.shopName}</h1>
-          </div>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#" className="hover:text-black transition-colors">Home</a>
-            <a href="#collections" className="hover:text-black transition-colors">Collections</a>
-            <a href="#about" className="hover:text-black transition-colors">About</a>
-            <a href="#contact" className="hover:text-black transition-colors">Contact</a>
+          </a>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
+            <a href="#" className="hover:text-slate-900 transition-colors">Collections</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Bespoke</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Our Story</a>
           </nav>
+          <div className="flex items-center gap-4">
+            <button className="text-sm font-medium hover:text-slate-600 transition-colors">Search</button>
+            <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors">
+              <span className="text-lg">🛒</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1588444650733-d0767b753cb8?auto=format&fit=crop&q=80&w=1600"} 
-            alt="Hero"
-            fill sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 opacity-80" style={{ backgroundColor: primaryColor }} />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-          <span className="text-white/80 font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Welcome to</span>
-          <h2 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">{config.shopName}</h2>
-          <p className="text-xl text-white/90 mb-8 font-light">{config.tagline}</p>
-          <a href="#collections" className="inline-block bg-white px-8 py-4 rounded-full font-bold transition-transform hover:scale-105" style={{ color: primaryColor }}>
-            Explore Collection
-          </a>
-        </div>
-      </section>
-
-      {/* LIVE PRODUCTS GRID */}
-      <section id="collections" className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h3 className="text-3xl font-bold text-slate-900 mb-4">Featured Collections</h3>
-            <div className="w-16 h-1 mx-auto rounded" style={{ backgroundColor: primaryColor }}></div>
+      {/* DYNAMIC PAGE INJECTION (Single page focus for now, but ready for multi-page) */}
+      <main className="pt-20 min-h-screen animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
+        
+        {/* HERO SECTION (Apple-esque large typography and image) */}
+        <section className="relative h-[85vh] flex flex-col items-center justify-center overflow-hidden px-6">
+          <div className="text-center z-10 max-w-4xl mx-auto mb-12 transform hover:scale-105 transition-transform duration-1000">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-slate-900 mb-6 leading-[0.9]">
+              {config.tagline || "Redefining Minimalist Gold."}
+            </h1>
+            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light">
+              Discover the new standard in contemporary jewelry design. Ethically sourced, meticulously crafted.
+            </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.length > 0 ? products.map(product => (
-              <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group">
-                <div className="relative h-80 overflow-hidden bg-slate-100">
+          <div className="relative w-full max-w-6xl aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl">
+            <Image 
+              src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1599643478524-fb66f70a9210?auto=format&fit=crop&q=80&w=2000"} 
+              alt="Hero" fill className="object-cover hover:scale-105 transition-transform duration-[2s] ease-in-out"
+            />
+          </div>
+        </section>
+
+        {/* PRODUCT GRID SECTION */}
+        <section className="max-w-7xl mx-auto px-6 py-32">
+          <div className="flex justify-between items-end mb-16">
+            <div>
+              <h2 className="text-4xl font-bold tracking-tight mb-2">Curated Pieces</h2>
+              <p className="text-slate-500">The latest arrivals from our studio.</p>
+            </div>
+            <a href="#" className="hidden md:inline-block text-sm font-bold border-b-2 hover:px-2 transition-all" style={{ borderColor: primaryColor, color: primaryColor }}>
+              View All &rarr;
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product, idx) => (
+              <div key={product.id} className="group cursor-pointer">
+                <div className="relative aspect-[4/5] bg-slate-50 rounded-2xl overflow-hidden mb-6">
                   <Image 
                     src={product.images[0]} 
-                    alt={product.title}
-                    fill sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    alt={product.title} 
+                    fill 
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
                   />
-                  {product.stoneDetails?.hasStones && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur text-xs font-bold rounded-full text-slate-800">
-                      {product.stoneDetails.type}
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <span className="text-xs font-bold uppercase tracking-wider block mb-2" style={{ color: primaryColor }}>
-                    {product.categoryId}
-                  </span>
-                  <h4 className="text-lg font-bold text-slate-900 mb-2">{product.title}</h4>
-                  <p className="text-slate-500 text-sm line-clamp-2 mb-4">{product.description}</p>
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <span className="font-bold text-lg text-slate-900">₹{product.price.toLocaleString('en-IN')}</span>
-                    <button className="text-sm font-bold hover:opacity-80" style={{ color: primaryColor }}>
-                      View Details &rarr;
+                  {/* Hover Overlay Button */}
+                  <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <button className="bg-white text-slate-900 font-bold px-6 py-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                      Quick View
                     </button>
                   </div>
                 </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{product.categoryId}</span>
+                  <h3 className="text-lg font-bold text-slate-900 mb-1 truncate group-hover:text-sky-600 transition-colors">{product.title}</h3>
+                  <p className="text-slate-600 font-medium">₹{product.price.toLocaleString('en-IN')}</p>
+                </div>
               </div>
-            )) : (
-              <div className="col-span-3 text-center py-20 text-slate-400">
-                No active products found in inventory.
-              </div>
-            )}
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h4 className="text-xl font-bold mb-4">{config.shopName}</h4>
-            <p className="text-slate-400 text-sm">{config.tagline}</p>
+        {/* FEATURE HIGHLIGHT */}
+        <section className="bg-slate-50 py-32">
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+            <div className="w-full md:w-1/2">
+              <h2 className="text-4xl font-bold tracking-tight mb-6">Uncompromising Quality.</h2>
+              <p className="text-slate-500 text-lg leading-relaxed mb-8">
+                Every piece in our collection goes through a rigorous 50-point inspection process. We use only conflict-free diamonds and 100% recycled gold to ensure our environmental footprint is as minimal as our designs.
+              </p>
+              <button className="px-8 py-4 text-white font-bold rounded-full shadow-lg shadow-sky-500/30 hover:-translate-y-1 transition-all" style={{ backgroundColor: primaryColor }}>
+                Learn About Our Process
+              </button>
+            </div>
+            <div className="w-full md:w-1/2 grid grid-cols-2 gap-4">
+              <div className="aspect-square bg-slate-200 rounded-3xl overflow-hidden relative">
+                <Image src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800" alt="Process 1" fill className="object-cover hover:scale-110 transition-transform duration-700" />
+              </div>
+              <div className="aspect-square bg-slate-200 rounded-3xl overflow-hidden relative mt-12">
+                <Image src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800" alt="Process 2" fill className="object-cover hover:scale-110 transition-transform duration-700" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* MODERN FOOTER */}
+      <footer className="bg-white border-t border-slate-100 py-24">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="md:col-span-2">
+            <h2 className="text-2xl font-black tracking-tight mb-6" style={{ color: primaryColor }}>{config.shopName}</h2>
+            <p className="text-slate-500 max-w-sm mb-8">
+              Elevating the everyday with minimalist gold jewelry. Designed in {shop.location?.city}.
+            </p>
+            <div className="flex gap-4">
+              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 cursor-pointer transition-colors">IN</div>
+              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 cursor-pointer transition-colors">FB</div>
+              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 cursor-pointer transition-colors">TW</div>
+            </div>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-slate-300">Location</h4>
-            <p className="text-slate-400 text-sm">{shop.address}</p>
-            <p className="text-slate-400 text-sm">{shop.location?.city || shop.location?.block}, {shop.location?.state}</p>
+            <h4 className="font-bold mb-6">Explore</h4>
+            <ul className="space-y-4 text-slate-500 text-sm">
+              <li><a href="#" className="hover:text-slate-900 transition-colors">New Arrivals</a></li>
+              <li><a href="#" className="hover:text-slate-900 transition-colors">Best Sellers</a></li>
+              <li><a href="#" className="hover:text-slate-900 transition-colors">Bridal Collection</a></li>
+              <li><a href="#" className="hover:text-slate-900 transition-colors">Gifts</a></li>
+            </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-slate-300">Contact</h4>
-            <p className="text-slate-400 text-sm mb-2">{shop.phone}</p>
-            <p className="text-slate-400 text-sm">{shop.email}</p>
+            <h4 className="font-bold mb-6">Contact</h4>
+            <ul className="space-y-4 text-slate-500 text-sm">
+              <li>{shop.address}</li>
+              <li>{shop.location?.city}, {shop.location?.state}</li>
+              <li>{shop.phone}</li>
+              <li>{shop.email}</li>
+            </ul>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500 flex flex-col items-center gap-2">
-          <span>&copy; {new Date().getFullYear()} {config.shopName}. All rights reserved.</span>
-          <a href="https://shyamdash.com" className="text-xs text-sky-500 hover:text-sky-400 transition-colors">
-            Powered by ShyamDash IT Services
-          </a>
+        <div className="max-w-7xl mx-auto px-6 mt-24 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-xs text-slate-400">
+          <p>&copy; {new Date().getFullYear()} {config.shopName}. All rights reserved.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-slate-600">Privacy Policy</a>
+            <a href="#" className="hover:text-slate-600">Terms of Service</a>
+          </div>
         </div>
       </footer>
     </div>

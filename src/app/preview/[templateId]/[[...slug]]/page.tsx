@@ -11,52 +11,52 @@ import * as Icons from 'lucide-react';
 import { useParams, useSearchParams } from 'next/navigation';
 
 const MOCK_SHOP = {
-  id: "mock-shop-001",
-  name: "Jewel Craft Mockup",
-  email: "hello@jewelcraft.com",
-  address: "123 Heritage Lane, Diamond District",
-  location: { city: "Mumbai", state: "Maharashtra" },
+  id: "shop_preview",
+  name: "Boutique Preview",
+  location: { city: "Mumbai", state: "Maharashtra", district: "Mumbai City", block: "Bandra" },
+  address: "123 Heritage Lane, Bandra West",
   phone: "+91 98765 43210",
-  coverImages: ["https://images.unsplash.com/photo-1599643477874-5c91fce90a19?auto=format&fit=crop&q=80&w=1600"],
+  email: "hello@boutiquepreview.com",
+  coverImages: ["https://images.unsplash.com/photo-1599643478524-fb66f70a9210?auto=format&fit=crop&q=80&w=2000"],
 };
 
 const MOCK_PRODUCTS = [
-  {
-    id: "prod-1",
+  { 
+    id: "prod_1", 
+    title: "22K Gold Bridal Necklace", 
+    price: 145000, 
     categoryId: "Necklaces",
-    title: "22K Antique Temple Necklace",
-    description: "Intricately designed temple necklace crafted in pure 22K gold featuring traditional motifs.",
-    price: 125000,
-    images: ["https://images.unsplash.com/photo-1599643478524-fb66f723666a?auto=format&fit=crop&q=80&w=800"],
-    stoneDetails: { hasStones: true, type: "Kundan" }
+    images: ["https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=800"],
+    description: "An exquisite 22-karat gold bridal necklace featuring intricate temple motifs and a brilliant polished finish.",
+    stoneDetails: { hasStones: false, type: "none" }
   },
-  {
-    id: "prod-2",
-    categoryId: "Earrings",
-    title: "Diamond Studded Jhumkas",
-    description: "Classic gold jhumkas adorned with brilliant cut diamonds for elegant occasions.",
-    price: 45000,
-    images: ["https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800"],
-    stoneDetails: { hasStones: true, type: "Diamond" }
-  },
-  {
-    id: "prod-3",
-    categoryId: "Bangles",
-    title: "Bridal Gold Kada Set",
-    description: "A pair of heavy 24K gold kadas perfect for bridal wear and grand celebrations.",
-    price: 210000,
-    images: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800"],
-    stoneDetails: { hasStones: false }
-  },
-  {
-    id: "prod-4",
+  { 
+    id: "prod_2", 
+    title: "Diamond Solitaire Ring", 
+    price: 85000, 
     categoryId: "Rings",
-    title: "Solitaire Engagement Ring",
-    description: "A timeless solitaire diamond set in an 18K rose gold band.",
-    price: 85000,
     images: ["https://images.unsplash.com/photo-1605100804763-247f6612d486?auto=format&fit=crop&q=80&w=800"],
+    description: "A breathtaking 1-carat diamond solitaire ring set in 18k white gold, designed for eternity.",
     stoneDetails: { hasStones: true, type: "Diamond" }
   },
+  { 
+    id: "prod_3", 
+    title: "Antique Gold Bangles", 
+    price: 120000, 
+    categoryId: "Bangles",
+    images: ["https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800"],
+    description: "A pair of antique-finish 22k gold bangles with delicate filigree work.",
+    stoneDetails: { hasStones: true, type: "Ruby" }
+  },
+  {
+    id: "prod_4",
+    title: "Emerald Drop Earrings",
+    price: 65000,
+    categoryId: "Earrings",
+    images: ["https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800"],
+    description: "Stunning emerald drop earrings encased in a halo of natural diamonds.",
+    stoneDetails: { hasStones: true, type: "Emerald" }
+  }
 ];
 
 import { Suspense, useState, useEffect } from 'react';

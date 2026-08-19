@@ -2,15 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 
 export default function JewelArtisanTemplate({ config, shop, products, currentRoute = 'home' }: { config: any, shop: any, products: any[], currentRoute?: string }) {
-  const primaryColor = config.themeColor || '#a16207'; // Earthy artisan gold/brown
+  const primaryColor = config.themeColor || '#654321'; // Earthy brown/copper
 
   // Multi-page Router Map
   const renderPage = () => {
     switch (currentRoute) {
-      case 'gallery':
-        return <GalleryPage products={products} primaryColor={primaryColor} />;
-      case 'studio':
-        return <StudioPage shop={shop} config={config} primaryColor={primaryColor} />;
+      case 'workshop':
+        return <WorkshopPage shop={shop} config={config} primaryColor={primaryColor} />;
       case 'home':
       default:
         return <HomePage config={config} shop={shop} products={products} primaryColor={primaryColor} />;
@@ -18,35 +16,23 @@ export default function JewelArtisanTemplate({ config, shop, products, currentRo
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f5f2] text-stone-800 font-serif overflow-x-hidden">
-      
-      {/* ARTISAN HEADER (Asymmetrical & Organic) */}
-      <header className="relative z-50 pt-8 pb-4 px-6 md:px-12 flex flex-col md:flex-row justify-between items-start md:items-center">
-        <a href="./" className="mb-6 md:mb-0 group">
-          {shop.logoUrl ? (
-            <Image src={shop.logoUrl} alt={config.shopName} width={100} height={40} className="object-contain" />
-          ) : (
-            <div>
-              <h1 className="text-3xl font-normal italic tracking-wider text-stone-800 group-hover:text-stone-500 transition-colors">{config.shopName}</h1>
-              <span className="text-[9px] uppercase tracking-[0.4em] text-stone-400 block mt-1">Handcrafted with Soul</span>
-            </div>
-          )}
-        </a>
-        
-        <nav className="flex gap-8 text-xs uppercase tracking-widest text-stone-500 font-sans">
-          <a href="./" className={`relative pb-1 ${currentRoute === 'home' || currentRoute === '' ? 'text-stone-900' : 'hover:text-stone-900'} transition-colors`}>
-            The Work
-            {(currentRoute === 'home' || currentRoute === '') && <span className="absolute bottom-0 left-0 w-full h-px" style={{ backgroundColor: primaryColor }}></span>}
+    <div className="min-h-screen bg-[#f9f8f6] text-[#3e3c38] font-serif selection:bg-[#d8d3c9]">
+      {/* ARTISAN HEADER */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-[#f9f8f6]/80 backdrop-blur-md border-b border-[#ece9e2] transition-all">
+        <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+          <a href="./" className="text-3xl font-normal tracking-tight italic" style={{ color: primaryColor }}>
+            {shop.logoUrl ? (
+              <Image src={shop.logoUrl} alt={config.shopName} width={140} height={50} className="object-contain" />
+            ) : (
+              config.shopName
+            )}
           </a>
-          <a href="gallery" className={`relative pb-1 ${currentRoute === 'gallery' ? 'text-stone-900' : 'hover:text-stone-900'} transition-colors`}>
-            Archive
-            {currentRoute === 'gallery' && <span className="absolute bottom-0 left-0 w-full h-px" style={{ backgroundColor: primaryColor }}></span>}
-          </a>
-          <a href="studio" className={`relative pb-1 ${currentRoute === 'studio' ? 'text-stone-900' : 'hover:text-stone-900'} transition-colors`}>
-            Studio
-            {currentRoute === 'studio' && <span className="absolute bottom-0 left-0 w-full h-px" style={{ backgroundColor: primaryColor }}></span>}
-          </a>
-        </nav>
+          <nav className="hidden md:flex items-center gap-12 font-medium tracking-wide text-[#5c5a55]">
+            <a href="./" className={`hover:text-[#222] transition-colors ${currentRoute === 'home' || currentRoute === '' ? 'text-[#222] italic' : ''}`}>The Collection</a>
+            <a href="workshop" className={`hover:text-[#222] transition-colors ${currentRoute === 'workshop' ? 'text-[#222] italic' : ''}`}>Inside the Workshop</a>
+            <a href="#" className="hover:text-[#222] transition-colors">Bespoke Inquiries</a>
+          </nav>
+        </div>
       </header>
 
       {/* DYNAMIC PAGE INJECTION */}
@@ -55,22 +41,36 @@ export default function JewelArtisanTemplate({ config, shop, products, currentRo
       </main>
 
       {/* ARTISAN FOOTER */}
-      <footer className="mt-24 pt-24 pb-12 px-6 md:px-12 border-t border-stone-200">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-12">
-          <div className="max-w-sm">
-            <h2 className="text-2xl italic text-stone-800 mb-6">{config.shopName}</h2>
-            <p className="text-stone-500 text-sm leading-loose mb-6">
-              "We believe jewelry is not just an accessory, but a wearable piece of art, carrying the energy of the hands that forged it."
+      <footer className="bg-[#ece9e2] pt-24 pb-12 mt-32 border-t border-[#d8d3c9]">
+        <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+          <div>
+            <h3 className="text-3xl italic mb-6 text-[#222]">{config.shopName}</h3>
+            <p className="text-[#5c5a55] leading-loose max-w-md font-light">
+              Handcrafting fine jewelry from sustainably sourced gold and ethically mined stones. 
+              Every piece is a dialogue between the artisan and the earth.
             </p>
-            <p className="text-xs uppercase tracking-widest text-stone-400">Handmade in {shop.location?.city || shop.location?.state}</p>
           </div>
-          
-          <div className="flex flex-col gap-4 font-sans text-xs uppercase tracking-widest text-stone-500">
-            <span className="font-bold text-stone-800 mb-2">Connect</span>
-            <a href={`mailto:${shop.email}`} className="hover:text-stone-800 transition-colors">Inquiries</a>
-            <a href="#" className="hover:text-stone-800 transition-colors">Instagram</a>
-            <a href="#" className="hover:text-stone-800 transition-colors">Pinterest</a>
+          <div className="grid grid-cols-2 gap-8 font-light text-[#5c5a55]">
+            <div>
+              <h4 className="text-[#222] font-medium mb-6 uppercase tracking-widest text-xs">Visit the Studio</h4>
+              <ul className="space-y-4">
+                <li>{shop.address}</li>
+                <li>{shop.location?.city}, {shop.location?.state}</li>
+                <li className="pt-4"><a href="#" className="italic border-b border-[#5c5a55] pb-1 hover:text-[#222]">Get Directions</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-[#222] font-medium mb-6 uppercase tracking-widest text-xs">Connect</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="hover:text-[#222] transition-colors">Instagram</a></li>
+                <li><a href="#" className="hover:text-[#222] transition-colors">Pinterest</a></li>
+                <li><a href="#" className="hover:text-[#222] transition-colors">Email Us</a></li>
+              </ul>
+            </div>
           </div>
+        </div>
+        <div className="max-w-5xl mx-auto px-6 pt-12 border-t border-[#d8d3c9] text-center text-sm font-light text-[#8b8882]">
+          &copy; {new Date().getFullYear()} {config.shopName}. Powered by ShyamDash.
         </div>
       </footer>
     </div>
@@ -78,125 +78,109 @@ export default function JewelArtisanTemplate({ config, shop, products, currentRo
 }
 
 // ---------------------------------------------------------
-// PAGE 1: HOME PAGE (Asymmetrical Storytelling)
+// PAGE 1: HOME PAGE (Asymmetrical Layout)
 // ---------------------------------------------------------
 function HomePage({ config, shop, products, primaryColor }: { config: any, shop: any, products: any[], primaryColor: string }) {
   return (
-    <div className="px-6 md:px-12 max-w-7xl mx-auto">
-      {/* Hero Section */}
-      <section className="mt-12 flex flex-col md:flex-row items-center gap-16">
-        <div className="w-full md:w-5/12 order-2 md:order-1 relative z-10">
-          <h1 className="text-5xl md:text-6xl text-stone-800 leading-[1.1] mb-8 relative">
-            <span className="absolute -left-8 -top-8 text-[120px] text-stone-200 opacity-50 font-sans italic z-[-1]">"</span>
-            {config.tagline || "Artistry Cast in Precious Metal."}
+    <>
+      <section className="pt-40 pb-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-center">
+        <div className="w-full md:w-5/12 animate-in fade-in slide-in-from-left-8 duration-1000">
+          <h1 className="text-5xl md:text-7xl mb-8 leading-[1.1] text-[#222] tracking-tight">
+            {config.tagline || "Jewelry with a Soul."}
           </h1>
-          <p className="text-stone-500 text-lg leading-relaxed mb-10 font-sans max-w-md">
-            Every piece is forged by hand in our studio, embracing the natural imperfections and raw beauty of ethically sourced materials.
+          <p className="text-xl text-[#5c5a55] font-light leading-relaxed mb-12 italic">
+            Unique, handcrafted gold pieces inspired by nature's beautiful imperfections.
           </p>
-          <a href="gallery" className="inline-block border-b-2 pb-1 text-sm uppercase tracking-widest font-sans font-bold hover:px-2 transition-all duration-300" style={{ borderColor: primaryColor, color: primaryColor }}>
-            Explore the Archive &rarr;
+          <a href="#gallery" className="inline-block border-b-2 pb-2 text-lg font-medium transition-all hover:pr-4" style={{ borderColor: primaryColor, color: primaryColor }}>
+            Explore the works &rarr;
           </a>
         </div>
-        
-        <div className="w-full md:w-7/12 order-1 md:order-2">
-          <div className="relative aspect-[4/3] rounded-sm overflow-hidden bg-stone-200">
-            <Image src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1579965611488-8250c60da089?auto=format&fit=crop&q=80&w=1600"} alt="Studio Work" fill className="object-cover" />
-          </div>
-          <div className="mt-4 flex justify-end">
-            <span className="text-[10px] uppercase tracking-widest text-stone-400 font-sans">The Studio Process</span>
-          </div>
+        <div className="w-full md:w-7/12 relative aspect-[4/3] animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
+          <div className="absolute inset-0 bg-[#ece9e2] rounded-[2rem] transform rotate-3 translate-x-4 translate-y-4"></div>
+          <Image 
+            src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=1600"} 
+            alt="Artisan Jewelry" fill className="object-cover rounded-[2rem] shadow-xl relative z-10 hover:-translate-y-2 hover:-translate-x-2 transition-transform duration-500" 
+          />
         </div>
       </section>
 
-      {/* Featured Pieces (Offset Grid) */}
-      <section className="mt-32">
-        <div className="text-center mb-16">
-          <span className="text-xs uppercase tracking-widest font-sans text-stone-500 block mb-4">Latest Forgings</span>
-          <div className="w-px h-12 bg-stone-300 mx-auto"></div>
-        </div>
+      {/* Asymmetrical Gallery */}
+      <section id="gallery" className="py-32 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+          {products.map((product, index) => {
+            // Asymmetrical grid logic
+            let colSpan = "md:col-span-4";
+            let marginTop = "md:mt-0";
+            
+            if (index % 4 === 0) {
+              colSpan = "md:col-span-7";
+            } else if (index % 4 === 1) {
+              colSpan = "md:col-span-5";
+              marginTop = "md:mt-32";
+            } else if (index % 4 === 2) {
+              colSpan = "md:col-span-5";
+            } else if (index % 4 === 3) {
+              colSpan = "md:col-span-7";
+              marginTop = "md:-mt-24";
+            }
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-32 max-w-5xl mx-auto">
-          {products.slice(0, 4).map((product, idx) => (
-            <div key={product.id} className={`group ${idx % 2 === 1 ? 'md:mt-32' : ''}`}>
-              <div className="relative aspect-[3/4] bg-stone-100 mb-6 overflow-hidden">
-                <Image src={product.images[0]} alt={product.title} fill className="object-cover group-hover:scale-[1.03] transition-transform duration-700" />
-                {product.stoneDetails?.hasStones && (
-                  <div className="absolute bottom-4 left-4 right-4 text-center py-2 bg-[#f8f5f2]/90 backdrop-blur text-[10px] uppercase tracking-widest font-sans text-stone-800">
-                    {product.stoneDetails.type} Focus
+            return (
+              <div key={product.id} className={`${colSpan} ${marginTop} group cursor-pointer`}>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-[#ece9e2]">
+                  <Image 
+                    src={product.images[0]} alt={product.title} fill 
+                    className="object-cover transition-all duration-[2s] group-hover:scale-105 group-hover:opacity-90" 
+                  />
+                  {product.stoneDetails?.hasStones && (
+                    <div className="absolute top-6 right-6 w-16 h-16 rounded-full bg-[#f9f8f6] flex items-center justify-center shadow-lg text-[9px] uppercase tracking-widest font-bold text-[#5c5a55] transform rotate-12 group-hover:rotate-0 transition-transform duration-500">
+                      {product.stoneDetails.type}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                  <div>
+                    <h3 className="text-2xl mb-2 text-[#222] italic">{product.title}</h3>
+                    <p className="text-sm font-light text-[#5c5a55] max-w-sm line-clamp-2">{product.description}</p>
                   </div>
-                )}
+                  <span className="text-xl tracking-tight" style={{ color: primaryColor }}>₹{product.price.toLocaleString('en-IN')}</span>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl text-stone-800 mb-2 group-hover:italic transition-all">{product.title}</h3>
-                <span className="font-sans text-sm text-stone-500">₹{product.price.toLocaleString('en-IN')}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
-    </div>
+    </>
   );
 }
 
 // ---------------------------------------------------------
-// PAGE 2: GALLERY PAGE (Masonry/Mosaic Style)
+// PAGE 2: WORKSHOP PAGE
 // ---------------------------------------------------------
-function GalleryPage({ products, primaryColor }: { products: any[], primaryColor: string }) {
+function WorkshopPage({ shop, config, primaryColor }: { shop: any, config: any, primaryColor: string }) {
   return (
-    <div className="px-6 md:px-12 max-w-7xl mx-auto py-16 animate-in fade-in duration-1000">
-      <h1 className="text-4xl text-stone-800 italic mb-16 border-b border-stone-200 pb-8">The Archive</h1>
+    <div className="pt-40 pb-20 px-6 max-w-4xl mx-auto animate-in fade-in duration-1000 min-h-screen">
+      <h1 className="text-5xl italic text-center mb-16 text-[#222]">Inside the Workshop</h1>
       
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-        {products.map((product, i) => (
-          <div key={product.id} className="break-inside-avoid relative group cursor-pointer bg-white p-3 shadow-sm border border-stone-100">
-            {/* Randomize aspect ratio slightly for the masonry effect */}
-            <div className={`relative w-full ${i % 3 === 0 ? 'aspect-square' : i % 2 === 0 ? 'aspect-[3/4]' : 'aspect-[4/5]'} bg-stone-100 overflow-hidden`}>
-              <Image src={product.images[0]} alt={product.title} fill className="object-cover group-hover:opacity-90 transition-opacity duration-300" />
-            </div>
-            <div className="mt-4 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <h3 className="text-stone-800 text-lg mb-1">{product.title}</h3>
-              <p className="font-sans text-xs text-stone-500 mb-2">₹{product.price.toLocaleString('en-IN')}</p>
-              <button className="text-[10px] uppercase tracking-widest border-b pb-0.5" style={{ borderColor: primaryColor, color: primaryColor }}>Request Piece</button>
-            </div>
-          </div>
-        ))}
+      <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-16 shadow-2xl">
+        <Image src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=1600" alt="Workshop" fill className="object-cover sepia-[0.3]" />
       </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------
-// PAGE 3: STUDIO (About & Process)
-// ---------------------------------------------------------
-function StudioPage({ shop, config, primaryColor }: { shop: any, config: any, primaryColor: string }) {
-  return (
-    <div className="px-6 md:px-12 max-w-4xl mx-auto py-16 animate-in fade-in duration-1000">
-      <div className="text-center mb-20">
-        <h1 className="text-4xl text-stone-800 italic mb-6">Inside the Studio</h1>
-        <div className="w-12 h-px mx-auto" style={{ backgroundColor: primaryColor }}></div>
-      </div>
-
-      <div className="prose prose-stone lg:prose-lg mx-auto font-serif text-stone-600 leading-loose">
-        <p className="first-letter:text-5xl first-letter:font-bold first-letter:text-stone-900 first-letter:mr-3 first-letter:float-left">
-          The art of jewelry making is an ancient dialogue between creator and material. Here at {config.shopName}, 
-          we honor that dialogue by taking our time. There are no rush jobs. There are no mass production lines.
+      
+      <div className="prose prose-lg prose-stone max-w-2xl mx-auto font-light leading-loose text-[#5c5a55]">
+        <p className="first-letter:text-7xl first-letter:font-normal first-letter:text-[#222] first-letter:mr-3 first-letter:float-left">
+          Every piece at {config.shopName} begins its journey not in a factory, but on a well-worn jeweler's bench. 
+          We believe that jewelry should bear the subtle marks of the hands that made it, giving each ring, necklace, 
+          and bracelet a unique soul that cannot be replicated by machines.
         </p>
         <p>
-          Every piece begins as an idea, sketched roughly onto paper, before it is slowly coaxed into reality using 
-          fire, hammers, and infinite patience. We source our metals and stones ethically, ensuring that the raw 
-          materials carry as much good intention as the final design.
+          Our process involves traditional lost-wax casting, hand-forging, and meticulous stone setting. We source only 
+          conflict-free gems and recycled gold, ensuring that our commitment to beauty extends to the earth from which 
+          these materials came.
         </p>
-        <blockquote className="border-l-4 pl-6 italic text-stone-800 my-10" style={{ borderColor: primaryColor }}>
-          "A piece of jewelry should look like it was dug out of the earth, perfectly formed, carrying the warmth of the sun."
-        </blockquote>
-      </div>
-
-      <div className="mt-24 border-t border-stone-200 pt-16 flex flex-col items-center text-center">
-        <h3 className="text-xl text-stone-800 mb-8 italic">Visit the Workbench</h3>
-        <p className="font-sans text-sm text-stone-500 uppercase tracking-widest leading-loose">
-          {shop.address} <br/>
-          {shop.location?.city}, {shop.location?.state} <br/>
-          {shop.phone}
+        <div className="my-16 border-l-4 pl-8 italic text-2xl text-[#222]" style={{ borderColor: primaryColor }}>
+          "True luxury is not about perfection, but about authenticity and the human touch."
+        </div>
+        <p>
+          Visit our studio in {shop.location?.city} to witness the magic firsthand and discuss a bespoke commission tailored entirely to your story.
         </p>
       </div>
     </div>

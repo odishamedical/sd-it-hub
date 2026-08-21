@@ -27,7 +27,19 @@ export default function TemplatesPage() {
       try {
         const querySnapshot = await getDocs(collection(db, "shyamdash_templates"));
         const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setTemplates(data);
+        
+        if (data.length > 0) {
+          setTemplates(data);
+        } else {
+          // Fallback to static templates if DB is empty
+          setTemplates([
+            { id: "jewel-modern", name: "Modern Minimalist", category: "Gold Jewelry", description: "A sleek, contemporary design focused on large imagery and clean typography. Perfect for high-end bespoke jewellers.", thumbnailUrl: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=800", colors: [{ name: "Slate", value: "#0f172a" }, { name: "Emerald", value: "#065f46" }] },
+            { id: "jewel-classic", name: "Classic Elegance", category: "Gold Jewelry", description: "A traditional, luxurious layout designed for heritage brands with a focus on trust and wide catalog visibility.", thumbnailUrl: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800", colors: [{ name: "Ruby", value: "#991b1b" }, { name: "Gold", value: "#b45309" }] },
+            { id: "jewel-prestige", name: "Prestige Gallery", category: "Gold Jewelry", description: "An ultra-premium dark-mode template with gold accents, designed to make diamond and polki jewelry pop.", thumbnailUrl: "https://images.unsplash.com/photo-1605100804763-247f6612d486?auto=format&fit=crop&q=80&w=800", colors: [{ name: "Onyx", value: "#000000" }, { name: "Sapphire", value: "#1e3a8a" }] },
+            { id: "jewel-commerce", name: "High-Volume Commerce", category: "Gold Jewelry", description: "An e-commerce focused template with advanced filtering, optimized for high volume catalog browsing and fast checkouts.", thumbnailUrl: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800", colors: [{ name: "Trust Blue", value: "#0ea5e9" }, { name: "Royal", value: "#7e22ce" }] },
+            { id: "jewel-artisan", name: "Artisan Boutique", category: "Gold Jewelry", description: "A warm, narrative-driven template designed for independent creators and boutique artisanal collections.", thumbnailUrl: "https://images.unsplash.com/photo-1599643478524-fb66f70a9210?auto=format&fit=crop&q=80&w=800", colors: [{ name: "Terracotta", value: "#9a3412" }, { name: "Forest", value: "#166534" }] }
+          ]);
+        }
       } catch (err) {
         console.error("Error fetching templates:", err);
       } finally {

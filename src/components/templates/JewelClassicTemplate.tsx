@@ -55,12 +55,16 @@ export default function JewelClassicTemplate({ config, shop, products, currentRo
               </button>
             </div>
             
-            <div className="w-full md:w-1/2 h-[60vh] md:h-[80vh] relative">
+            <div className="w-full md:w-1/2 h-[60vh] md:h-[80vh] relative flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-r from-[#4a2c1d] to-transparent z-10 hidden md:block"></div>
-              <Image 
-                src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1599643477874-5c91fce90a19?auto=format&fit=crop&q=80&w=1600"} 
-                alt="Bridal Gold" fill className="object-cover object-right"
-              />
+              {shop.coverImages && shop.coverImages.length > 0 ? (
+                <Image 
+                  src={shop.coverImages[0]} 
+                  alt="Bridal Gold" fill className="object-cover object-right"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-[#d4af37]/20"></div>
+              )}
             </div>
           </div>
         </section>
@@ -75,13 +79,17 @@ export default function JewelClassicTemplate({ config, shop, products, currentRo
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {products.map((product) => (
               <div key={product.id} className="group bg-white p-6 rounded shadow-sm border border-[#e8dccb] hover:shadow-xl transition-all duration-500 flex flex-col items-center text-center">
-                <div className="relative w-full aspect-square mb-8 overflow-hidden rounded border border-[#f0e8d9]">
-                  <Image 
-                    src={product.images[0]} 
-                    alt={product.title} 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-[1.5s]" 
-                  />
+                <div className="relative w-full aspect-square mb-8 overflow-hidden rounded border border-[#f0e8d9] flex items-center justify-center bg-[#fcf9f2]">
+                  {product.images && product.images.length > 0 ? (
+                    <Image 
+                      src={product.images[0]} 
+                      alt={product.title} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-[1.5s]" 
+                    />
+                  ) : (
+                    <span className="text-4xl opacity-20">💎</span>
+                  )}
                   {product.stoneDetails?.hasStones && (
                     <div className="absolute top-4 right-4 bg-[#fcf9f2] text-[#4a2c1d] px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-md">
                       {product.stoneDetails.type}

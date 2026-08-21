@@ -93,14 +93,17 @@ function ConfigureSiteForm() {
   return (
     <div className="min-h-screen bg-[#001529] pt-28 pb-20 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center gap-2 text-sky-400 mb-2 font-semibold">
+        <div className="mb-12">
+          <div className="flex items-center gap-2 text-sky-400 mb-3 font-semibold uppercase tracking-widest text-sm">
             <Icons.Settings className="w-5 h-5" />
             <span>Universal Deployment Configurator</span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Build Your {templateName} Website</h1>
-          <p className="text-slate-400">Map your {hubName} data to your custom domain.</p>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">Build Your Site</h1>
+          <p className="text-slate-400 text-lg">Map your {hubName} data to your custom domain.</p>
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
 
         {userDomains.length === 0 ? (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl text-center">
@@ -215,9 +218,34 @@ function ConfigureSiteForm() {
             </div>
 
           </div>
-        </form>
-        )}
-      </div>
+          </form>
+          )}
+          </div>
+          
+          {/* Visual Sidebar */}
+          <div className="hidden lg:block space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl sticky top-28">
+              <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+                <Icons.LayoutTemplate className="w-5 h-5 text-sky-400" /> Selected Template
+              </h3>
+              <div className="aspect-[4/3] bg-slate-800 rounded-xl mb-4 overflow-hidden relative border border-slate-700">
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-slate-500">
+                  <Icons.Image className="w-12 h-12 opacity-20" />
+                </div>
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">{templateName}</h4>
+              <p className="text-sm text-slate-400 mb-6">This template is optimized for {isGold ? 'Gold Jewelry catalogs' : isHandloom ? 'Handloom Saree stores' : isHealth ? 'Medical Clinics' : 'General Business'}.</p>
+              
+              <div className="p-4 bg-sky-500/10 border border-sky-500/20 rounded-xl">
+                <p className="text-xs text-sky-300 flex items-center gap-2 font-medium leading-relaxed">
+                  <Icons.Info className="w-4 h-4 shrink-0" />
+                  Your site will go live instantly on {selectedDomain || 'your domain'} after deployment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
   );
 }

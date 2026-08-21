@@ -44,11 +44,15 @@ export default function JewelModernTemplate({ config, shop, products, currentRou
               Discover the new standard in contemporary jewelry design. Ethically sourced, meticulously crafted.
             </p>
           </div>
-          <div className="relative w-full max-w-6xl aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl">
-            <Image 
-              src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1599643478524-fb66f70a9210?auto=format&fit=crop&q=80&w=2000"} 
-              alt="Hero" fill className="object-cover hover:scale-105 transition-transform duration-[2s] ease-in-out"
-            />
+          <div className="relative w-full max-w-6xl aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl bg-slate-100 flex items-center justify-center">
+            {shop.coverImages && shop.coverImages.length > 0 ? (
+              <Image 
+                src={shop.coverImages[0]} 
+                alt="Hero" fill className="object-cover hover:scale-105 transition-transform duration-[2s] ease-in-out"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300"></div>
+            )}
           </div>
         </section>
 
@@ -67,15 +71,19 @@ export default function JewelModernTemplate({ config, shop, products, currentRou
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {products.map((product, idx) => (
               <div key={product.id} className="group cursor-pointer">
-                <div className="relative aspect-[4/5] bg-slate-50 rounded-2xl overflow-hidden mb-6">
-                  <Image 
-                    src={product.images[0]} 
-                    alt={product.title} 
-                    fill 
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
-                  />
+                <div className="relative aspect-[4/5] bg-slate-100 rounded-2xl overflow-hidden mb-6 flex items-center justify-center">
+                  {product.images && product.images.length > 0 ? (
+                    <Image 
+                      src={product.images[0]} 
+                      alt={product.title} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                    />
+                  ) : (
+                    <span className="text-4xl opacity-20">💎</span>
+                  )}
                   {/* Hover Overlay Button */}
-                  <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                  <div className="absolute inset-0 bg-slate-900/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
                     <button className="bg-white text-slate-900 font-bold px-6 py-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                       Quick View
                     </button>

@@ -97,10 +97,14 @@ function HomePage({ config, shop, products, primaryColor }: { config: any, shop:
         </div>
         <div className="w-full md:w-7/12 relative aspect-[4/3] animate-in fade-in slide-in-from-right-8 duration-1000 delay-300">
           <div className="absolute inset-0 bg-[#ece9e2] rounded-[2rem] transform rotate-3 translate-x-4 translate-y-4"></div>
-          <Image 
-            src={shop.coverImages?.[0] || "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=1600"} 
-            alt="Artisan Jewelry" fill className="object-cover rounded-[2rem] shadow-xl relative z-10 hover:-translate-y-2 hover:-translate-x-2 transition-transform duration-500" 
-          />
+          {shop.coverImages && shop.coverImages.length > 0 ? (
+            <Image 
+              src={shop.coverImages[0]} 
+              alt="Artisan Jewelry" fill className="object-cover rounded-[2rem] shadow-xl relative z-10 hover:-translate-y-2 hover:-translate-x-2 transition-transform duration-500" 
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[#d8d3c9] rounded-[2rem] shadow-xl z-10 flex items-center justify-center"></div>
+          )}
         </div>
       </section>
 
@@ -126,11 +130,15 @@ function HomePage({ config, shop, products, primaryColor }: { config: any, shop:
 
             return (
               <div key={product.id} className={`${colSpan} ${marginTop} group cursor-pointer`}>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-[#ece9e2]">
-                  <Image 
-                    src={product.images[0]} alt={product.title} fill 
-                    className="object-cover transition-all duration-[2s] group-hover:scale-105 group-hover:opacity-90" 
-                  />
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-6 bg-[#ece9e2] flex items-center justify-center">
+                  {product.images && product.images.length > 0 ? (
+                    <Image 
+                      src={product.images[0]} alt={product.title} fill 
+                      className="object-cover transition-all duration-[2s] group-hover:scale-105 group-hover:opacity-90" 
+                    />
+                  ) : (
+                    <span className="text-4xl opacity-20 grayscale sepia">💎</span>
+                  )}
                   {product.stoneDetails?.hasStones && (
                     <div className="absolute top-6 right-6 w-16 h-16 rounded-full bg-[#f9f8f6] flex items-center justify-center shadow-lg text-[9px] uppercase tracking-widest font-bold text-[#5c5a55] transform rotate-12 group-hover:rotate-0 transition-transform duration-500">
                       {product.stoneDetails.type}

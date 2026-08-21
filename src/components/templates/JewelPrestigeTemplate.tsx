@@ -103,8 +103,12 @@ function HomePage({ config, shop, products, primaryColor }: { config: any, shop:
       {featured && (
         <section className="py-40 px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-24">
           <div className="w-full md:w-1/2">
-            <div className="relative aspect-[3/4] overflow-hidden rounded shadow-2xl shadow-white/5">
-              <Image src={featured.images[0]} alt={featured.title} fill className="object-cover grayscale hover:grayscale-0 scale-105 hover:scale-100 transition-all duration-[2s] ease-out" />
+            <div className="relative aspect-[3/4] overflow-hidden rounded shadow-2xl shadow-white/5 flex items-center justify-center bg-[#111]">
+              {featured.images && featured.images.length > 0 ? (
+                <Image src={featured.images[0]} alt={featured.title} fill className="object-cover grayscale hover:grayscale-0 scale-105 hover:scale-100 transition-all duration-[2s] ease-out" />
+              ) : (
+                <span className="text-4xl opacity-20 grayscale">💎</span>
+              )}
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-col items-start">
@@ -148,11 +152,15 @@ function CollectionsPage({ products, primaryColor }: { products: any[], primaryC
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32">
         {products.map((product, i) => (
           <div key={product.id} id={product.id} className={`group cursor-pointer ${i % 2 === 1 ? 'md:mt-32' : ''}`}>
-            <div className="relative aspect-[3/4] overflow-hidden bg-[#111] mb-8">
-              <Image 
-                src={product.images[0]} alt={product.title} fill 
-                className="object-cover opacity-60 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1.5s] ease-out grayscale group-hover:grayscale-0" 
-              />
+            <div className="relative aspect-[3/4] overflow-hidden bg-[#111] mb-8 flex items-center justify-center">
+              {product.images && product.images.length > 0 ? (
+                <Image 
+                  src={product.images[0]} alt={product.title} fill 
+                  className="object-cover opacity-60 group-hover:opacity-100 scale-105 group-hover:scale-100 transition-all duration-[1.5s] ease-out grayscale group-hover:grayscale-0" 
+                />
+              ) : (
+                <span className="text-4xl opacity-20 grayscale">💎</span>
+              )}
             </div>
             <div className="flex flex-col items-center text-center">
               <span className="text-[9px] uppercase tracking-[0.4em] text-white/30 mb-4">{product.categoryId}</span>

@@ -288,9 +288,13 @@ function CatalogPage({ products, primaryColor }: { products: any[], primaryColor
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {products.map(product => (
             <div key={product.id} className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-200 transition-all duration-300 flex flex-col">
-              <div className="relative aspect-square bg-slate-100 overflow-hidden p-6">
+              <div className="relative aspect-square bg-slate-100 overflow-hidden p-6 flex items-center justify-center">
                 <div className="absolute inset-0 bg-white/40 group-hover:bg-transparent transition-colors z-10"></div>
-                <Image src={product.images[0]} alt={product.title} fill className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" />
+                {product.images && product.images.length > 0 ? (
+                  <Image src={product.images[0]} alt={product.title} fill className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" />
+                ) : (
+                  <span className="text-4xl opacity-20">💎</span>
+                )}
                 
                 {product.stoneDetails?.hasStones && (
                   <span className="absolute top-4 left-4 px-3 py-1 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-md z-20">
@@ -308,7 +312,7 @@ function CatalogPage({ products, primaryColor }: { products: any[], primaryColor
                       ₹{product.price.toLocaleString('en-IN')}
                     </span>
                   </div>
-                  <button className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-black rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                  <button className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-black rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95">
                     Add
                   </button>
                 </div>

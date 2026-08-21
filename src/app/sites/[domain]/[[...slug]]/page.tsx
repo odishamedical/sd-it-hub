@@ -22,17 +22,22 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
 
   // 2. Fetch live data from Gold Hub API Bridge
   // In a real environment, we'd use the production URL. For now we use the live domain since we pushed it.
-  const apiBridgeUrl = `https://golddunia.com/api/export-shop?shopId=${deployment.shopId}`;
+  const apiBridgeUrl = `https://golddunia.com/api/export-shop?shopId=${deployment.hubId || deployment.shopId}`;
   
   let shopData = null;
   let products = [];
   
   try {
     const res = await fetch(apiBridgeUrl, { next: { revalidate: 60 } }); // Cache for 60 seconds
+    if (!res.ok) {
+      throw new Error(`API returned ${res.status}`);
+    }
     const json = await res.json();
-    if (json.success) {
-      shopData = json.data.shop;
-      products = json.data.products;
+    if (json.success && json.data) {
+      shopData = json.data.shop || null;
+      products = json.data.products || [];
+    } else {
+      console.error("API returned success: false", json);
     }
   } catch (error) {
     console.error("Failed to fetch from Gold Hub API Bridge", error);
@@ -40,11 +45,18 @@ export default async function SiteRenderer({ params }: { params: { domain: strin
 
   if (!shopData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-500 mb-2">Data Source Error</h1>
-          <p>Could not connect to the inventory database for {domain}.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white p-6 text-center">
+        <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+          <span className="text-4xl">⚠️</span>
         </div>
+        <h1 className="text-3xl font-bold text-red-400 mb-4">Data Source Disconnected</h1>
+        <p className="text-slate-400 max-w-md mb-8">
+          Could not connect to the master inventory database for <strong className="text-white">{domain}</strong> (Hub ID: {deployment.hubId || deployment.shopId}). 
+          Please ensure your Hub ID is correct in the configuration portal.
+        </p>
+        <a href="https://shyamdash.com/portal/configure" className="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all shadow-lg shadow-sky-500/20">
+          Reconfigure Site
+        </a>
       </div>
     );
   }

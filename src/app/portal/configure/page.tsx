@@ -246,6 +246,7 @@ function ConfigureSiteForm() {
             </div>
           </div>
         </div>
+      </div>
     </div>
   );
 }
